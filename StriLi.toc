@@ -1,0 +1,8 @@
+## Interface: 30300
+## Title: StriLi
+## Author: Truggler
+## Notes: StriLi
+## Version: 1.0.0
+
+MMButtonFrame.xml
+MainFrame.xml
