@@ -2,19 +2,74 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
     xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd">
 	
-	<Frame name="StriLi_ListTemplate" virtual="true">
+	<StatusBar name="StriLi_Template" virtual="true">
 		<Size>
-			<AbsDimension x="91" y="470"/>
+			<AbsDimension x="85" y="30"/>
 		</Size>
-		<Backdrop
-		edgeFile="Interface/Tooltips/UI-Tooltip-Border">
-			<BackgroundInsets>
-				<AbsInset left="30" right="30" top="30" bottom="30"/>
-			</BackgroundInsets>
-			<EdgeSize>
-				<AbsValue val="16"/>
-			</EdgeSize>
-		</Backdrop>
+		<BarTexture file="Interface\Tooltips\UI-Tooltip-Background"/>
+		<BarColor r="1" g="1" b="1"/>
+	</StatusBar>
+	
+	<Frame name="StriLi_Row_Template" virtual="true">
+		<Size>
+			<AbsDimension x="425" y="30"/>
+		</Size>
+		<Anchors>
+			<Anchor point="TOPLEFT" relativePoint="TOPLEFT">
+				<Offset>
+					<AbsDimension x="35" y="-35"/>
+				</Offset>
+			</Anchor>
+		</Anchors>
+		<Frames>
+			<StatusBar name="StriLi_Name" inherits="StriLi_Template" useParentLevel="true">
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</StatusBar>
+			<StatusBar name="StriLi_Main" inherits="StriLi_Template" useParentLevel="true">
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="85" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<BarColor r="0.8" g="0.8" b="0.8"/>
+			</StatusBar>
+			<StatusBar name="StriLi_Sec" inherits="StriLi_Template" useParentLevel="true">
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="170" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</StatusBar>
+			<StatusBar name="StriLi_Token" inherits="StriLi_Template" useParentLevel="true">
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="255" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<BarColor r="0.8" g="0.8" b="0.8"/>
+			</StatusBar>
+			<StatusBar name="StriLi_Fail" inherits="StriLi_Template" useParentLevel="true">
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="340" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</StatusBar>
+		</Frames>
 	</Frame>
 	
 	<Frame name="StriLi_MainFrame" toplevel="true" frameStrata="DIALOG" 
@@ -69,57 +124,13 @@
 			</Layer>
 		</Layers>
 		<Frames>
-			<Frame name="StriLi_Chars" inherits="StriLi_ListTemplate">
-				<Anchors>
-					<Anchor point="TOPLEFT">
-						<Offset>
-							<AbsDimension x="20" y="-50"/>
-						</Offset>
-					</Anchor>
-				</Anchors>
-			</Frame>
-			<Frame name="StriLi_MainNeed" inherits="StriLi_ListTemplate">
-				<Anchors>
-					<Anchor point="TOPLEFT">
-						<Offset>
-							<AbsDimension x="111" y="-50"/>
-						</Offset>
-					</Anchor>
-				</Anchors>
-			</Frame>
-			<Frame name="StriLi_SecNeed" inherits="StriLi_ListTemplate">
-				<Anchors>
-					<Anchor point="TOPLEFT">
-						<Offset>
-							<AbsDimension x="202" y="-50"/>
-						</Offset>
-					</Anchor>
-				</Anchors>
-			</Frame>
-			<Frame name="StriLi_TokenNeed" inherits="StriLi_ListTemplate">
-				<Anchors>
-					<Anchor point="TOPLEFT">
-						<Offset>
-							<AbsDimension x="293" y="-50"/>
-						</Offset>
-					</Anchor>
-				</Anchors>
-			</Frame>
-			<Frame name="StriLi_Fails" inherits="StriLi_ListTemplate">
-				<Anchors>
-					<Anchor point="TOPLEFT">
-						<Offset>
-							<AbsDimension x="384" y="-50"/>
-						</Offset>
-					</Anchor>
-				</Anchors>
-			</Frame>
 		</Frames>
 		<Scripts>
 			<OnMouseDown>StriLi_StartMoving(self);</OnMouseDown>
 			<OnMouseUp>StriLi_StopMoving(self);</OnMouseUp>
 			<OnDragStart></OnDragStart>
 			<OnDragStop></OnDragStop>
+			<OnLoad>StriLi_MainFrame_OnLoad();</OnLoad>
 		</Scripts>
 	</Frame>
 </Ui>
