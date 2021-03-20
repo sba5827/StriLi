@@ -64,7 +64,6 @@ function StriLi_AddRow(CharName, CharClass)
 	
 	StriLi_SetTextColorByClass(PlayerName, CharClass);
 	
-	
 	StriLi_RowCount = StriLi_RowCount + 1;
 
 end

@@ -10,6 +10,62 @@
 		<BarColor r="1" g="1" b="1"/>
 	</StatusBar>
 	
+	<Button name="StriLi_Button_Template" virtual="true" inherits="UIPanelButtonTemplate">
+		<Size>
+			<AbsDimension x="15" y="15"/>
+		</Size>
+		<Anchors>
+			<Anchor point="CENTER">
+				<Offset>
+					<AbsDimension x="0" y="0"/>
+				</Offset>
+			</Anchor>
+		</Anchors>
+	</Button>
+	
+	<Frame name="StriLi_Counter_Template" virtual="true">
+		<Size>
+			<AbsDimension x="85" y="30"/>
+		</Size>
+		<Anchors>
+			<Anchor point="TOPLEFT">
+				<Offset>
+					<AbsDimension x="0" y="0"/>
+				</Offset>
+			</Anchor>
+		</Anchors>
+		<Frames>	
+			<Button name="StriLi_MinusButton" inherits="StriLi_Button_Template" text="-">
+				<Anchors>
+					<Anchor point="LEFT">
+						<Offset>
+							<AbsDimension x="5" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Button>
+			<Button name="StriLi_PlusButton" inherits="StriLi_Button_Template" text="+">
+				<Anchors>
+					<Anchor point="RIGHT">
+						<Offset>
+							<AbsDimension x="-5" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Button>
+		</Frames>
+		<Layers>
+			<Layer>
+				<FontString name="StriLi_Count" text="0" inherits="GameFontNormal">
+					<Size x="50" y="20"/>
+					<Anchors>
+						<Anchor point="CENTER"/>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+	</Frame>
+	
 	<Frame name="StriLi_Row_Template" virtual="true">
 		<Size>
 			<AbsDimension x="425" y="30"/>
@@ -123,8 +179,6 @@
 				</FontString>
 			</Layer>
 		</Layers>
-		<Frames>
-		</Frames>
 		<Scripts>
 			<OnMouseDown>StriLi_StartMoving(self);</OnMouseDown>
 			<OnMouseUp>StriLi_StopMoving(self);</OnMouseUp>
