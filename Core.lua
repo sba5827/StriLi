@@ -5,6 +5,8 @@ local StriLi_RowYBaseOffset=-35;
 local StriLi_RowCount = 0;
 local StriLi_RowFrames = {};
 
+local StriLi_RaidMembers = {};
+
 function StriLi_MMButton_OnClick(self)
 
 	if ( StriLi_MainFrame:IsVisible() ) then
@@ -130,14 +132,47 @@ function StriLi_OnClickMinusButton(self)
 	
 end
 
-function StriLi_MainFrame_OnLoad()
+function StriLi_MainFrame_OnEvent(self, event)
+
+	if(event == "PARTY_MEMBERS_CHANGED") then
+		StriLi_On_PARTY_MEMBERS_CHANGED(self);
+	end
+
+end
+
+function StriLi_On_PARTY_MEMBERS_CHANGED(self)
+
+	numOfMembers = GetNumRaidMembers();	
 	
-	local playerName = UnitName("player");
-	local localizedClass, englishClass, classIndex = UnitClass("player");
+	if(numOfMembers < 1) then return end
+	
+	for i = 1, numOfMembers, 1 do 
+		local name = GetRaidRosterInfo(i);
+		local localizedClass, englishClass, classIndex = UnitClass("raid"..tostring(i));
+		StriLi_AddMember(name, englishClass);
+	end
+	
+end
+
+function StriLi_AddMember(CharName, CharClass)
+
+	if (StriLi_RaidMembers[CharName] == nil) then
+		StriLi_RaidMembers[CharName] = true;
+		StriLi_AddRow(CharName, CharClass);
+	end
+	
+end
+
+function StriLi_MainFrame_OnLoad(self)
+
 	StriLi_AddLabelRow();
-	StriLi_AddRow( playerName, englishClass);
 	
-	StriLi_DEBUG();
+	self:RegisterEvent("PARTY_MEMBERS_CHANGED");
+	self:SetScript("OnEvent", StriLi_MainFrame_OnEvent);
+	
+	StriLi_On_PARTY_MEMBERS_CHANGED(self);
+	
+	--StriLi_DEBUG();
 	
 end
 
