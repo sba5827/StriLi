@@ -57,12 +57,17 @@ function StriLi_AddRow(CharName, CharClass)
 	
 	local Name, Main, Sec, Token, Fail = StriLi_RowFrames[StriLi_RowCount]:GetChildren();
 	
-	local PlayerName = Name:CreateFontString("PlayerName","ARTWORK", "GameFontNormal");
+	local PlayerName = Name:CreateFontString("PlayerName"..tostring(StriLi_RowCount),"ARTWORK", "GameFontNormal");
 	PlayerName:SetPoint("LEFT", 0, 0);
+	PlayerName:SetPoint("RIGHT", 0, 0);
 	PlayerName:SetText(CharName);
-	--PlayerName:SetTextColor(0.50, 0.31, 0.27, 1);
 	
 	StriLi_SetTextColorByClass(PlayerName, CharClass);
+	
+	CreateFrame("Frame", "CounterMain"..tostring(StriLi_RowCount), Main, "StriLi_Counter_Template");
+	CreateFrame("Frame", "CounterSec"..tostring(StriLi_RowCount), Sec, "StriLi_Counter_Template");
+	CreateFrame("Frame", "CounterToken"..tostring(StriLi_RowCount), Token, "StriLi_Counter_Template");
+	CreateFrame("Frame", "CounterFail"..tostring(StriLi_RowCount), Fail, "StriLi_Counter_Template");
 	
 	StriLi_RowCount = StriLi_RowCount + 1;
 
@@ -75,11 +80,11 @@ function StriLi_AddLabelRow()
 	
 	local Name, Main, Sec, Token, Fail = StriLi_RowFrames[StriLi_RowCount]:GetChildren();
 	
-	Name = Name:CreateFontString("PlayerName","ARTWORK", "GameFontNormal");
-	Main = Main:CreateFontString("PlayerName","ARTWORK", "GameFontNormal");
-	Sec = Sec:CreateFontString("PlayerName","ARTWORK", "GameFontNormal");
-	Token = Token:CreateFontString("PlayerName","ARTWORK", "GameFontNormal");
-	Fail = Fail:CreateFontString("PlayerName","ARTWORK", "GameFontNormal");
+	Name = Name:CreateFontString("PlayerNameLable","ARTWORK", "GameFontNormal");
+	Main = Main:CreateFontString("MainLable","ARTWORK", "GameFontNormal");
+	Sec = Sec:CreateFontString("SecLable","ARTWORK", "GameFontNormal");
+	Token = Token:CreateFontString("TokenLabel","ARTWORK", "GameFontNormal");
+	Fail = Fail:CreateFontString("FailLable","ARTWORK", "GameFontNormal");
 	Name:SetPoint("CENTER", 0, 0);
 	Main:SetPoint("CENTER", 0, 0);
 	Sec:SetPoint("CENTER", 0, 0);
@@ -92,6 +97,36 @@ function StriLi_AddLabelRow()
 	Fail:SetText("Fail");
 		
 	StriLi_RowCount = StriLi_RowCount + 1;
+	
+end
+
+function StriLi_OnClickPlusButton(self)
+
+	local parent = self:GetParent();
+	local fontString = parent:GetRegions();
+	
+	local oldText = fontString:GetText();
+	local count = tonumber(oldText);
+	
+	count = count+1;
+	
+	fontString:SetText(tostring(count));
+	
+end
+
+function StriLi_OnClickMinusButton(self)
+
+	local parent = self:GetParent();
+	local fontString = parent:GetRegions();
+	
+	local oldText = fontString:GetText();
+	local count = tonumber(oldText);
+	
+	if (count>0) then
+		count = count-1;
+	end
+	
+	fontString:SetText(tostring(count));
 	
 end
 

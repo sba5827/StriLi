@@ -2,6 +2,8 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
     xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd">
 	
+	<Script file="Core.lua" />
+	
 	<StatusBar name="StriLi_Template" virtual="true">
 		<Size>
 			<AbsDimension x="85" y="30"/>
@@ -43,6 +45,9 @@
 						</Offset>
 					</Anchor>
 				</Anchors>
+				<Scripts>
+					<OnClick>StriLi_OnClickMinusButton(self)</OnClick>
+				</Scripts>
 			</Button>
 			<Button name="StriLi_PlusButton" inherits="StriLi_Button_Template" text="+">
 				<Anchors>
@@ -52,6 +57,9 @@
 						</Offset>
 					</Anchor>
 				</Anchors>
+				<Scripts>
+					<OnClick>StriLi_OnClickPlusButton(self)</OnClick>
+				</Scripts>
 			</Button>
 		</Frames>
 		<Layers>
