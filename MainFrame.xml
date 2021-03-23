@@ -137,7 +137,7 @@
 	</Frame>
 	
 	<Frame name="StriLi_MainFrame" toplevel="true" frameStrata="DIALOG" 
-      movable="true" parent="UIParent" enableMouse="true" hidden="false">
+      movable="true" parent="UIParent" enableMouse="true" hidden="true">
 		<Size>
 			<AbsDimension x="495" y="555"/>
 		</Size>
@@ -187,6 +187,23 @@
 				</FontString>
 			</Layer>
 		</Layers>
+		<Frames>
+			<Button name="StriLi_ResetButton" inherits="UIPanelButtonTemplate" text="Reset">
+				<Size>
+					<AbsDimension x="30" y="15"/>
+				</Size>
+				<Anchors>
+					<Anchor point="BOTTOMRIGHT">
+						<Offset>
+							<AbsDimension x="-15" y="15"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>StriLi_OnClickResetButton(self)</OnClick>
+				</Scripts>
+			</Button>
+		</Frames>
 		<Scripts>
 			<OnMouseDown>StriLi_StartMoving(self);</OnMouseDown>
 			<OnMouseUp>StriLi_StopMoving(self);</OnMouseUp>

@@ -2,6 +2,8 @@
 ## Title: StriLi
 ## Author: Truggler
 ## Notes: StriLi
+## SavedVariablesPerCharacter:  
+## SavedVariables: StriLi_RaidMembers
 ## Version: 1.0.0
 
 MMButtonFrame.xml

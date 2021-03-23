@@ -5,8 +5,6 @@ local StriLi_RowYBaseOffset=-35;
 local StriLi_RowCount = 0;
 local StriLi_RowFrames = {};
 
-local StriLi_RaidMembers = {};
-
 function StriLi_MMButton_OnClick(self)
 
 	if ( StriLi_MainFrame:IsVisible() ) then
@@ -52,7 +50,9 @@ function StriLi_SetTextColorByClass(FontString, Class)
 
 end
 
-function StriLi_AddRow(CharName, CharClass)
+function StriLi_AddRow(CharName, CharData)
+	
+	CharClass = CharData[1];
 	
 	StriLi_RowFrames[StriLi_RowCount] = CreateFrame("Frame", "StriLi_Row"..tostring(StriLi_RowCount), StriLi_MainFrame, "StriLi_Row_Template");
 	StriLi_RowFrames[StriLi_RowCount]:SetPoint("TOPLEFT", StriLi_MainFrame, "TOPLEFT", StriLi_RowXBaseOffset, StriLi_RowYBaseOffset - StriLi_RowCount*StriLi_RowHight);
@@ -66,10 +66,20 @@ function StriLi_AddRow(CharName, CharClass)
 	
 	StriLi_SetTextColorByClass(PlayerName, CharClass);
 	
-	CreateFrame("Frame", "CounterMain"..tostring(StriLi_RowCount), Main, "StriLi_Counter_Template");
-	CreateFrame("Frame", "CounterSec"..tostring(StriLi_RowCount), Sec, "StriLi_Counter_Template");
-	CreateFrame("Frame", "CounterToken"..tostring(StriLi_RowCount), Token, "StriLi_Counter_Template");
-	CreateFrame("Frame", "CounterFail"..tostring(StriLi_RowCount), Fail, "StriLi_Counter_Template");
+	local counterMain = CreateFrame("Frame", "CounterMain"..tostring(StriLi_RowCount), Main, "StriLi_Counter_Template");
+	local counterSec = CreateFrame("Frame", "CounterSec"..tostring(StriLi_RowCount), Sec, "StriLi_Counter_Template");
+	local counterToken = CreateFrame("Frame", "CounterToken"..tostring(StriLi_RowCount), Token, "StriLi_Counter_Template");
+	local counterFail = CreateFrame("Frame", "CounterFail"..tostring(StriLi_RowCount), Fail, "StriLi_Counter_Template");
+	
+	local counterMainFontString = counterMain:GetRegions();
+	local counterSecFontString = counterSec:GetRegions();
+	local counterTokenFontString = counterToken:GetRegions();
+	local counterFailFontString = counterFail:GetRegions();
+	
+	counterMainFontString:SetText(tostring(CharData["Main"]))
+	counterSecFontString:SetText(tostring(CharData["Sec"]))
+	counterTokenFontString:SetText(tostring(CharData["Token"]))
+	counterFailFontString:SetText(tostring(CharData["Fail"]))
 	
 	StriLi_RowCount = StriLi_RowCount + 1;
 
@@ -82,21 +92,21 @@ function StriLi_AddLabelRow()
 	
 	local Name, Main, Sec, Token, Fail = StriLi_RowFrames[StriLi_RowCount]:GetChildren();
 	
-	Name = Name:CreateFontString("PlayerNameLable","ARTWORK", "GameFontNormal");
-	Main = Main:CreateFontString("MainLable","ARTWORK", "GameFontNormal");
-	Sec = Sec:CreateFontString("SecLable","ARTWORK", "GameFontNormal");
-	Token = Token:CreateFontString("TokenLabel","ARTWORK", "GameFontNormal");
-	Fail = Fail:CreateFontString("FailLable","ARTWORK", "GameFontNormal");
-	Name:SetPoint("CENTER", 0, 0);
-	Main:SetPoint("CENTER", 0, 0);
-	Sec:SetPoint("CENTER", 0, 0);
-	Token:SetPoint("CENTER", 0, 0);
-	Fail:SetPoint("CENTER", 0, 0);
-	Name:SetText("Name");
-	Main:SetText("Main");
-	Sec:SetText("Sec");
-	Token:SetText("Token");
-	Fail:SetText("Fail");
+	local Name2 = Name:CreateFontString("PlayerNameLable","ARTWORK", "GameFontNormal");
+	local Main2 = Main:CreateFontString("MainLable","ARTWORK", "GameFontNormal");
+	local Sec2 = Sec:CreateFontString("SecLable","ARTWORK", "GameFontNormal");
+	local Token2 = Token:CreateFontString("TokenLabel","ARTWORK", "GameFontNormal");
+	local Fail2 = Fail:CreateFontString("FailLable","ARTWORK", "GameFontNormal");
+	Name2:SetPoint("CENTER", 0, 0);
+	Main2:SetPoint("CENTER", 0, 0);
+	Sec2:SetPoint("CENTER", 0, 0);
+	Token2:SetPoint("CENTER", 0, 0);
+	Fail2:SetPoint("CENTER", 0, 0);
+	Name2:SetText("Name");
+	Main2:SetText("Main");
+	Sec2:SetText("Sec");
+	Token2:SetText("Token");
+	Fail2:SetText("Fail");
 		
 	StriLi_RowCount = StriLi_RowCount + 1;
 	
@@ -104,13 +114,31 @@ end
 
 function StriLi_OnClickPlusButton(self)
 
-	local parent = self:GetParent();
-	local fontString = parent:GetRegions();
+	local parentFrameCounter = self:GetParent();
+	local parentFrameCell = parentFrameCounter:GetParent();
+	local parentFrameRow = parentFrameCell:GetParent();
+	local Name, Main, Sec, Token, Fail = parentFrameRow:GetChildren();
+
+	local NameRegion1, NameRegion2 = Name:GetRegions();
+	local text = NameRegion2:GetText();
 	
-	local oldText = fontString:GetText();
-	local count = tonumber(oldText);
+	local count = 0;
 	
-	count = count+1;
+	if parentFrameCell == Main then
+		StriLi_RaidMembers[text]["Main"] = StriLi_RaidMembers[text]["Main"] + 1;
+		count = StriLi_RaidMembers[text]["Main"];
+	elseif parentFrameCell == Sec then
+		StriLi_RaidMembers[text]["Sec"] = StriLi_RaidMembers[text]["Sec"] + 1;
+		count = StriLi_RaidMembers[text]["Sec"];
+	elseif parentFrameCell == Token then
+		StriLi_RaidMembers[text]["Token"] = StriLi_RaidMembers[text]["Token"] + 1;
+		count = StriLi_RaidMembers[text]["Token"];
+	elseif parentFrameCell == Fail then
+		StriLi_RaidMembers[text]["Fail"] = StriLi_RaidMembers[text]["Fail"] + 1;
+		count = StriLi_RaidMembers[text]["Fail"];
+	end	
+	
+	local fontString = parentFrameCounter:GetRegions();
 	
 	fontString:SetText(tostring(count));
 	
@@ -118,24 +146,69 @@ end
 
 function StriLi_OnClickMinusButton(self)
 
-	local parent = self:GetParent();
-	local fontString = parent:GetRegions();
+	local parentFrameCounter = self:GetParent();
+	local parentFrameCell = parentFrameCounter:GetParent();
+	local parentFrameRow = parentFrameCell:GetParent();
+	local Name, Main, Sec, Token, Fail = parentFrameRow:GetChildren();
+
+	local NameRegion1, NameRegion2 = Name:GetRegions();
+	local text = NameRegion2:GetText();
 	
-	local oldText = fontString:GetText();
-	local count = tonumber(oldText);
+	local count = 0;
 	
-	if (count>0) then
-		count = count-1;
-	end
+	if parentFrameCell == Main then
+	
+		if (StriLi_RaidMembers[text]["Main"] > 0) then 
+			StriLi_RaidMembers[text]["Main"] = StriLi_RaidMembers[text]["Main"] - 1;
+		end
+		count = StriLi_RaidMembers[text]["Main"];
+		
+	elseif parentFrameCell == Sec then
+	
+		if (StriLi_RaidMembers[text]["Sec"] > 0) then 
+			StriLi_RaidMembers[text]["Sec"] = StriLi_RaidMembers[text]["Sec"] - 1;
+		end
+		count = StriLi_RaidMembers[text]["Sec"];
+	elseif parentFrameCell == Token then
+	
+		if (StriLi_RaidMembers[text]["Token"] > 0) then 
+			StriLi_RaidMembers[text]["Token"] = StriLi_RaidMembers[text]["Token"] - 1;
+		end
+		count = StriLi_RaidMembers[text]["Token"];
+	elseif parentFrameCell == Fail then
+	
+		if (StriLi_RaidMembers[text]["Fail"] > 0) then 
+			StriLi_RaidMembers[text]["Fail"] = StriLi_RaidMembers[text]["Fail"] - 1;
+		end
+		
+		count = StriLi_RaidMembers[text]["Fail"];
+	end	
+	
+	local fontString = parentFrameCounter:GetRegions();
 	
 	fontString:SetText(tostring(count));
 	
+end
+
+function StriLi_OnClickResetButton(self)
+	StriLi_RaidMembers = {};
+	for i = 0, StriLi_RowCount-1, 1 do
+		StriLi_RowFrames[i]:Hide();
+	end
+	StriLi_RowFrames = {};
+	StriLi_RowCount = 0;
+	StriLi_AddLabelRow();
+	StriLi_On_PARTY_MEMBERS_CHANGED();
+	StriLi_RefreshUI();
 end
 
 function StriLi_MainFrame_OnEvent(self, event)
 
 	if(event == "PARTY_MEMBERS_CHANGED") then
 		StriLi_On_PARTY_MEMBERS_CHANGED(self);
+	elseif (event == "ADDON_LOADED") then
+		print("Call: StriLi_RefreshUI");
+		StriLi_RefreshUI();
 	end
 
 end
@@ -152,13 +225,14 @@ function StriLi_On_PARTY_MEMBERS_CHANGED(self)
 		StriLi_AddMember(name, englishClass);
 	end
 	
+	StriLi_RefreshUI();
+	
 end
 
 function StriLi_AddMember(CharName, CharClass)
 
 	if (StriLi_RaidMembers[CharName] == nil) then
-		StriLi_RaidMembers[CharName] = true;
-		StriLi_AddRow(CharName, CharClass);
+		StriLi_RaidMembers[CharName] = {CharClass, ["Main"]=0, ["Sec"]=0, ["Token"]=0, ["Fail"]=0};
 	end
 	
 end
@@ -168,12 +242,42 @@ function StriLi_MainFrame_OnLoad(self)
 	StriLi_AddLabelRow();
 	
 	self:RegisterEvent("PARTY_MEMBERS_CHANGED");
+	self:RegisterEvent("ADDON_LOADED");
 	self:SetScript("OnEvent", StriLi_MainFrame_OnEvent);
 	
-	StriLi_On_PARTY_MEMBERS_CHANGED(self);
+end
+
+function StriLi_RefreshUI()
+
+	for name, data in pairs(StriLi_RaidMembers) do
 	
-	--StriLi_DEBUG();
+		if not StriLi_DoesFrameForCharExist(name) then 
+			StriLi_AddRow(name, data);
+		end
+
+	end
+
+end
+
+function StriLi_DoesFrameForCharExist(CharName)
 	
+	if StriLi_RowCount < 1 then return end
+
+	for i=0, StriLi_RowCount-1, 1 do
+	
+		local Name, Main, Sec, Token, Fail = StriLi_RowFrames[i]:GetChildren();
+		local DUMP, Name2 = Name:GetRegions();
+		
+		local text = Name2:GetText();
+		
+		
+		if (text == CharName) then
+			return true;
+		end
+	end
+	
+	return false;
+
 end
 
 function StriLi_DEBUG()
