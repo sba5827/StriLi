@@ -6,9 +6,22 @@ local StriLi_RowCount = 0;
 local StriLi_RowFrames = {};
 local StriLi_ADDONLOADED = false;
 
+local StriLi_MemberToInspect_unitID = "";
+local StriLi_MemberToInspect_raidNumber = 0;
+local StriLi_Pendend_MembersToInspect = true;
+local StriLi_WatingForSpeccInformation = false;
+
+local StriLi_NotifyInspect_isValid = false;
+
 local loadEventFrame = CreateFrame("FRAME");
 loadEventFrame:RegisterEvent("ADDON_LOADED");
+loadEventFrame:RegisterEvent("INSPECT_TALENT_READY");
 loadEventFrame:SetScript("OnEvent", StriLi_MainFrame_OnEvent);
+
+SLASH_TEST1 = "/test1";
+SlashCmdList["TEST"] = function(msg)
+
+end 
 
 function StriLi_MMButton_OnClick(self)
 
@@ -58,16 +71,22 @@ end
 function StriLi_AddRow(CharName, CharData)
 	
 	CharClass = CharData[1];
+	CharSpecc = CharData["Specc"];
 	
 	StriLi_RowFrames[StriLi_RowCount] = CreateFrame("Frame", "StriLi_Row"..tostring(StriLi_RowCount), StriLi_MainFrame, "StriLi_Row_Template");
 	StriLi_RowFrames[StriLi_RowCount]:SetPoint("TOPLEFT", StriLi_MainFrame, "TOPLEFT", StriLi_RowXBaseOffset, StriLi_RowYBaseOffset - StriLi_RowCount*StriLi_RowHight);
 	
-	local Name, Main, Sec, Token, Fail = StriLi_RowFrames[StriLi_RowCount]:GetChildren();
+	local Name, Main, Sec, Token, Fail, Specc = StriLi_RowFrames[StriLi_RowCount]:GetChildren();
 	
 	local PlayerName = Name:CreateFontString("PlayerName"..tostring(StriLi_RowCount),"ARTWORK", "GameFontNormal");
 	PlayerName:SetPoint("LEFT", 0, 0);
 	PlayerName:SetPoint("RIGHT", 0, 0);
 	PlayerName:SetText(CharName);
+	
+	local SpeccFontText = Specc:CreateFontString("SpeccFontText"..tostring(StriLi_RowCount),"ARTWORK", "GameFontNormal");
+	SpeccFontText:SetPoint("LEFT", 0, 0);
+	SpeccFontText:SetPoint("RIGHT", 0, 0);
+	SpeccFontText:SetText(CharSpecc);
 	
 	StriLi_SetTextColorByClass(PlayerName, CharClass);
 	
@@ -95,23 +114,29 @@ function StriLi_AddLabelRow()
 	StriLi_RowFrames[StriLi_RowCount] = CreateFrame("Frame", "StriLi_Row"..tostring(StriLi_RowCount), StriLi_MainFrame, "StriLi_Row_Template");
 	StriLi_RowFrames[StriLi_RowCount]:SetPoint("TOPLEFT", StriLi_MainFrame, "TOPLEFT", StriLi_RowXBaseOffset, StriLi_RowYBaseOffset - StriLi_RowCount*StriLi_RowHight);
 	
-	local Name, Main, Sec, Token, Fail = StriLi_RowFrames[StriLi_RowCount]:GetChildren();
+	local Name, Main, Sec, Token, Fail, Specc = StriLi_RowFrames[StriLi_RowCount]:GetChildren();
 	
 	local Name2 = Name:CreateFontString("PlayerNameLable","ARTWORK", "GameFontNormal");
 	local Main2 = Main:CreateFontString("MainLable","ARTWORK", "GameFontNormal");
 	local Sec2 = Sec:CreateFontString("SecLable","ARTWORK", "GameFontNormal");
 	local Token2 = Token:CreateFontString("TokenLabel","ARTWORK", "GameFontNormal");
 	local Fail2 = Fail:CreateFontString("FailLable","ARTWORK", "GameFontNormal");
+	local Specc2 = Specc:CreateFontString("SpeccLable","ARTWORK", "GameFontNormal");
+	
+	
 	Name2:SetPoint("CENTER", 0, 0);
 	Main2:SetPoint("CENTER", 0, 0);
 	Sec2:SetPoint("CENTER", 0, 0);
 	Token2:SetPoint("CENTER", 0, 0);
 	Fail2:SetPoint("CENTER", 0, 0);
+	Specc2:SetPoint("CENTER", 0, 0);
+	
 	Name2:SetText("Name");
 	Main2:SetText("Main");
 	Sec2:SetText("Sec");
 	Token2:SetText("Token");
 	Fail2:SetText("Fail");
+	Specc2:SetText("Specc");
 		
 	StriLi_RowCount = StriLi_RowCount + 1;
 	
@@ -196,6 +221,7 @@ function StriLi_OnClickMinusButton(self)
 end
 
 function StriLi_OnClickResetButton(self)
+
 	StriLi_RaidMembers = {};
 	for i = 0, StriLi_RowCount-1, 1 do
 		StriLi_RowFrames[i]:Hide();
@@ -205,6 +231,7 @@ function StriLi_OnClickResetButton(self)
 	StriLi_AddLabelRow();
 	StriLi_On_PARTY_MEMBERS_CHANGED();
 	StriLi_RefreshUI();
+	
 end
 
 function StriLi_MainFrame_OnEvent(self, event)
@@ -214,14 +241,18 @@ function StriLi_MainFrame_OnEvent(self, event)
 	elseif ((event == "ADDON_LOADED") and (not StriLi_ADDONLOADED)) then
 		print("|cffFFFF00StriLi loaded|r");
 		StriLi_ADDONLOADED = true;
+		hooksecurefunc("NotifyInspect", StriLi_NotifyInspect);
 		StriLi_RefreshUI();
+	elseif (event == "INSPECT_TALENT_READY") then
+		StriLi_InspectPlayer();
 	end
+	
 
 end
 
 function StriLi_On_PARTY_MEMBERS_CHANGED(self)
 
-	numOfMembers = GetNumRaidMembers();	
+	local numOfMembers = GetNumRaidMembers();	
 	
 	if(numOfMembers < 1) then return end
 	
@@ -231,6 +262,8 @@ function StriLi_On_PARTY_MEMBERS_CHANGED(self)
 		StriLi_AddMember(name, englishClass);
 	end
 	
+	StriLi_GetPendingSpeccs();
+	
 	StriLi_RefreshUI();
 	
 end
@@ -238,7 +271,8 @@ end
 function StriLi_AddMember(CharName, CharClass)
 
 	if (StriLi_RaidMembers[CharName] == nil) then
-		StriLi_RaidMembers[CharName] = {CharClass, ["Main"]=0, ["Sec"]=0, ["Token"]=0, ["Fail"]=0};
+		StriLi_RaidMembers[CharName] = {CharClass, ["Main"]=0, ["Sec"]=0, ["Token"]=0, ["Fail"]=0, ["Specc"]=''};
+		StriLi_Pendend_MembersToInspect = true;
 	end
 	
 end
@@ -258,19 +292,31 @@ function StriLi_RefreshUI()
 	
 		if not StriLi_DoesFrameForCharExist(name) then
 			StriLi_AddRow(name, data);
+		else	
+			StriLi_UpdateSpecc(name, data["Specc"]);
 		end
 
 	end
 
+	StriLi_ResizeMainFrame();
+
+end
+
+function StriLi_ResizeMainFrame()
+
+	local SumRowFrameHeight = StriLi_RowCount * StriLi_RowHight;
+	
+	StriLi_MainFrame:SetHeight(SumRowFrameHeight - 2*StriLi_RowYBaseOffset);
+	
 end
 
 function StriLi_DoesFrameForCharExist(CharName)
 	
-	if StriLi_RowCount < 1 then return end
+	if StriLi_RowCount < 1 then return false end
 
 	for i=0, StriLi_RowCount-1, 1 do
 	
-		local Name, Main, Sec, Token, Fail = StriLi_RowFrames[i]:GetChildren();
+		local Name = StriLi_RowFrames[i]:GetChildren();
 		local DUMP, Name2 = Name:GetRegions();
 		
 		local text = Name2:GetText();
@@ -283,6 +329,136 @@ function StriLi_DoesFrameForCharExist(CharName)
 	
 	return false;
 
+end
+
+function StriLi_UpdateSpecc(CharName, CharSpecc)
+
+	if StriLi_RowCount < 1 then return end
+
+	for i=0, StriLi_RowCount-1, 1 do
+	
+		local Name, _, _, _, _, Specc = StriLi_RowFrames[i]:GetChildren();
+		local DUMP, Name2 = Name:GetRegions();
+		
+		local text = Name2:GetText();
+		
+		
+		if (text == CharName) then
+			local _, Specc2 = Specc:GetRegions();
+			Specc2:SetText(CharSpecc);
+		end
+	end
+
+end
+
+function StriLi_GetActiveSpecc(PlayerName)
+
+	if (StriLi_WatingForSpeccInformation) then return false end;
+	
+	local numOfMembers = GetNumRaidMembers();	
+	local playerFound = false;
+	
+	local index = 0;
+	
+	for i = 1, numOfMembers, 1 do 
+	
+		local name = GetRaidRosterInfo(i);
+		
+		if (name == PlayerName) then 
+			playerFound = true;
+			index = i;
+			break; 
+		end;
+		
+	end
+	
+	if (not playerFound) then
+		return false;
+	end
+	
+	
+	StriLi_MemberToInspect_raidNumber = index
+	
+	StriLi_MemberToInspect_unitID = "raid"..tostring(index);
+	
+	if( UnitIsConnected(StriLi_MemberToInspect_unitID) and UnitExists(StriLi_MemberToInspect_unitID) and UnitIsVisible(StriLi_MemberToInspect_unitID) and UnitIsFriend(StriLi_MemberToInspect_unitID, "player") and CanInspect(StriLi_MemberToInspect_unitID) and UnitName(StriLi_MemberToInspect_unitID) ~= UNKNOWN ) then
+	
+		StriLi_WatingForSpeccInformation = true;
+		
+		NotifyInspect(StriLi_MemberToInspect_unitID);
+		return true;
+		
+	end
+	
+	return false;
+	
+end
+
+function StriLi_InspectPlayer()
+
+	if (not StriLi_NotifyInspect_isValid) then return end
+	
+	local name1, _, pointsSpent1 = GetTalentTabInfo(1, true, false);	
+	local name2, _, pointsSpent2 = GetTalentTabInfo(2, true, false);
+	local name3, _, pointsSpent3 = GetTalentTabInfo(3, true, false);
+	
+	local sepcc;
+	
+	if (pointsSpent1 > pointsSpent2) and (pointsSpent1 > pointsSpent3) then
+		sepcc = name1;
+	elseif (pointsSpent2 > pointsSpent1) and (pointsSpent2 > pointsSpent3) then
+		sepcc = name2;
+	else
+		sepcc = name3;
+	end
+	
+	local name = GetRaidRosterInfo(StriLi_MemberToInspect_raidNumber);
+	
+	StriLi_RaidMembers[name]["Specc"] = sepcc;
+	StriLi_RefreshUI();
+		
+	StriLi_WatingForSpeccInformation = false;
+	
+	if StriLi_Pendend_MembersToInspect then
+		StriLi_GetPendingSpeccs();
+	end
+	
+end
+
+function StriLi_NotifyInspect(unitID)
+	
+	if (unitID ~= StriLi_MemberToInspect_unitID) then 
+	
+		StriLi_NotifyInspect_isValid = false;
+		
+	else
+	
+		StriLi_NotifyInspect_isValid = true;
+		
+	end
+
+end
+
+function StriLi_GetPendingSpeccs()
+
+	local numRaidMem = GetNumRaidMembers();
+	
+	for j = 1, numRaidMem, 1 do
+	
+		local name = GetRaidRosterInfo(j);
+		
+		if (StriLi_RaidMembers[name] ~= nil) then
+		
+			if (StriLi_RaidMembers[name]["Specc"] == "") then 
+				StriLi_GetActiveSpecc(name);
+				return;
+			end
+			
+		end
+	end
+	
+	StriLi_Pendend_MembersToInspect = false;
+	
 end
 
 function StriLi_DEBUG()

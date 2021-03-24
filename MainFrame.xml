@@ -133,13 +133,23 @@
 					</Anchor>
 				</Anchors>
 			</StatusBar>
+			<StatusBar name="StriLi_Specc" inherits="StriLi_Template" useParentLevel="true">
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="425" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<BarColor r="0.8" g="0.8" b="0.8"/>
+			</StatusBar>
 		</Frames>
 	</Frame>
 	
 	<Frame name="StriLi_MainFrame" toplevel="true" frameStrata="DIALOG" 
       movable="true" parent="UIParent" enableMouse="true" hidden="true">
 		<Size>
-			<AbsDimension x="495" y="555"/>
+			<AbsDimension x="580" y="555"/>
 		</Size>
 		<Anchors>
 			<Anchor point="CENTER">
