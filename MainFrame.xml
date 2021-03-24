@@ -190,7 +190,7 @@
 		<Frames>
 			<Button name="StriLi_ResetButton" inherits="UIPanelButtonTemplate" text="Reset">
 				<Size>
-					<AbsDimension x="30" y="15"/>
+					<AbsDimension x="40" y="20"/>
 				</Size>
 				<Anchors>
 					<Anchor point="BOTTOMRIGHT">
@@ -201,6 +201,21 @@
 				</Anchors>
 				<Scripts>
 					<OnClick>StriLi_OnClickResetButton(self)</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="StriLi_Close" inherits="UIPanelButtonTemplate" text="X">
+				<Size>
+					<AbsDimension x="20" y="20"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPRIGHT">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>HideUIPanel(self:GetParent())</OnClick>
 				</Scripts>
 			</Button>
 		</Frames>

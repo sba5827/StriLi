@@ -4,6 +4,11 @@ local StriLi_RowYBaseOffset=-35;
 
 local StriLi_RowCount = 0;
 local StriLi_RowFrames = {};
+local StriLi_ADDONLOADED = false;
+
+local loadEventFrame = CreateFrame("FRAME");
+loadEventFrame:RegisterEvent("ADDON_LOADED");
+loadEventFrame:SetScript("OnEvent", StriLi_MainFrame_OnEvent);
 
 function StriLi_MMButton_OnClick(self)
 
@@ -206,8 +211,9 @@ function StriLi_MainFrame_OnEvent(self, event)
 
 	if(event == "PARTY_MEMBERS_CHANGED") then
 		StriLi_On_PARTY_MEMBERS_CHANGED(self);
-	elseif (event == "ADDON_LOADED") then
-		print("Call: StriLi_RefreshUI");
+	elseif ((event == "ADDON_LOADED") and (not StriLi_ADDONLOADED)) then
+		print("|cffFFFF00StriLi loaded|r");
+		StriLi_ADDONLOADED = true;
 		StriLi_RefreshUI();
 	end
 
@@ -242,7 +248,6 @@ function StriLi_MainFrame_OnLoad(self)
 	StriLi_AddLabelRow();
 	
 	self:RegisterEvent("PARTY_MEMBERS_CHANGED");
-	self:RegisterEvent("ADDON_LOADED");
 	self:SetScript("OnEvent", StriLi_MainFrame_OnEvent);
 	
 end
@@ -251,7 +256,7 @@ function StriLi_RefreshUI()
 
 	for name, data in pairs(StriLi_RaidMembers) do
 	
-		if not StriLi_DoesFrameForCharExist(name) then 
+		if not StriLi_DoesFrameForCharExist(name) then
 			StriLi_AddRow(name, data);
 		end
 
