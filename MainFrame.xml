@@ -146,8 +146,8 @@
 		</Frames>
 	</Frame>
 	
-	<Frame name="StriLi_MainFrame" toplevel="true" frameStrata="DIALOG" 
-      movable="true" parent="UIParent" enableMouse="true" hidden="true">
+	<Frame name="StriLi_MainFrame_Template" virtual="true" toplevel="true" frameStrata="DIALOG" 
+      movable="true" enableMouse="true" hidden="true">
 		<Size>
 			<AbsDimension x="580" y="555"/>
 		</Size>
@@ -234,7 +234,6 @@
 			<OnMouseUp>StriLi_StopMoving(self);</OnMouseUp>
 			<OnDragStart></OnDragStart>
 			<OnDragStop></OnDragStop>
-			<OnLoad>StriLi_MainFrame_OnLoad(self);</OnLoad>
 		</Scripts>
 	</Frame>
 </Ui>

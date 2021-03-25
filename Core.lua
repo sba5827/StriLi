@@ -13,15 +13,36 @@ local StriLi_WatingForSpeccInformation = false;
 
 local StriLi_NotifyInspect_isValid = false;
 
-local loadEventFrame = CreateFrame("FRAME");
-loadEventFrame:RegisterEvent("ADDON_LOADED");
-loadEventFrame:RegisterEvent("INSPECT_TALENT_READY");
-loadEventFrame:SetScript("OnEvent", StriLi_MainFrame_OnEvent);
+StriLi_MainFrame = CreateFrame("FRAME", "StriLi_MainFrame", UIParent, "StriLi_MainFrame_Template");
+StriLi_MainFrame:RegisterEvent("INSPECT_TALENT_READY");
+StriLi_MainFrame:SetScript("OnEvent", StriLi_MainFrame_OnEvent);
 
-SLASH_TEST1 = "/test1";
-SlashCmdList["TEST"] = function(msg)
+---------------------------------------------------------------------------------------------------------------------------------------
+local StriLi = LibStub("AceAddon-3.0"):NewAddon("StriLi", "AceConsole-3.0")
+local StriLiLDB = LibStub("LibDataBroker-1.1"):NewDataObject("StriLi!", {
+    type = "data source",
+    text = "StriLi!",
+    icon = "Interface\\AddOns\\StriLi\\StriLiIcon",
+    OnClick = function()StriLi_MMButton_OnClick() end,
+})
+local icon = LibStub("LibDBIcon-1.0")
+ 
+function StriLi:OnInitialize()
+    self.db = LibStub("AceDB-3.0"):New("StriLiDB", {
+        profile = {
+            minimap = {
+                hide = false,
+            },
+        },
+    });
+    icon:Register("StriLi!", StriLiLDB, self.db.profile.minimap);
+	StriLi_MainFrame_OnEvent(nil,"ADDON_LOADED");
+	StriLi_MainFrame_OnLoad();
+	
+end
 
-end 
+---------------------------------------------------------------------------------------------------------------------------------------
+
 
 function StriLi_MMButton_OnClick(self)
 
@@ -244,6 +265,7 @@ function StriLi_MainFrame_OnEvent(self, event)
 		hooksecurefunc("NotifyInspect", StriLi_NotifyInspect);
 		StriLi_RefreshUI();
 	elseif (event == "INSPECT_TALENT_READY") then
+		--print("|cffFFFF00Inspecting|r");
 		StriLi_InspectPlayer();
 	end
 	
@@ -277,12 +299,14 @@ function StriLi_AddMember(CharName, CharClass)
 	
 end
 
-function StriLi_MainFrame_OnLoad(self)
+function StriLi_MainFrame_OnLoad()
 
 	StriLi_AddLabelRow();
 	
-	self:RegisterEvent("PARTY_MEMBERS_CHANGED");
-	self:SetScript("OnEvent", StriLi_MainFrame_OnEvent);
+	StriLi_MainFrame:RegisterEvent("PARTY_MEMBERS_CHANGED");
+	StriLi_MainFrame:SetScript("OnEvent", StriLi_MainFrame_OnEvent);
+	
+	StriLi_RefreshUI();
 	
 end
 
@@ -396,11 +420,21 @@ end
 
 function StriLi_InspectPlayer()
 
-	if (not StriLi_NotifyInspect_isValid) then return end
+	if (not StriLi_NotifyInspect_isValid) then 
 	
-	local name1, _, pointsSpent1 = GetTalentTabInfo(1, true, false);	
-	local name2, _, pointsSpent2 = GetTalentTabInfo(2, true, false);
-	local name3, _, pointsSpent3 = GetTalentTabInfo(3, true, false);
+		if StriLi_Pendend_MembersToInspect then
+			StriLi_GetPendingSpeccs();
+		end
+		
+		return 
+	
+	end
+	
+	local activeTalentGroup = GetActiveTalentGroup(true)
+	
+	local name1, _, pointsSpent1 = GetTalentTabInfo(1, true, false, activeTalentGroup);	
+	local name2, _, pointsSpent2 = GetTalentTabInfo(2, true, false, activeTalentGroup);
+	local name3, _, pointsSpent3 = GetTalentTabInfo(3, true, false, activeTalentGroup);
 	
 	local sepcc;
 	
