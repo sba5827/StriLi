@@ -104,6 +104,7 @@ function StriLi_InitDropDownMenu_PlayerNameFrame(frame, level, menuList)
 		for k,v in pairs(StriLi_RaidMembers) do
 			if (k ~= playerName) then
 				info.text = k;
+				info.colorCode = "|cff".. Strili_GetHexClassCollerCode(v[1])
 				info.func = StriLi_CombineRaidmembers;
 				info.arg1 = playerName;
 				info.arg2 = k;
@@ -136,6 +137,21 @@ function StriLi_SetTextColorByClass(FontString, Class)
 	if( Class == "WARLOCK" ) 		then FontString:SetTextColor(0.53,	0.53,	0.93, 1) end
 	if( Class == "DRUID" ) 			then FontString:SetTextColor(1.00,	0.49,	0.04, 1) end
 
+end
+
+function Strili_GetHexClassCollerCode(Class) -- Returns RRGGBB
+
+	if( Class == "WARRIOR" ) 		then return "C69B6D" end
+	if( Class == "PALADIN" ) 		then return "F48CBA" end
+	if( Class == "HUNTER" ) 		then return "AAD372" end
+	if( Class == "ROGUE" ) 			then return "FFF468" end
+	if( Class == "PRIEST" ) 		then return "FFFFFF" end
+	if( Class == "DEATHKNIGHT" ) 	then return "C41E3A" end
+	if( Class == "SHAMAN" ) 		then return "0070DD" end
+	if( Class == "MAGE" ) 			then return "3FC7EB" end
+	if( Class == "WARLOCK" ) 		then return "8788EE" end
+	if( Class == "DRUID" ) 			then return "FF7C0A" end
+	
 end
 
 function StriLi_AddRow(CharName, CharData)
