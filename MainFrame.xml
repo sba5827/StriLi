@@ -94,6 +94,9 @@
 						</Offset>
 					</Anchor>
 				</Anchors>
+				<Scripts>
+					<OnMouseUp>StriLi_OnMouseUp_NameFrame(self, button);</OnMouseUp>
+				</Scripts>
 			</StatusBar>
 			<StatusBar name="StriLi_Main" inherits="StriLi_Template" useParentLevel="true">
 				<Anchors>

@@ -9,7 +9,7 @@ local StriLi_ADDONLOADED = false;
 local StriLi_MemberToInspect_unitID = "";
 local StriLi_MemberToInspect_raidNumber = 0;
 local StriLi_Pendend_MembersToInspect = true;
-local StriLi_WatingForSpeccInformation = false;
+local StriLi_WatingForSpecInformation = false;
 
 local StriLi_NotifyInspect_isValid = false;
 
@@ -17,31 +17,31 @@ StriLi_MainFrame = CreateFrame("FRAME", "StriLi_MainFrame", UIParent, "StriLi_Ma
 StriLi_MainFrame:RegisterEvent("INSPECT_TALENT_READY");
 StriLi_MainFrame:SetScript("OnEvent", StriLi_MainFrame_OnEvent);
 
----------------------------------------------------------------------------------------------------------------------------------------
-local StriLi = LibStub("AceAddon-3.0"):NewAddon("StriLi", "AceConsole-3.0")
-local StriLiLDB = LibStub("LibDataBroker-1.1"):NewDataObject("StriLi!", {
-    type = "data source",
-    text = "StriLi!",
-    icon = "Interface\\AddOns\\StriLi\\StriLiIcon",
-    OnClick = function()StriLi_MMButton_OnClick() end,
-})
-local icon = LibStub("LibDBIcon-1.0")
- 
-function StriLi:OnInitialize()
-    self.db = LibStub("AceDB-3.0"):New("StriLiDB", {
-        profile = {
-            minimap = {
-                hide = false,
-            },
-        },
-    });
-    icon:Register("StriLi!", StriLiLDB, self.db.profile.minimap);
-	StriLi_MainFrame_OnEvent(nil,"ADDON_LOADED");
-	StriLi_MainFrame_OnLoad();
-	
-end
+---------------------------------------------------------Minimap Icon---------------------------------------------------------
+local StriLi = LibStub("AceAddon-3.0"):NewAddon("StriLi", "AceConsole-3.0")                                                   
+local StriLiLDB = LibStub("LibDataBroker-1.1"):NewDataObject("StriLi!", {                                                     
+    type = "data source",                                                                                                     
+    text = "StriLi!",                                                                                                         
+    icon = "Interface\\AddOns\\StriLi\\StriLiIcon",                                                                           
+    OnClick = function()StriLi_MMButton_OnClick() end,                                                                        
+})                                                                                                                            
+local icon = LibStub("LibDBIcon-1.0")                                                                                         
 
----------------------------------------------------------------------------------------------------------------------------------------
+function StriLi:OnInitialize()                                                                                                
+    self.db = LibStub("AceDB-3.0"):New("StriLiDB", {                                                                          
+        profile = {                                                                                                           
+            minimap = {                                                                                                       
+                hide = false,                                                                                                 
+            },                                                                                                                
+        },                                                                                                                    
+    });                                                                                                                       
+    icon:Register("StriLi!", StriLiLDB, self.db.profile.minimap);   
+	StriLi_MainFrame_OnLoad(); 
+	StriLi_MainFrame_OnEvent(nil,"ADDON_LOADED");                                                                                                                                                                            
+
+end                                                                                                                           
+
+------------------------------------------------------------------------------------------------------------------------------
 
 
 function StriLi_MMButton_OnClick(self)
@@ -72,6 +72,12 @@ function StriLi_StopMoving(Frame)
 	
 end
 
+function StriLi_OnMouseUp_NameFrame(self, button)
+	
+	if (button ~= "RightButton") or (not MouseIsOver(self)) then return end;
+	
+end
+
 function StriLi_SetTextColorByClass(FontString, Class)
 
 	if( Class == nil ) 				then return end
@@ -92,22 +98,22 @@ end
 function StriLi_AddRow(CharName, CharData)
 	
 	CharClass = CharData[1];
-	CharSpecc = CharData["Specc"];
+	CharSpec = CharData["Spec"];
 	
 	StriLi_RowFrames[StriLi_RowCount] = CreateFrame("Frame", "StriLi_Row"..tostring(StriLi_RowCount), StriLi_MainFrame, "StriLi_Row_Template");
 	StriLi_RowFrames[StriLi_RowCount]:SetPoint("TOPLEFT", StriLi_MainFrame, "TOPLEFT", StriLi_RowXBaseOffset, StriLi_RowYBaseOffset - StriLi_RowCount*StriLi_RowHight);
 	
-	local Name, Main, Sec, Token, Fail, Specc = StriLi_RowFrames[StriLi_RowCount]:GetChildren();
+	local Name, Main, Sec, Token, Fail, Spec = StriLi_RowFrames[StriLi_RowCount]:GetChildren();
 	
 	local PlayerName = Name:CreateFontString("PlayerName"..tostring(StriLi_RowCount),"ARTWORK", "GameFontNormal");
 	PlayerName:SetPoint("LEFT", 0, 0);
 	PlayerName:SetPoint("RIGHT", 0, 0);
 	PlayerName:SetText(CharName);
 	
-	local SpeccFontText = Specc:CreateFontString("SpeccFontText"..tostring(StriLi_RowCount),"ARTWORK", "GameFontNormal");
-	SpeccFontText:SetPoint("LEFT", 0, 0);
-	SpeccFontText:SetPoint("RIGHT", 0, 0);
-	SpeccFontText:SetText(CharSpecc);
+	local SpecFontText = Spec:CreateFontString("SpecFontText"..tostring(StriLi_RowCount),"ARTWORK", "GameFontNormal");
+	SpecFontText:SetPoint("LEFT", 0, 0);
+	SpecFontText:SetPoint("RIGHT", 0, 0);
+	SpecFontText:SetText(CharSpec);
 	
 	StriLi_SetTextColorByClass(PlayerName, CharClass);
 	
@@ -135,14 +141,15 @@ function StriLi_AddLabelRow()
 	StriLi_RowFrames[StriLi_RowCount] = CreateFrame("Frame", "StriLi_Row"..tostring(StriLi_RowCount), StriLi_MainFrame, "StriLi_Row_Template");
 	StriLi_RowFrames[StriLi_RowCount]:SetPoint("TOPLEFT", StriLi_MainFrame, "TOPLEFT", StriLi_RowXBaseOffset, StriLi_RowYBaseOffset - StriLi_RowCount*StriLi_RowHight);
 	
-	local Name, Main, Sec, Token, Fail, Specc = StriLi_RowFrames[StriLi_RowCount]:GetChildren();
+	local Name, Main, Sec, Token, Fail, Spec = StriLi_RowFrames[StriLi_RowCount]:GetChildren();
+	Name:SetScript("OnMouseUp", nil);
 	
 	local Name2 = Name:CreateFontString("PlayerNameLable","ARTWORK", "GameFontNormal");
 	local Main2 = Main:CreateFontString("MainLable","ARTWORK", "GameFontNormal");
 	local Sec2 = Sec:CreateFontString("SecLable","ARTWORK", "GameFontNormal");
 	local Token2 = Token:CreateFontString("TokenLabel","ARTWORK", "GameFontNormal");
 	local Fail2 = Fail:CreateFontString("FailLable","ARTWORK", "GameFontNormal");
-	local Specc2 = Specc:CreateFontString("SpeccLable","ARTWORK", "GameFontNormal");
+	local Spec2 = Spec:CreateFontString("SpecLable","ARTWORK", "GameFontNormal");
 	
 	
 	Name2:SetPoint("CENTER", 0, 0);
@@ -150,14 +157,14 @@ function StriLi_AddLabelRow()
 	Sec2:SetPoint("CENTER", 0, 0);
 	Token2:SetPoint("CENTER", 0, 0);
 	Fail2:SetPoint("CENTER", 0, 0);
-	Specc2:SetPoint("CENTER", 0, 0);
+	Spec2:SetPoint("CENTER", 0, 0);
 	
 	Name2:SetText("Name");
 	Main2:SetText("Main");
 	Sec2:SetText("Sec");
 	Token2:SetText("Token");
 	Fail2:SetText("Fail");
-	Specc2:SetText("Specc");
+	Spec2:SetText("Spec");
 		
 	StriLi_RowCount = StriLi_RowCount + 1;
 	
@@ -284,7 +291,7 @@ function StriLi_On_PARTY_MEMBERS_CHANGED(self)
 		StriLi_AddMember(name, englishClass);
 	end
 	
-	StriLi_GetPendingSpeccs();
+	StriLi_GetPendingSpecs();
 	
 	StriLi_RefreshUI();
 	
@@ -293,7 +300,7 @@ end
 function StriLi_AddMember(CharName, CharClass)
 
 	if (StriLi_RaidMembers[CharName] == nil) then
-		StriLi_RaidMembers[CharName] = {CharClass, ["Main"]=0, ["Sec"]=0, ["Token"]=0, ["Fail"]=0, ["Specc"]=''};
+		StriLi_RaidMembers[CharName] = {CharClass, ["Main"]=0, ["Sec"]=0, ["Token"]=0, ["Fail"]=0, ["Spec"]=''};
 		StriLi_Pendend_MembersToInspect = true;
 	end
 	
@@ -317,7 +324,7 @@ function StriLi_RefreshUI()
 		if not StriLi_DoesFrameForCharExist(name) then
 			StriLi_AddRow(name, data);
 		else	
-			StriLi_UpdateSpecc(name, data["Specc"]);
+			StriLi_UpdateSpec(name, data["Spec"]);
 		end
 
 	end
@@ -355,29 +362,29 @@ function StriLi_DoesFrameForCharExist(CharName)
 
 end
 
-function StriLi_UpdateSpecc(CharName, CharSpecc)
+function StriLi_UpdateSpec(CharName, CharSpec)
 
 	if StriLi_RowCount < 1 then return end
 
 	for i=0, StriLi_RowCount-1, 1 do
 	
-		local Name, _, _, _, _, Specc = StriLi_RowFrames[i]:GetChildren();
+		local Name, _, _, _, _, Spec = StriLi_RowFrames[i]:GetChildren();
 		local DUMP, Name2 = Name:GetRegions();
 		
 		local text = Name2:GetText();
 		
 		
 		if (text == CharName) then
-			local _, Specc2 = Specc:GetRegions();
-			Specc2:SetText(CharSpecc);
+			local _, Spec2 = Spec:GetRegions();
+			Spec2:SetText(CharSpec);
 		end
 	end
 
 end
 
-function StriLi_GetActiveSpecc(PlayerName)
+function StriLi_GetActiveSpec(PlayerName)
 
-	if (StriLi_WatingForSpeccInformation) then return false end;
+	if (StriLi_WatingForSpecInformation) then return false end;
 	
 	local numOfMembers = GetNumRaidMembers();	
 	local playerFound = false;
@@ -407,7 +414,7 @@ function StriLi_GetActiveSpecc(PlayerName)
 	
 	if( UnitIsConnected(StriLi_MemberToInspect_unitID) and UnitExists(StriLi_MemberToInspect_unitID) and UnitIsVisible(StriLi_MemberToInspect_unitID) and UnitIsFriend(StriLi_MemberToInspect_unitID, "player") and CanInspect(StriLi_MemberToInspect_unitID) and UnitName(StriLi_MemberToInspect_unitID) ~= UNKNOWN ) then
 	
-		StriLi_WatingForSpeccInformation = true;
+		StriLi_WatingForSpecInformation = true;
 		
 		NotifyInspect(StriLi_MemberToInspect_unitID);
 		return true;
@@ -423,7 +430,7 @@ function StriLi_InspectPlayer()
 	if (not StriLi_NotifyInspect_isValid) then 
 	
 		if StriLi_Pendend_MembersToInspect then
-			StriLi_GetPendingSpeccs();
+			StriLi_GetPendingSpecs();
 		end
 		
 		return 
@@ -448,13 +455,13 @@ function StriLi_InspectPlayer()
 	
 	local name = GetRaidRosterInfo(StriLi_MemberToInspect_raidNumber);
 	
-	StriLi_RaidMembers[name]["Specc"] = sepcc;
+	StriLi_RaidMembers[name]["Spec"] = sepcc;
 	StriLi_RefreshUI();
 		
-	StriLi_WatingForSpeccInformation = false;
+	StriLi_WatingForSpecInformation = false;
 	
 	if StriLi_Pendend_MembersToInspect then
-		StriLi_GetPendingSpeccs();
+		StriLi_GetPendingSpecs();
 	end
 	
 end
@@ -473,7 +480,7 @@ function StriLi_NotifyInspect(unitID)
 
 end
 
-function StriLi_GetPendingSpeccs()
+function StriLi_GetPendingSpecs()
 
 	local numRaidMem = GetNumRaidMembers();
 	
@@ -483,8 +490,8 @@ function StriLi_GetPendingSpeccs()
 		
 		if (StriLi_RaidMembers[name] ~= nil) then
 		
-			if (StriLi_RaidMembers[name]["Specc"] == "") then 
-				StriLi_GetActiveSpecc(name);
+			if (StriLi_RaidMembers[name]["Spec"] == "") then 
+				StriLi_GetActiveSpec(name);
 				return;
 			end
 			
