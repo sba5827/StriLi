@@ -76,6 +76,49 @@ function StriLi_OnMouseUp_NameFrame(self, button)
 	
 	if (button ~= "RightButton") or (not MouseIsOver(self)) then return end;
 	
+	local dropDown = CreateFrame("Frame", "StriLi_ContextMenu", self, "UIDropDownMenuTemplate")
+	-- Bind an initializer function to the dropdown; see previous sections for initializer function examples.
+	
+	UIDropDownMenu_Initialize(dropDown, StriLi_InitDropDownMenu_PlayerNameFrame, "MENU")
+	
+	ToggleDropDownMenu(1, nil, dropDown, "cursor", 3, -3)
+	
+end
+
+function StriLi_InitDropDownMenu_PlayerNameFrame(frame, level, menuList)
+
+	local info = UIDropDownMenu_CreateInfo();
+
+	if level == 1 then
+	
+		-- Outermost menu level		
+		info.text, info.hasArrow, info.menuList = "Same as", true, "Players";
+		UIDropDownMenu_AddButton(info);
+		
+	elseif menuList == "Players" then
+	
+		local pFrame = frame:GetParent();
+		local _, fString = pFrame:GetRegions();
+		local playerName = fString:GetText();
+		
+		for k,v in pairs(StriLi_RaidMembers) do
+			if (k ~= playerName) then
+				info.text = k;
+				info.func = StriLi_CombineRaidmembers;
+				info.arg1 = playerName;
+				info.arg2 = k;
+				UIDropDownMenu_AddButton(info, level);
+			end
+		end 
+	
+	end
+	
+end
+
+function StriLi_CombineRaidmembers(self, arg1, arg2, checked)
+	
+	print ("Combining "..arg1.." and "..arg2);
+	
 end
 
 function StriLi_SetTextColorByClass(FontString, Class)
