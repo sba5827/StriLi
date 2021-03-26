@@ -216,6 +216,21 @@
 					<OnClick>StriLi_OnClickResetButton(self)</OnClick>
 				</Scripts>
 			</Button>
+			<Button name="StriLi_RefreshButton" inherits="UIPanelButtonTemplate" text="Refresh">
+				<Size>
+					<AbsDimension x="50" y="20"/>
+				</Size>
+				<Anchors>
+					<Anchor point="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="15" y="15"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>StriLi_OnClickRefreshButton(self)</OnClick>
+				</Scripts>
+			</Button>
 			<Button name="StriLi_Close" inherits="UIPanelButtonTemplate" text="X">
 				<Size>
 					<AbsDimension x="20" y="20"/>

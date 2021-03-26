@@ -33,7 +33,7 @@
 					<Anchors>
 						<Anchor point="CENTER">
 							<Offset>
-								<AbsDimension x="0" y="0"/>
+								<AbsDimension x="0" y="10"/>
 							</Offset>
 						</Anchor>
 					</Anchors>
@@ -48,7 +48,7 @@
 				<Anchors>
 					<Anchor point="CENTER">
 						<Offset>
-							<AbsDimension x="-40" y="-30"/>
+							<AbsDimension x="-40" y="-20"/>
 						</Offset>
 					</Anchor>
 				</Anchors>
@@ -60,7 +60,7 @@
 				<Anchors>
 					<Anchor point="CENTER">
 						<Offset>
-							<AbsDimension x="40" y="-30"/>
+							<AbsDimension x="40" y="-20"/>
 						</Offset>
 					</Anchor>
 				</Anchors>

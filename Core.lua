@@ -35,7 +35,8 @@ function StriLi:OnInitialize()
                 hide = false,                                                                                                 
             },                                                                                                                
         },                                                                                                                    
-    });                                                                                                                       
+    }); 
+	
     icon:Register("StriLi!", StriLiLDB, self.db.profile.minimap);   
 	StriLi_MainFrame_OnLoad(); 
 	StriLi_MainFrame_OnEvent(nil,"ADDON_LOADED");                                                                                                                                                                            
@@ -337,6 +338,12 @@ function StriLi_OnClickResetButton(self)
 	StriLi_On_PARTY_MEMBERS_CHANGED();
 	StriLi_RefreshUI();
 	
+end
+
+function StriLi_OnClickRefreshButton(self)
+
+	StriLi_GetPendingSpecs();
+
 end
 
 function StriLi_MainFrame_OnEvent(self, event)
