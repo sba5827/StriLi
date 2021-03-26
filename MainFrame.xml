@@ -149,7 +149,7 @@
 		</Frames>
 	</Frame>
 	
-	<Frame name="StriLi_MainFrame_Template" virtual="true" toplevel="true" frameStrata="DIALOG" 
+	<Frame name="StriLi_MainFrame_Template" virtual="true"
       movable="true" enableMouse="true" hidden="true">
 		<Size>
 			<AbsDimension x="580" y="555"/>

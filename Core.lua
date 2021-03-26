@@ -17,6 +17,7 @@ StriLi_MainFrame = CreateFrame("FRAME", "StriLi_MainFrame", UIParent, "StriLi_Ma
 StriLi_MainFrame:RegisterEvent("INSPECT_TALENT_READY");
 StriLi_MainFrame:SetScript("OnEvent", StriLi_MainFrame_OnEvent);
 
+StriLi_ConfirmDialogFrame = CreateFrame("FRAME", "StriLi_ConfirmDialogFrame", StriLi_MainFrame, "StriLi_ConfirmDialogFrame_Template");
 ---------------------------------------------------------Minimap Icon---------------------------------------------------------
 local StriLi = LibStub("AceAddon-3.0"):NewAddon("StriLi", "AceConsole-3.0")                                                   
 local StriLiLDB = LibStub("LibDataBroker-1.1"):NewDataObject("StriLi!", {                                                     
@@ -105,7 +106,7 @@ function StriLi_InitDropDownMenu_PlayerNameFrame(frame, level, menuList)
 			if (k ~= playerName) then
 				info.text = k;
 				info.colorCode = "|cff".. Strili_GetHexClassCollerCode(v[1])
-				info.func = StriLi_CombineRaidmembers;
+				info.func = StriLi_CombineRaidmembersRequest;
 				info.arg1 = playerName;
 				info.arg2 = k;
 				UIDropDownMenu_AddButton(info, level);
@@ -116,10 +117,27 @@ function StriLi_InitDropDownMenu_PlayerNameFrame(frame, level, menuList)
 	
 end
 
-function StriLi_CombineRaidmembers(self, arg1, arg2, checked)
+function StriLi_CombineRaidmembersRequest(self, arg1, arg2, checked)
 	
-	print ("Combining "..arg1.." and "..arg2);
+	Strili_ConfirmSelection("Are you sure you want to combine "..arg1.." and "..arg2.."?", StriLi_CombineRaidmembers, nil, {arg1,arg2});
 	
+end
+
+function StriLi_CombineRaidmembers(argList)
+	
+	print("Combining "..argList[1].." and "..argList[2]);
+
+end
+
+function Strili_ConfirmSelection(displayText, true_CBF, false_CBF, argList)
+
+	StriLi_ConfirmDialogFrame_FontString:SetText(displayText);
+	
+	StriLi_ConfirmDialogFrame_ConfirmButton:SetScript("OnClick", function() StriLi_ConfirmDialogFrame:Hide(); true_CBF(argList)  end);
+	StriLi_ConfirmDialogFrame_CancleButton:SetScript("OnClick", function() StriLi_ConfirmDialogFrame:Hide(); false_CBF(argList)  end);
+	
+	StriLi_ConfirmDialogFrame:Show();
+
 end
 
 function StriLi_SetTextColorByClass(FontString, Class)
