@@ -76,7 +76,7 @@
 	
 	<Frame name="StriLi_Row_Template" virtual="true">
 		<Size>
-			<AbsDimension x="425" y="30"/>
+			<AbsDimension x="510" y="30"/>
 		</Size>
 		<Anchors>
 			<Anchor point="TOPLEFT" relativePoint="TOPLEFT">
@@ -85,6 +85,11 @@
 				</Offset>
 			</Anchor>
 		</Anchors>
+		<Backdrop edgeFile="Interface\DialogFrame\UI-DialogBox-Border">
+			<EdgeSize>
+				<AbsValue val="6"/>
+			</EdgeSize>
+		</Backdrop>
 		<Frames>
 			<StatusBar name="StriLi_Name" inherits="StriLi_Template" useParentLevel="true">
 				<Anchors>
