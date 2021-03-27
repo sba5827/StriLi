@@ -32,5 +32,3 @@ Achten Sie darauf, dass der Ordnername des entpackten Ordners StriLi lautet, son
 Und **NICHT** wie:
 
     C:\Benutzer\USERNAME\..\WoW\Interface\AddOns\StriLi-1.0.2
-
-Übersetzt mit www.DeepL.com/Translator (kostenlose Version)
