@@ -1,0 +1,256 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd">
+	
+	<Script file="Core.lua" />
+	
+	<StatusBar name="StriLi_Template" virtual="true">
+		<Size>
+			<AbsDimension x="85" y="30"/>
+		</Size>
+		<BarTexture file="Interface\Tooltips\UI-Tooltip-Background"/>
+		<BarColor r="1" g="1" b="1"/>
+	</StatusBar>
+	
+	<Button name="StriLi_Button_Template" virtual="true" inherits="UIPanelButtonTemplate">
+		<Size>
+			<AbsDimension x="15" y="15"/>
+		</Size>
+		<Anchors>
+			<Anchor point="CENTER">
+				<Offset>
+					<AbsDimension x="0" y="0"/>
+				</Offset>
+			</Anchor>
+		</Anchors>
+	</Button>
+	
+	<Frame name="StriLi_Counter_Template" virtual="true">
+		<Size>
+			<AbsDimension x="85" y="30"/>
+		</Size>
+		<Anchors>
+			<Anchor point="TOPLEFT">
+				<Offset>
+					<AbsDimension x="0" y="0"/>
+				</Offset>
+			</Anchor>
+		</Anchors>
+		<Frames>	
+			<Button name="StriLi_MinusButton" inherits="StriLi_Button_Template" text="-">
+				<Anchors>
+					<Anchor point="LEFT">
+						<Offset>
+							<AbsDimension x="5" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>StriLi_OnClickMinusButton(self)</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="StriLi_PlusButton" inherits="StriLi_Button_Template" text="+">
+				<Anchors>
+					<Anchor point="RIGHT">
+						<Offset>
+							<AbsDimension x="-5" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>StriLi_OnClickPlusButton(self)</OnClick>
+				</Scripts>
+			</Button>
+		</Frames>
+		<Layers>
+			<Layer>
+				<FontString name="StriLi_Count" text="0" inherits="GameFontNormal">
+					<Size x="50" y="20"/>
+					<Anchors>
+						<Anchor point="CENTER"/>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+	</Frame>
+	
+	<Frame name="StriLi_Row_Template" virtual="true">
+		<Size>
+			<AbsDimension x="425" y="30"/>
+		</Size>
+		<Anchors>
+			<Anchor point="TOPLEFT" relativePoint="TOPLEFT">
+				<Offset>
+					<AbsDimension x="35" y="-35"/>
+				</Offset>
+			</Anchor>
+		</Anchors>
+		<Frames>
+			<StatusBar name="StriLi_Name" inherits="StriLi_Template" useParentLevel="true">
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnMouseUp>StriLi_OnMouseUp_NameFrame(self, button);</OnMouseUp>
+				</Scripts>
+			</StatusBar>
+			<StatusBar name="StriLi_Main" inherits="StriLi_Template" useParentLevel="true">
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="85" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<BarColor r="0.8" g="0.8" b="0.8"/>
+			</StatusBar>
+			<StatusBar name="StriLi_Sec" inherits="StriLi_Template" useParentLevel="true">
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="170" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</StatusBar>
+			<StatusBar name="StriLi_Token" inherits="StriLi_Template" useParentLevel="true">
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="255" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<BarColor r="0.8" g="0.8" b="0.8"/>
+			</StatusBar>
+			<StatusBar name="StriLi_Fail" inherits="StriLi_Template" useParentLevel="true">
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="340" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</StatusBar>
+			<StatusBar name="StriLi_Specc" inherits="StriLi_Template" useParentLevel="true">
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="425" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<BarColor r="0.8" g="0.8" b="0.8"/>
+			</StatusBar>
+		</Frames>
+	</Frame>
+	
+	<Frame name="StriLi_MainFrame_Template" virtual="true"
+      movable="true" enableMouse="true" hidden="true">
+		<Size>
+			<AbsDimension x="580" y="555"/>
+		</Size>
+		<Anchors>
+			<Anchor point="CENTER">
+				<Offset>
+					<AbsDimension x="0" y="0"/>
+				</Offset>
+			</Anchor>
+		</Anchors>
+		<Backdrop tile="true"
+        bgFile="Interface\DialogFrame\UI-DialogBox-Background"
+        edgeFile="Interface\DialogFrame\UI-DialogBox-Border">
+			<BackgroundInsets>
+				<AbsInset left="11" right="12" top="12" bottom="11"/>
+			</BackgroundInsets>
+			<TileSize>
+				<AbsValue val="32"/>
+			</TileSize>
+			<EdgeSize>
+				<AbsValue val="32"/>
+			</EdgeSize>
+		</Backdrop>
+		<Layers>
+			<Layer level="ARTWORK">
+				<Texture name="StriLi_MainFrame_Header"
+            file="Interface\DialogFrame\UI-DialogBox-Header">
+					<Size>
+						<AbsDimension x="400" y="64"/>
+					</Size>
+					<Anchors>
+						<Anchor point="TOP">
+							<Offset>
+								<AbsDimension x="0" y="12"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</Texture>
+				<FontString inherits="GameFontNormal" text="StriLi">
+					<Anchors>
+						<Anchor point="TOP" relativeTo="StriLi_MainFrame_Header">
+							<Offset>
+								<AbsDimension x="0" y="-13"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Button name="StriLi_ResetButton" inherits="UIPanelButtonTemplate" text="Reset">
+				<Size>
+					<AbsDimension x="40" y="20"/>
+				</Size>
+				<Anchors>
+					<Anchor point="BOTTOMRIGHT">
+						<Offset>
+							<AbsDimension x="-15" y="15"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>StriLi_OnClickResetButton(self)</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="StriLi_RefreshButton" inherits="UIPanelButtonTemplate" text="Refresh">
+				<Size>
+					<AbsDimension x="50" y="20"/>
+				</Size>
+				<Anchors>
+					<Anchor point="BOTTOMLEFT">
+						<Offset>
+							<AbsDimension x="15" y="15"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>StriLi_OnClickRefreshButton(self)</OnClick>
+				</Scripts>
+			</Button>
+			<Button name="StriLi_Close" inherits="UIPanelButtonTemplate" text="X">
+				<Size>
+					<AbsDimension x="20" y="20"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPRIGHT">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>HideUIPanel(self:GetParent())</OnClick>
+				</Scripts>
+			</Button>
+		</Frames>
+		<Scripts>
+			<OnMouseDown>StriLi_StartMoving(self);</OnMouseDown>
+			<OnMouseUp>StriLi_StopMoving(self);</OnMouseUp>
+			<!--<OnUpdate>StriLi_MainFrame_OnUpdate(self,arg1)</OnUpdate>!-->
+		</Scripts>
+	</Frame>
+</Ui>
