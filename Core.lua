@@ -13,6 +13,11 @@ local StriLi_WatingForSpecInformation = false;
 
 local StriLi_NotifyInspect_isValid = false;
 
+local StriLi_TimeToNotifyCanbeused = 2.0;
+
+Strili_UPDATE_FRAME = CreateFrame("FRAME");
+Strili_UPDATE_FRAME:SetScript("OnUpdate", function(self,arg1) StriLi_MainFrame_OnUpdate(self, arg1) end)
+
 StriLi_MainFrame = CreateFrame("FRAME", "StriLi_MainFrame", UIParent, "StriLi_MainFrame_Template");
 StriLi_MainFrame:RegisterEvent("INSPECT_TALENT_READY");
 StriLi_MainFrame:SetScript("OnEvent", StriLi_MainFrame_OnEvent);
@@ -125,8 +130,17 @@ function StriLi_CombineRaidmembersRequest(self, arg1, arg2, checked)
 end
 
 function StriLi_CombineRaidmembers(argList)
+
+	local Main, Sec, Token, Fail = StriLi_RaidMembers[argList[2]]["Main"], StriLi_RaidMembers[argList[2]]["Sec"], StriLi_RaidMembers[argList[2]]["Token"], StriLi_RaidMembers[argList[2]]["Fail"];
 	
-	print("Combining "..argList[1].." and "..argList[2]);
+	StriLi_RaidMembers[argList[1]]["Main"] = StriLi_RaidMembers[argList[1]]["Main"]+Main;
+	StriLi_RaidMembers[argList[1]]["Sec"] = StriLi_RaidMembers[argList[1]]["Sec"]+Sec;
+	StriLi_RaidMembers[argList[1]]["Token"] = StriLi_RaidMembers[argList[1]]["Token"]+Token;
+	StriLi_RaidMembers[argList[1]]["Fail"] = StriLi_RaidMembers[argList[1]]["Fail"]+Fail;
+	
+	StriLi_RaidMembers[argList[2]] = nil;
+	
+	StriLi_ResetUI();
 
 end
 
@@ -329,21 +343,30 @@ end
 function StriLi_OnClickResetButton(self)
 
 	StriLi_RaidMembers = {};
-	for i = 0, StriLi_RowCount-1, 1 do
-		StriLi_RowFrames[i]:Hide();
-	end
-	StriLi_RowFrames = {};
-	StriLi_RowCount = 0;
-	StriLi_AddLabelRow();
+	StriLi_ResetUI();
 	StriLi_On_PARTY_MEMBERS_CHANGED();
-	StriLi_RefreshUI();
 	
 end
 
 function StriLi_OnClickRefreshButton(self)
 
-	StriLi_GetPendingSpecs();
+	if StriLi_Pendend_MembersToInspect then
+		StriLi_GetPendingSpecs();
+	end
 
+end
+
+function StriLi_MainFrame_OnUpdate(self, elapsed)
+
+	if StriLi_TimeToNotifyCanbeused < 0.0 then 
+		if StriLi_Pendend_MembersToInspect then
+			StriLi_GetPendingSpecs();
+		end
+		return 
+	end;
+
+	StriLi_TimeToNotifyCanbeused = StriLi_TimeToNotifyCanbeused - elapsed;
+	
 end
 
 function StriLi_MainFrame_OnEvent(self, event)
@@ -357,6 +380,7 @@ function StriLi_MainFrame_OnEvent(self, event)
 		StriLi_RefreshUI();
 	elseif (event == "INSPECT_TALENT_READY") then
 		--print("|cffFFFF00Inspecting|r");
+		StriLi_TimeToNotifyCanbeused = 2.0;
 		StriLi_InspectPlayer();
 	end
 	
@@ -375,7 +399,9 @@ function StriLi_On_PARTY_MEMBERS_CHANGED(self)
 		StriLi_AddMember(name, englishClass);
 	end
 	
-	StriLi_GetPendingSpecs();
+	if StriLi_Pendend_MembersToInspect then
+		StriLi_GetPendingSpecs();
+	end
 	
 	StriLi_RefreshUI();
 	
@@ -417,6 +443,19 @@ function StriLi_RefreshUI()
 
 end
 
+function StriLi_ResetUI()
+
+	for i = 0, StriLi_RowCount-1, 1 do
+		StriLi_RowFrames[i]:Hide();
+	end
+	StriLi_RowFrames = {};
+	StriLi_RowCount = 0;
+	StriLi_AddLabelRow();
+	StriLi_Pendend_MembersToInspect = true;
+	StriLi_RefreshUI();
+
+end
+
 function StriLi_ResizeMainFrame()
 
 	local SumRowFrameHeight = StriLi_RowCount * StriLi_RowHight;
@@ -453,7 +492,7 @@ function StriLi_UpdateSpec(CharName, CharSpec)
 	for i=0, StriLi_RowCount-1, 1 do
 	
 		local Name, _, _, _, _, Spec = StriLi_RowFrames[i]:GetChildren();
-		local DUMP, Name2 = Name:GetRegions();
+		local _, Name2 = Name:GetRegions();
 		
 		local text = Name2:GetText();
 		
@@ -496,12 +535,15 @@ function StriLi_GetActiveSpec(PlayerName)
 	
 	StriLi_MemberToInspect_unitID = "raid"..tostring(index);
 	
-	if( UnitIsConnected(StriLi_MemberToInspect_unitID) and UnitExists(StriLi_MemberToInspect_unitID) and UnitIsVisible(StriLi_MemberToInspect_unitID) and UnitIsFriend(StriLi_MemberToInspect_unitID, "player") and CanInspect(StriLi_MemberToInspect_unitID) and UnitName(StriLi_MemberToInspect_unitID) ~= UNKNOWN ) then
-	
-		StriLi_WatingForSpecInformation = true;
+	if( UnitExists(StriLi_MemberToInspect_unitID) and UnitIsConnected(StriLi_MemberToInspect_unitID) and UnitIsVisible(StriLi_MemberToInspect_unitID) and UnitIsFriend(StriLi_MemberToInspect_unitID, "player") and CanInspect(StriLi_MemberToInspect_unitID) and UnitName(StriLi_MemberToInspect_unitID) ~= UNKNOWN ) then
 		
-		NotifyInspect(StriLi_MemberToInspect_unitID);
-		return true;
+		if (StriLi_TimeToNotifyCanbeused < 0.0) then
+		
+			StriLi_WatingForSpecInformation = true;
+			NotifyInspect(StriLi_MemberToInspect_unitID);
+			return true;
+			
+		end
 		
 	end
 	
@@ -520,9 +562,9 @@ function StriLi_InspectPlayer()
 		return 
 	
 	end
-	
+
 	local activeTalentGroup = GetActiveTalentGroup(true)
-	
+
 	local name1, _, pointsSpent1 = GetTalentTabInfo(1, true, false, activeTalentGroup);	
 	local name2, _, pointsSpent2 = GetTalentTabInfo(2, true, false, activeTalentGroup);
 	local name3, _, pointsSpent3 = GetTalentTabInfo(3, true, false, activeTalentGroup);
@@ -542,6 +584,7 @@ function StriLi_InspectPlayer()
 	StriLi_RaidMembers[name]["Spec"] = sepcc;
 	StriLi_RefreshUI();
 		
+	ClearInspectPlayer();
 	StriLi_WatingForSpecInformation = false;
 	
 	if StriLi_Pendend_MembersToInspect then
@@ -569,7 +612,7 @@ function StriLi_GetPendingSpecs()
 	local numRaidMem = GetNumRaidMembers();
 	
 	for j = 1, numRaidMem, 1 do
-	
+		
 		local name = GetRaidRosterInfo(j);
 		
 		if (StriLi_RaidMembers[name] ~= nil) then

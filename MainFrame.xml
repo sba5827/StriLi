@@ -250,8 +250,7 @@
 		<Scripts>
 			<OnMouseDown>StriLi_StartMoving(self);</OnMouseDown>
 			<OnMouseUp>StriLi_StopMoving(self);</OnMouseUp>
-			<OnDragStart></OnDragStart>
-			<OnDragStop></OnDragStop>
+			<!--<OnUpdate>StriLi_MainFrame_OnUpdate(self,arg1)</OnUpdate>!-->
 		</Scripts>
 	</Frame>
 </Ui>
