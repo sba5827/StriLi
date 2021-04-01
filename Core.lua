@@ -262,6 +262,7 @@ function StriLi_AddRow(CharName, CharData)
 	
 	local ReregisterCB = CreateFrame("CheckButton", "ReRegisterCheckButton"..tostring(StriLi_RowCount), Reregister, "ChatConfigCheckButtonTemplate");
 	ReregisterCB:SetPoint("CENTER", 0, 0);
+	ReregisterCB:SetHitRectInsets(0, 0, 0, 0);
 	if(CharData["Reregister"] ~= "") then 
 		ReregisterCB:SetChecked(true);
 		Name:SetScript("OnEnter", 	function()
