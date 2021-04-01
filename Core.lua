@@ -408,10 +408,16 @@ end
 
 function StriLi_OnClickResetButton(self)
 
+	Strili_ConfirmSelection("Wirklich alle Daten zurücksetzen?", StriLi_ConfirmReset, nil, self)
+	
+end
+
+function StriLi_ConfirmReset(self)
+
 	StriLi_RaidMembers = {};
 	StriLi_ResetUI();
 	StriLi_On_PARTY_MEMBERS_CHANGED();
-	
+
 end
 
 function StriLi_OnClickLockButton(self)
