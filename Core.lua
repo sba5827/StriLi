@@ -13,6 +13,9 @@ CreateFrame("FRAME", "StriLi_MainFrame", UIParent, "StriLi_MainFrame_Template");
 StriLi_MainFrame:SetScript("OnEvent", StriLi_MainFrame_OnEvent);
 
 StriLi_ConfirmDialogFrame = CreateFrame("FRAME", "StriLi_ConfirmDialogFrame", StriLi_MainFrame, "StriLi_ConfirmDialogFrame_Template");
+StriLi_TextInput_DialogFrame = CreateFrame("FRAME", "StriLi_TextInput_DialogFrame", StriLi_MainFrame, "StriLi_TextInputDialogFrame_Template");
+StriLi_TextInput_DialogFrame_Frame_EditBox:SetMaxLetters(20);
+
 ---------------------------------------------------------Minimap Icon---------------------------------------------------------
 local StriLi = LibStub("AceAddon-3.0"):NewAddon("StriLi", "AceConsole-3.0")                                                   
 local StriLiLDB = LibStub("LibDataBroker-1.1"):NewDataObject("StriLi!", {                                                     
@@ -88,8 +91,14 @@ function StriLi_InitDropDownMenu_PlayerNameFrame(frame, level, menuList)
 
 	if level == 1 then
 	
+		local pFrame = frame:GetParent();
+		local _, fString = pFrame:GetRegions();
+		local playerName = fString:GetText();
+	
 		-- Outermost menu level		
-		info.text, info.hasArrow, info.menuList = "Same as", true, "Players";
+		info.text, info.hasArrow, info.menuList = "Zusammenlegen mit", true, "Players";
+		UIDropDownMenu_AddButton(info);
+		info.text, info.hasArrow, info.func, info.arg1 = "Ummeldung", false, StriLi_ReregisterRequest, playerName;
 		UIDropDownMenu_AddButton(info);
 		
 	elseif menuList == "Players" then
@@ -113,10 +122,55 @@ function StriLi_InitDropDownMenu_PlayerNameFrame(frame, level, menuList)
 	
 end
 
+function StriLi_ReregisterRequest(self, arg1, arg2, checked)
+	
+	HideUIPanel(StriLi_DropdownFrame);
+	
+	local Name, Reregister, Main, Sec, Token, Fail = StriLi_GetFrameForChar(arg1):GetChildren();
+	local ReregisterCB = Reregister:GetChildren();	
+	
+	if not checked then 
+		StriLi_TextInput("Gib den Spec an auf den Umgemeldet wird: ", StriLi_Reregister, function() ReregisterCB:SetChecked(false) end, {arg1, arg2});
+	else
+		StriLi_RaidMembers[arg1]["Reregister"] = "";
+		
+		Name:SetScript("OnEnter", 	nil);
+		Name:SetScript("OnLeave", 	function() GameTooltip:Hide() end);
+	end
+	
+end
+
 function StriLi_CombineRaidmembersRequest(self, arg1, arg2, checked)
 		
 	HideUIPanel(StriLi_DropdownFrame);
-	Strili_ConfirmSelection("Are you sure you want to combine "..arg1.." and "..arg2.."?", StriLi_CombineRaidmembers, nil, {arg1,arg2});
+	Strili_ConfirmSelection("Sind Sie sicher, dass Sie "..arg1.." und "..arg2.." zusammenlegen wollen?", StriLi_CombineRaidmembers, nil, {arg1,arg2});
+	
+end
+
+function StriLi_Reregister(argList, text)
+	
+	local PlayerName = argList[1];
+	
+	StriLi_RaidMembers[PlayerName]["Reregister"] = text;
+	
+	local Name, Reregister, Main, Sec, Token, Fail = StriLi_GetFrameForChar(PlayerName):GetChildren();
+	local ReregisterCB = Reregister:GetChildren();
+	
+	if (text == "") then
+		ReregisterCB:SetChecked(false);
+		Name:SetScript("OnEnter", 	nil);
+		Name:SetScript("OnLeave", 	function() GameTooltip:Hide() end);
+	else
+		ReregisterCB:SetChecked(true);
+		Name:SetScript("OnEnter", 	function()
+												GameTooltip_SetDefaultAnchor( GameTooltip, Name )
+												GameTooltip:SetOwner(Name,"ANCHOR_NONE")
+												GameTooltip:SetPoint("CENTER",Name,"CENTER",0,30)
+												GameTooltip:SetText( text )
+												GameTooltip:Show()
+											end);
+		Name:SetScript("OnLeave", 	function() GameTooltip:Hide() end );
+	end
 	
 end
 
@@ -139,10 +193,22 @@ function Strili_ConfirmSelection(displayText, true_CBF, false_CBF, argList)
 
 	StriLi_ConfirmDialogFrame_FontString:SetText(displayText);
 	
-	StriLi_ConfirmDialogFrame_ConfirmButton:SetScript("OnClick", function() StriLi_ConfirmDialogFrame:Hide(); if not true_CBF == nil then true_CBF(argList) end end);
-	StriLi_ConfirmDialogFrame_CancleButton:SetScript("OnClick", function() StriLi_ConfirmDialogFrame:Hide(); if not false_CBF == nil then false_CBF(argList) end  end);
+	StriLi_ConfirmDialogFrame_ConfirmButton:SetScript("OnClick", function() StriLi_ConfirmDialogFrame:Hide(); if not (true_CBF == nil) then true_CBF(argList) end end);
+	StriLi_ConfirmDialogFrame_CancleButton:SetScript("OnClick", function() StriLi_ConfirmDialogFrame:Hide(); if not (false_CBF == nil) then false_CBF(argList) end  end);
 	
 	StriLi_ConfirmDialogFrame:Show();
+
+end
+
+function StriLi_TextInput(displayText, true_CBF, false_CBF, argList)
+
+	StriLi_TextInput_DialogFrame_FontString:SetText(displayText);
+	StriLi_TextInput_DialogFrame_Frame_EditBox:SetText("");
+	
+	StriLi_TextInput_DialogFrame_ConfirmButton:SetScript("OnClick", function() StriLi_TextInput_DialogFrame:Hide(); if not (true_CBF == nil) then true_CBF(argList, StriLi_TextInput_DialogFrame_Frame_EditBox:GetText()) end end);
+	StriLi_TextInput_DialogFrame_CancleButton:SetScript("OnClick", function() StriLi_TextInput_DialogFrame:Hide(); if not (false_CBF == nil) then false_CBF(argList, StriLi_TextInput_DialogFrame_Frame_EditBox:GetText()) end  end);
+	
+	StriLi_TextInput_DialogFrame:Show();
 
 end
 
@@ -196,6 +262,18 @@ function StriLi_AddRow(CharName, CharData)
 	
 	local ReregisterCB = CreateFrame("CheckButton", "ReRegisterCheckButton"..tostring(StriLi_RowCount), Reregister, "ChatConfigCheckButtonTemplate");
 	ReregisterCB:SetPoint("CENTER", 0, 0);
+	if(CharData["Reregister"] ~= "") then 
+		ReregisterCB:SetChecked(true);
+		Name:SetScript("OnEnter", 	function()
+												GameTooltip_SetDefaultAnchor( GameTooltip, Name )
+												GameTooltip:SetOwner(Name,"ANCHOR_NONE")
+												GameTooltip:SetPoint("CENTER",Name,"CENTER",0,30)
+												GameTooltip:SetText( CharData["Reregister"] )
+												GameTooltip:Show()
+											end);
+		Name:SetScript("OnLeave", 	function() GameTooltip:Hide() end );
+	end
+	ReregisterCB:SetScript("OnClick", function(self) if(self:IsEnabled()) then StriLi_ReregisterRequest(self, CharName, nil, not self:GetChecked()) end end)
 	
 	local counterMain = CreateFrame("Frame", "CounterMain"..tostring(StriLi_RowCount), Main, StriLi_Template_Counter);
 	local counterSec = CreateFrame("Frame", "CounterSec"..tostring(StriLi_RowCount), Sec, StriLi_Template_Counter);
@@ -340,8 +418,8 @@ function StriLi_OnClickLockButton(self)
 
 	for i = 1, StriLi_RowCount-1, 1 do
 		local _, Reregister = StriLi_RowFrames[i]:GetChildren();
-		Reregister = Reregister:GetChildren();
-		Reregister:Disable();
+		local ReregisterCB = Reregister:GetChildren();
+		ReregisterCB:Disable();
 	end
 	
 	self:SetText("Unlock");
@@ -385,7 +463,7 @@ function StriLi_On_PARTY_MEMBERS_CHANGED(self)
 	
 	for i = 1, numOfMembers, 1 do 
 		local name = GetRaidRosterInfo(i);
-		local localizedClass, englishClass, classIndex = UnitClass("raid"..tostring(i));
+		local localizedClass, englishClass = UnitClass("raid"..tostring(i));
 		StriLi_AddMember(name, englishClass);
 	end
 	
@@ -396,7 +474,7 @@ end
 function StriLi_AddMember(CharName, CharClass)
 
 	if (StriLi_RaidMembers[CharName] == nil) then
-		StriLi_RaidMembers[CharName] = {CharClass, ["Main"]=0, ["Sec"]=0, ["Token"]=0, ["Fail"]=0};
+		StriLi_RaidMembers[CharName] = {CharClass, ["Main"]=0, ["Sec"]=0, ["Token"]=0, ["Fail"]=0, ["Reregister"]=""};
 	end
 	
 end
@@ -406,7 +484,6 @@ function StriLi_MainFrame_OnLoad()
 	StriLi_AddLabelRow();
 	
 	StriLi_MainFrame:RegisterEvent("PARTY_MEMBERS_CHANGED");
-	StriLi_MainFrame:SetScript("OnEvent", StriLi_MainFrame_OnEvent);
 	
 	StriLi_RefreshUI();
 	
@@ -448,7 +525,15 @@ end
 
 function StriLi_DoesFrameForCharExist(CharName)
 	
-	if StriLi_RowCount < 1 then return false end
+	if(StriLi_GetFrameForChar(CharName) == nil) then return false end;
+	
+	return true;
+
+end
+
+function StriLi_GetFrameForChar(CharName)
+	
+	if StriLi_RowCount < 1 then return nil end
 
 	for i=0, StriLi_RowCount-1, 1 do
 	
@@ -459,11 +544,11 @@ function StriLi_DoesFrameForCharExist(CharName)
 		
 		
 		if (text == CharName) then
-			return true;
+			return StriLi_RowFrames[i];
 		end
 	end
 	
-	return false;
+	return nil;
 
 end
 

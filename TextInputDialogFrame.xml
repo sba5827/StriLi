@@ -1,0 +1,103 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd">
+	
+	<Frame name="StriLi_TextInputDialogFrame_Template" virtual="true" toplevel="true"
+      movable="false" enableMouse="true" hidden="true">
+		<Size>
+			<AbsDimension x="430" y="200"/>
+		</Size>
+		<Anchors>
+			<Anchor point="CENTER">
+				<Offset>
+					<AbsDimension x="0" y="0"/>
+				</Offset>
+			</Anchor>
+		</Anchors>
+		<Backdrop tile="true"
+        bgFile="Interface\DialogFrame\UI-DialogBox-Background"
+        edgeFile="Interface\DialogFrame\UI-DialogBox-Border">
+			<BackgroundInsets>
+				<AbsInset left="11" right="12" top="12" bottom="11"/>
+			</BackgroundInsets>
+			<TileSize>
+				<AbsValue val="32"/>
+			</TileSize>
+			<EdgeSize>
+				<AbsValue val="32"/>
+			</EdgeSize>
+		</Backdrop>
+		<Layers>
+			<Layer>
+				<FontString name="$parent_FontString" inherits="GameFontNormal" text="StriLi">
+					<Anchors>
+						<Anchor point="CENTER">
+							<Offset>
+								<AbsDimension x="0" y="70"/>
+							</Offset>
+						</Anchor>
+					</Anchors>
+				</FontString>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Frame name="$parent_Frame">
+				<Size>
+					<AbsDimension x="200" y="35"/>
+				</Size>
+				<Anchors>
+					<Anchor point="CENTER">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Backdrop 	bgFile="Interface\DialogFrame\UI-DialogBox-Background"
+							edgeFile="Interface\DialogFrame\UI-DialogBox-Border">
+					<EdgeSize>
+						<AbsValue val="12"/>
+					</EdgeSize>
+				</Backdrop>
+				<Frames>
+					<EditBox name="$parent_EditBox">
+						<Size>
+							<AbsDimension x="190" y="30"/>
+						</Size>
+						<Anchors>
+							<Anchor point="CENTER">
+								<Offset>
+									<AbsDimension x="0" y="0"/>
+								</Offset>
+							</Anchor>
+						</Anchors>
+						<FontString inherits="GameFontNormal"/>
+					</EditBox>
+				</Frames>
+			</Frame>
+			<Button name="$parent_ConfirmButton" inherits="UIPanelButtonTemplate" text="Ok">
+				<Size>
+					<AbsDimension x="60" y="20"/>
+				</Size>
+				<Anchors>
+					<Anchor point="CENTER">
+						<Offset>
+							<AbsDimension x="-40" y="-80"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Button>
+			<Button name="$parent_CancleButton" inherits="UIPanelButtonTemplate" text="Cancle">
+				<Size>
+					<AbsDimension x="60" y="20"/>
+				</Size>
+				<Anchors>
+					<Anchor point="CENTER">
+						<Offset>
+							<AbsDimension x="40" y="-80"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Button>
+		</Frames>
+	</Frame>
+</Ui>

@@ -30,4 +30,5 @@ Libs\LibDBIcon-1.0\LibDBIcon-1.0.lua
 
 MainFrame.xml
 ConfirmDialogFrame.xml
+TextInputDialogFrame.xml
 Core.lua
