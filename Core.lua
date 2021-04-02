@@ -253,6 +253,7 @@ function StriLi_AddRow(CharName, CharData)
 	
 	local Name, Reregister, Main, Sec, Token, Fail = StriLi_RowFrames[StriLi_RowCount]:GetChildren();
 	
+	--Seting Playername
 	local PlayerName = Name:CreateFontString("PlayerName"..tostring(StriLi_RowCount),"ARTWORK", "GameFontNormal");
 	PlayerName:SetPoint("LEFT", 0, 0);
 	PlayerName:SetPoint("RIGHT", 0, 0);
@@ -260,6 +261,7 @@ function StriLi_AddRow(CharName, CharData)
 	
 	StriLi_SetTextColorByClass(PlayerName, CharClass);
 	
+	-- Creating Checkbox. Toolotip added if Reregistered
 	local ReregisterCB = CreateFrame("CheckButton", "ReRegisterCheckButton"..tostring(StriLi_RowCount), Reregister, "ChatConfigCheckButtonTemplate");
 	ReregisterCB:SetPoint("CENTER", 0, 0);
 	ReregisterCB:SetHitRectInsets(0, 0, 0, 0);
@@ -287,9 +289,16 @@ function StriLi_AddRow(CharName, CharData)
 	local counterFailFontString = counterFail:GetRegions();
 	
 	counterMainFontString:SetText(tostring(CharData["Main"]))
+	StriLi_ColorCounterCell(Main, CharData["Main"], false);
+	
 	counterSecFontString:SetText(tostring(CharData["Sec"]))
+	StriLi_ColorCounterCell(Sec, CharData["Sec"], true);
+	
 	counterTokenFontString:SetText(tostring(CharData["Token"]))
+	StriLi_ColorCounterCell(Token, CharData["Token"], false);
+	
 	counterFailFontString:SetText(tostring(CharData["Fail"]))
+	StriLi_ColorCounterCell(Fail, CharData["Fail"], true);
 	
 	StriLi_RowCount = StriLi_RowCount + 1;
 
@@ -334,22 +343,25 @@ function StriLi_OnClickPlusButton(self)
 	local parentFrameCounter = self:GetParent();
 	local parentFrameCell = parentFrameCounter:GetParent();
 	local parentFrameRow = parentFrameCell:GetParent();
-	local Name, Main, Sec, Token, Fail = parentFrameRow:GetChildren();
+	local Name, Reregisration, Main, Sec, Token, Fail  = parentFrameRow:GetChildren();
 
 	local NameRegion1, NameRegion2 = Name:GetRegions();
 	local text = NameRegion2:GetText();
 	
 	local count = 0;
+	local even = true;
 	
 	if parentFrameCell == Main then
 		StriLi_RaidMembers[text]["Main"] = StriLi_RaidMembers[text]["Main"] + 1;
 		count = StriLi_RaidMembers[text]["Main"];
+		even=false;
 	elseif parentFrameCell == Sec then
 		StriLi_RaidMembers[text]["Sec"] = StriLi_RaidMembers[text]["Sec"] + 1;
 		count = StriLi_RaidMembers[text]["Sec"];
 	elseif parentFrameCell == Token then
 		StriLi_RaidMembers[text]["Token"] = StriLi_RaidMembers[text]["Token"] + 1;
 		count = StriLi_RaidMembers[text]["Token"];
+		even=false;
 	elseif parentFrameCell == Fail then
 		StriLi_RaidMembers[text]["Fail"] = StriLi_RaidMembers[text]["Fail"] + 1;
 		count = StriLi_RaidMembers[text]["Fail"];
@@ -358,6 +370,7 @@ function StriLi_OnClickPlusButton(self)
 	local fontString = parentFrameCounter:GetRegions();
 	
 	fontString:SetText(tostring(count));
+	StriLi_ColorCounterCell(parentFrameCell, count, even);
 	
 end
 
@@ -366,12 +379,13 @@ function StriLi_OnClickMinusButton(self)
 	local parentFrameCounter = self:GetParent();
 	local parentFrameCell = parentFrameCounter:GetParent();
 	local parentFrameRow = parentFrameCell:GetParent();
-	local Name, Main, Sec, Token, Fail = parentFrameRow:GetChildren();
+	local Name, Reregisration, Main, Sec, Token, Fail  = parentFrameRow:GetChildren();
 
 	local NameRegion1, NameRegion2 = Name:GetRegions();
 	local text = NameRegion2:GetText();
 	
 	local count = 0;
+	local even = true;
 	
 	if parentFrameCell == Main then
 	
@@ -379,6 +393,7 @@ function StriLi_OnClickMinusButton(self)
 			StriLi_RaidMembers[text]["Main"] = StriLi_RaidMembers[text]["Main"] - 1;
 		end
 		count = StriLi_RaidMembers[text]["Main"];
+		even = false;
 		
 	elseif parentFrameCell == Sec then
 	
@@ -386,24 +401,62 @@ function StriLi_OnClickMinusButton(self)
 			StriLi_RaidMembers[text]["Sec"] = StriLi_RaidMembers[text]["Sec"] - 1;
 		end
 		count = StriLi_RaidMembers[text]["Sec"];
+		
 	elseif parentFrameCell == Token then
 	
 		if (StriLi_RaidMembers[text]["Token"] > 0) then 
 			StriLi_RaidMembers[text]["Token"] = StriLi_RaidMembers[text]["Token"] - 1;
 		end
 		count = StriLi_RaidMembers[text]["Token"];
+		even = false;
+		
 	elseif parentFrameCell == Fail then
 	
 		if (StriLi_RaidMembers[text]["Fail"] > 0) then 
 			StriLi_RaidMembers[text]["Fail"] = StriLi_RaidMembers[text]["Fail"] - 1;
 		end
-		
 		count = StriLi_RaidMembers[text]["Fail"];
+		
 	end	
 	
 	local fontString = parentFrameCounter:GetRegions();
 	
 	fontString:SetText(tostring(count));
+	StriLi_ColorCounterCell(parentFrameCell, count, even);
+	
+end
+
+function StriLi_ColorCounterCell(cell, count, even)
+
+	local R,G,B = 0,0,0;
+	
+	if (even) then
+		if ( count >=4 ) then
+			R, G, B = 204, 100, 100;
+		elseif ( count == 3) then
+			R, G, B = 204, 150, 100;
+		elseif ( count == 2) then
+			R, G, B = 204, 204, 0;
+		elseif ( count == 1) then
+			R, G, B = 180, 204, 180;
+		elseif ( count == 0) then
+			R, G, B = 204, 204, 204;
+		end
+	else
+		if ( count >=4 ) then
+			R, G, B = 255, 100, 100;
+		elseif ( count == 3) then
+			R, G, B = 255, 200, 160;
+		elseif ( count == 2) then
+			R, G, B = 255, 225, 0;
+		elseif ( count == 1) then
+			R, G, B = 220, 255, 220;
+		elseif ( count == 0) then
+			R, G, B = 255, 255, 255;
+		end
+	end
+	
+	cell:SetStatusBarColor(R/255,G/255,B/255,1);
 	
 end
 
@@ -455,8 +508,6 @@ function StriLi_MainFrame_OnEvent(self, event)
 		print("|cffFFFF00StriLi loaded|r");
 		StriLi_ADDONLOADED = true;
 		StriLi_RefreshUI();
-	elseif (event == "INSPECT_TALENT_READY") then
-		--print("|cffFFFF00Inspecting|r");
 	end
 	
 
