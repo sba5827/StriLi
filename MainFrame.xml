@@ -305,7 +305,7 @@
 		<Scripts>
 			<OnMouseDown>StriLi_StartMoving(self);</OnMouseDown>
 			<OnMouseUp>StriLi_StopMoving(self);</OnMouseUp>
-			<!--<OnUpdate>StriLi_MainFrame_OnUpdate(self,arg1)</OnUpdate>!-->
+			<OnEvent>StriLi_MainFrame_OnEvent(selfe,event)</OnEvent>
 		</Scripts>
 	</Frame>
 </Ui>

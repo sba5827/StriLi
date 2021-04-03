@@ -10,7 +10,6 @@ local StriLi_DropdownFrame = nil;
 local StriLi_Template_Counter = "StriLi_Counter_Template2"
 
 CreateFrame("FRAME", "StriLi_MainFrame", UIParent, "StriLi_MainFrame_Template");
-StriLi_MainFrame:SetScript("OnEvent", StriLi_MainFrame_OnEvent);
 
 StriLi_ConfirmDialogFrame = CreateFrame("FRAME", "StriLi_ConfirmDialogFrame", StriLi_MainFrame, "StriLi_ConfirmDialogFrame_Template");
 StriLi_TextInput_DialogFrame = CreateFrame("FRAME", "StriLi_TextInput_DialogFrame", StriLi_MainFrame, "StriLi_TextInputDialogFrame_Template");
@@ -35,9 +34,9 @@ function StriLi:OnInitialize()
         },                                                                                                                    
     }); 
 	
-    icon:Register("StriLi!", StriLiLDB, self.db.profile.minimap);   
+    icon:Register("StriLi!", StriLiLDB, self.db.profile.minimap);    
 	StriLi_MainFrame_OnLoad(); 
-	StriLi_MainFrame_OnEvent(nil,"ADDON_LOADED");                                                                                                                                                                            
+	StriLi_MainFrame_OnEvent(nil,"ADDON_LOADED"); 
 
 end                                                                                                                           
 
@@ -520,9 +519,11 @@ function StriLi_On_PARTY_MEMBERS_CHANGED(self)
 	if(numOfMembers < 1) then return end
 	
 	for i = 1, numOfMembers, 1 do 
+	
 		local name = GetRaidRosterInfo(i);
 		local localizedClass, englishClass = UnitClass("raid"..tostring(i));
 		StriLi_AddMember(name, englishClass);
+		
 	end
 	
 	StriLi_RefreshUI();
@@ -539,10 +540,8 @@ end
 
 function StriLi_MainFrame_OnLoad()
 
-	StriLi_AddLabelRow();
-	
+	StriLi_AddLabelRow();	
 	StriLi_MainFrame:RegisterEvent("PARTY_MEMBERS_CHANGED");
-	
 	StriLi_RefreshUI();
 	
 end
