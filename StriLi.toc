@@ -4,7 +4,7 @@
 ## OptionalDeps: Ace3, LibSharedMedia-3.0, AceGUI-3.0-SharedMediaWidgets, LibSink-2.0, LibDBIcon-1.0
 ## Notes: StriLi
 ## SavedVariablesPerCharacter:  
-## SavedVariables: StriLi_RaidMembers, StriLiDB
+## SavedVariables: StriLi_RaidMembers, StriLiDB, StriLi_Rolls
 ## Version: 1.0.0
 
 #@no-lib-strip@

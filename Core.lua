@@ -9,7 +9,50 @@ local StriLi_ADDONLOADED = false;
 local StriLi_DropdownFrame = nil;
 local StriLi_Template_Counter = "StriLi_Counter_Template2"
 
+local StriLi_Timer = 0.0;
+local StriLi_3 = true;
+local StriLi_2 = true;
+local StriLi_1 = true;
+
+local StriLi_Main_i = 0;
+local StriLi_Sec_i = 0;
+local StriLi_Enchant_i = 0;
+
+local StriLi_Rolls = {["Main"]={}, ["Sec"]={}, ["Enchant"]={}};
+local StriLi_Rolls_Main = {};
+local StriLi_Rolls_Sec = {};
+local StriLi_Rolls_Enchant = {};
+
+SLASH_STRILI1 = '/sl'
+
+local function StriLi_Commands(msg, editbox)
+  -- pattern matching that skips leading whitespace and whitespace between cmd and args
+  -- any whitespace at end of args is retained
+  local _, _, t, args = string.find(msg, "%s?(%w+)%s?(.*)")
+  t=tonumber(t)
+  
+  if ( t == nil) then 
+	print ("|cffFFFF00StriLiStrili: First argument must be a NUMBER|r");
+	return;
+  end
+   
+  if args == " [@mouseover]" then
+	local mmi = select(2, GameTooltip:GetItem());
+	if mmi == nil then return end
+    SendChatMessage( mmi,"RAID_WARNING");
+  elseif args ~= "" then
+	SendChatMessage(args ,"RAID_WARNING");
+  end
+  
+  StriLi_StartListeningRolls(t);
+  
+end
+
+SlashCmdList["STRILI"] = StriLi_Commands
+
 CreateFrame("FRAME", "StriLi_MainFrame", UIParent, "StriLi_MainFrame_Template");
+
+Strili_UPDATE_FRAME = CreateFrame("FRAME");
 
 StriLi_ConfirmDialogFrame = CreateFrame("FRAME", "StriLi_ConfirmDialogFrame", StriLi_MainFrame, "StriLi_ConfirmDialogFrame_Template");
 StriLi_TextInput_DialogFrame = CreateFrame("FRAME", "StriLi_TextInput_DialogFrame", StriLi_MainFrame, "StriLi_TextInputDialogFrame_Template");
@@ -42,6 +85,59 @@ end
 
 ------------------------------------------------------------------------------------------------------------------------------
 
+function StriLi_StartListeningRolls(time_in_s)
+
+	StriLi_Rolls = {["Main"]={}, ["Sec"]={}, ["Enchant"]={}};
+	
+	local StriLi_Main_i = 0;
+	local StriLi_Sec_i = 0;
+	local StriLi_Enchant_i = 0;
+	
+	StriLi_Timer = time_in_s;
+
+	StriLi_MainFrame:RegisterEvent("CHAT_MSG_SYSTEM");
+	Strili_UPDATE_FRAME:SetScript("OnUpdate", function(self,arg1) StriLi_OnUpdate(self, arg1) end);
+	
+	StriLi_1=false;
+	StriLi_2=false;
+	StriLi_3=false;
+	
+end
+
+function StriLi_StopListeningRolls()
+
+	StriLi_MainFrame:UnregisterEvent("CHAT_MSG_SYSTEM");
+	Strili_UPDATE_FRAME:SetScript("OnUpdate", nil);
+	
+	for k,v in pairs(StriLi_Rolls) do 
+		print("|cffFFFF00".."---"..k.."---|r");
+		for k2,v2 in pairs(v) do 
+			print(k2..": "..v2);
+		end
+	end
+	
+end
+
+function StriLi_OnUpdate(self, elapsed)
+
+	if StriLi_Timer < 0.0 then
+		SendChatMessage("---" ,"RAID_WARNING");
+		StriLi_StopListeningRolls();
+		return 
+	elseif (not StriLi_1 and (StriLi_Timer < 1.0)) then
+		StriLi_1 = true;
+		SendChatMessage("1" ,"RAID_WARNING");
+	elseif (not StriLi_2 and (StriLi_Timer < 2.0)) then
+		StriLi_2 = true;
+		SendChatMessage("2" ,"RAID_WARNING");
+	elseif (not StriLi_3 and (StriLi_Timer < 3.0)) then
+		StriLi_3 = true;
+		SendChatMessage("3" ,"RAID_WARNING");
+	end
+
+	StriLi_Timer = StriLi_Timer - elapsed;
+
+end
 
 function StriLi_MMButton_OnClick(self)
 
@@ -499,7 +595,7 @@ function StriLi_OnClickUnlockButton(self)
 
 end
 
-function StriLi_MainFrame_OnEvent(self, event)
+function StriLi_MainFrame_OnEvent(self, event, ...)
 
 	if(event == "PARTY_MEMBERS_CHANGED") then
 		StriLi_On_PARTY_MEMBERS_CHANGED(self);
@@ -507,10 +603,54 @@ function StriLi_MainFrame_OnEvent(self, event)
 		print("|cffFFFF00StriLi loaded|r");
 		StriLi_ADDONLOADED = true;
 		StriLi_RefreshUI();
+	elseif (event == "CHAT_MSG_SYSTEM") then
+		local text = ...;
+		StriLi_CHAT_MSG_SYSTEM(text);
 	end
 	
 
 end
+
+function StriLi_CHAT_MSG_SYSTEM(text)
+
+	local playername, _next = string.match(text, "(%a+)%s?(.*)");
+	local number, range = string.match(_next, "(%d+)%s?(.*)");
+	
+	if range == "(1-100)" then
+		StriLi_MainRoll(playername, number);
+	elseif range == "(1-99)" then 
+		StriLi_SecRoll(playername, number);
+	elseif range == "(1-98)" then 
+		StriLi_EnchantRoll(playername, number);
+	end
+	
+	
+end
+
+function StriLi_MainRoll(playername, roll)
+
+	if (StriLi_Rolls[playername] == nil) then
+		StriLi_Rolls[playername] = true;
+	end
+	
+end
+
+function StriLi_SecRoll(playername, roll)
+	if (StriLi_Rolls["Main"][playername] == nil) and (StriLi_Rolls["Sec"][playername] == nil) and (StriLi_Rolls["Enchant"][playername] == nil) then
+		StriLi_Rolls["Sec"][playername] = roll;
+	end
+end
+
+function StriLi_EnchantRoll(playername, roll)
+	if (StriLi_Rolls["Main"][playername] == nil) and (StriLi_Rolls["Sec"][playername] == nil) and (StriLi_Rolls["Enchant"][playername] == nil) then
+		StriLi_Rolls["Enchant"][playername] = roll;
+	end
+end
+
+function StriLi_InsertSorted_MainRoll(playername, roll)
+	
+end
+
 
 function StriLi_On_PARTY_MEMBERS_CHANGED(self)
 
@@ -540,6 +680,8 @@ end
 
 function StriLi_MainFrame_OnLoad()
 
+	StriLi_MainFrame:SetScript("OnEvent", StriLi_MainFrame_OnEvent);
+
 	StriLi_AddLabelRow();	
 	StriLi_MainFrame:RegisterEvent("PARTY_MEMBERS_CHANGED");
 	StriLi_RefreshUI();
@@ -565,6 +707,7 @@ function StriLi_ResetUI()
 	for i = 0, StriLi_RowCount-1, 1 do
 		StriLi_RowFrames[i]:Hide();
 	end
+	
 	StriLi_RowFrames = {};
 	StriLi_RowCount = 0;
 	StriLi_AddLabelRow();
