@@ -628,11 +628,9 @@ function StriLi_CHAT_MSG_SYSTEM(text)
 end
 
 function StriLi_MainRoll(playername, roll)
-
-	if (StriLi_Rolls[playername] == nil) then
-		StriLi_Rolls[playername] = true;
+	if (StriLi_Rolls["Main"][playername] == nil) and (StriLi_Rolls["Sec"][playername] == nil) and (StriLi_Rolls["Enchant"][playername] == nil) then
+		StriLi_Rolls["Main"][playername] = roll;
 	end
-	
 end
 
 function StriLi_SecRoll(playername, roll)
