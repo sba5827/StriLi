@@ -23,6 +23,8 @@ local StriLi_Rolls_Main = {};
 local StriLi_Rolls_Sec = {};
 local StriLi_Rolls_Enchant = {};
 
+local StriLi_newRaidGroup = true;
+
 SLASH_STRILI1 = '/sl'
 
 local function StriLi_Commands(msg, editbox)
@@ -655,6 +657,16 @@ function StriLi_On_PARTY_MEMBERS_CHANGED(self)
 	local numOfMembers = GetNumRaidMembers();	
 	
 	if(numOfMembers < 1) then return end
+	
+	if(StriLi_newRaidGroup == true) then 
+		
+		StriLi_MainFrame:Show();
+	
+		StriLi_newRaidGroup = false;
+		StriLi_OnClickResetButton();
+		return;
+	
+	end
 	
 	for i = 1, numOfMembers, 1 do 
 	
