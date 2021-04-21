@@ -659,6 +659,7 @@ function StriLi_On_PARTY_MEMBERS_CHANGED(self)
 	for i = 1, numOfMembers, 1 do 
 	
 		local name = GetRaidRosterInfo(i);
+		if(name == nil) then return end;
 		local localizedClass, englishClass = UnitClass("raid"..tostring(i));
 		StriLi_AddMember(name, englishClass);
 		
@@ -671,7 +672,8 @@ end
 function StriLi_AddMember(CharName, CharClass)
 
 	if (StriLi_RaidMembers[CharName] == nil) then
-		StriLi_RaidMembers[CharName] = {CharClass, ["Main"]=0, ["Sec"]=0, ["Token"]=0, ["Fail"]=0, ["Reregister"]=""};
+		local Char = {CharClass, ["Main"]=0, ["Sec"]=0, ["Token"]=0, ["Fail"]=0, ["Reregister"]=""};
+		StriLi_RaidMembers[CharName] = Char;
 	end
 	
 end
