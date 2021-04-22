@@ -18,11 +18,6 @@ local StriLi_Main_i = 0;
 local StriLi_Sec_i = 0;
 local StriLi_Enchant_i = 0;
 
-local StriLi_Rolls = {["Main"]={}, ["Sec"]={}, ["Enchant"]={}};
-local StriLi_Rolls_Main = {};
-local StriLi_Rolls_Sec = {};
-local StriLi_Rolls_Enchant = {};
-
 local StriLi_newRaidGroup = true;
 
 SLASH_STRILI1 = '/sl'
@@ -90,6 +85,9 @@ end
 function StriLi_StartListeningRolls(time_in_s)
 
 	StriLi_Rolls = {["Main"]={}, ["Sec"]={}, ["Enchant"]={}};
+	StriLi_Rolls_Main = {};
+	StriLi_Rolls_Sec = {};
+	StriLi_Rolls_Enchant = {};
 	
 	local StriLi_Main_i = 0;
 	local StriLi_Sec_i = 0;
@@ -597,6 +595,8 @@ function StriLi_OnClickUnlockButton(self)
 
 end
 
+--StriLi_MainFrame_OnEvent(StriLi_MainFrame, "UNIT_SPELLCAST_SUCCEEDED", "raid1", "Wehklagen der Hochgeborenen")
+
 function StriLi_MainFrame_OnEvent(self, event, ...)
 
 	if(event == "PARTY_MEMBERS_CHANGED") then
@@ -630,6 +630,7 @@ function StriLi_CHAT_MSG_SYSTEM(text)
 end
 
 function StriLi_MainRoll(playername, roll)
+	--StriLi_InsertSorted_MainRoll(playername, roll);
 	if (StriLi_Rolls["Main"][playername] == nil) and (StriLi_Rolls["Sec"][playername] == nil) and (StriLi_Rolls["Enchant"][playername] == nil) then
 		StriLi_Rolls["Main"][playername] = roll;
 	end
@@ -648,6 +649,11 @@ function StriLi_EnchantRoll(playername, roll)
 end
 
 function StriLi_InsertSorted_MainRoll(playername, roll)
+
+	if (StriLi_Rolls["Main"][1] == nil) then 
+		table.insert(StriLi_Rolls["Main"],{["Roll"]=roll, ["Name"]=playername, ["Count"]=StriLi_RaidMembers[playername]["Main"]});
+		return;
+	end
 	
 end
 
@@ -684,8 +690,7 @@ end
 function StriLi_AddMember(CharName, CharClass)
 
 	if (StriLi_RaidMembers[CharName] == nil) then
-		local Char = {CharClass, ["Main"]=0, ["Sec"]=0, ["Token"]=0, ["Fail"]=0, ["Reregister"]=""};
-		StriLi_RaidMembers[CharName] = Char;
+		StriLi_RaidMembers[CharName] = {CharClass, ["Main"]=0, ["Sec"]=0, ["Token"]=0, ["Fail"]=0, ["Reregister"]=""};
 	end
 	
 end
@@ -765,17 +770,5 @@ function StriLi_GetFrameForChar(CharName)
 end
 
 function StriLi_DEBUG()
-
-	--DEBUG CODE
-	StriLi_AddRow("WARRIOR", "WARRIOR");
-	StriLi_AddRow("PALADIN", "PALADIN");
-	StriLi_AddRow("HUNTER", "HUNTER");
-	StriLi_AddRow("ROGUE", "ROGUE");
-	StriLi_AddRow("PRIEST", "PRIEST");
-	StriLi_AddRow("DEATHKNIGHT", "DEATHKNIGHT");
-	StriLi_AddRow("SHAMAN", "SHAMAN");
-	StriLi_AddRow("MAGE", "MAGE");
-	StriLi_AddRow("WARLOCK", "WARLOCK");
-	StriLi_AddRow("DRUID", "DRUID");
 
 end
