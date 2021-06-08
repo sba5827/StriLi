@@ -139,6 +139,70 @@ function StriLi_OnUpdate(self, elapsed)
 
 end
 
+function StriLi_OnMasterChanged()
+	
+	if ((StriLi_Master == UnitName("player")) or (StriLi_Master == "")) then
+		StriLi_ActivateButtons();
+	else
+		StriLi_DeactivateButtons();
+	end
+	
+end
+
+function StriLi_ActivateButtons()
+	for i = 1, StriLi_RowCount-1, 1 do
+	
+		local Name, Reregister, Main, Sec, Token, Fail = StriLi_RowFrames[i]:GetChildren();
+		
+		local CB = Reregister:GetChildren();
+		CB:Enable();
+		
+		local M_Button, P_Button = Main:GetChildren():GetChildren();
+		M_Button:Enable(); P_Button:Enable();
+		
+		M_Button, P_Button = Sec:GetChildren():GetChildren();
+		M_Button:Enable(); P_Button:Enable();
+		
+		M_Button, P_Button = Token:GetChildren():GetChildren();
+		M_Button:Enable(); P_Button:Enable();
+		
+		M_Button, P_Button = Fail:GetChildren():GetChildren();
+		M_Button:Enable(); P_Button:Enable();
+		
+	end
+	
+	StriLi_ResetButton:Enable();
+	StriLi_LockRegButton:Enable();
+	
+end
+
+function StriLi_DeactivateButtons()
+	for i = 1, StriLi_RowCount-1, 1 do
+	
+		local Name, Reregister, Main, Sec, Token, Fail = StriLi_RowFrames[i]:GetChildren();
+				
+		local CB = Reregister:GetChildren();
+		CB:Disable();
+		
+		local M_Button, P_Button = Main:GetChildren():GetChildren();
+		M_Button:Disable(); P_Button:Disable();
+		
+		M_Button, P_Button = Sec:GetChildren():GetChildren();
+		M_Button:Disable(); P_Button:Disable();
+		
+		M_Button, P_Button = Token:GetChildren():GetChildren();
+		M_Button:Disable(); P_Button:Disable();
+		
+		M_Button, P_Button = Fail:GetChildren():GetChildren();
+		M_Button:Disable(); P_Button:Disable();
+		
+	end
+	
+	StriLi_ResetButton:Disable();
+	StriLi_LockRegButton:Disable();
+	
+end
+
 function StriLi_MMButton_OnClick(self)
 
 	if ( StriLi_MainFrame:IsVisible() ) then
@@ -169,7 +233,7 @@ end
 
 function StriLi_OnMouseUp_NameFrame(self, button)
 	
-	if (button ~= "RightButton") or (not MouseIsOver(self)) then return end;
+	if (button ~= "RightButton") or (not MouseIsOver(self) or ((StriLi_Master ~= "") and (StriLi_Master ~= UnitName("player"))) ) then return end;
 	
 	StriLi_DropdownFrame = CreateFrame("Frame", "StriLi_DropdownFrame", self, "UIDropDownMenuTemplate")
 	-- Bind an initializer function to the dropdown; see previous sections for initializer function examples.
@@ -225,9 +289,11 @@ function StriLi_ReregisterRequest(self, arg1, arg2, checked)
 	local ReregisterCB = Reregister:GetChildren();	
 	
 	if not checked then 
-		StriLi_TextInput("Gib den Spec an auf den Umgemeldet wird: ", StriLi_Reregister, function() ReregisterCB:SetChecked(false) end, {arg1, arg2});
+		StriLi_TextInput("Gib den Spec an auf den Umgemeldet wird: ", function(argList, text) StriLi_Reregister(argList, text); StriLi_SendDataChanged(argList[1], "Reregister", text); end, function() ReregisterCB:SetChecked(false) end, {arg1, arg2});
 	else
 		StriLi_RaidMembers[arg1]["Reregister"] = "";
+		
+		StriLi_SendDataChanged(arg1, "Reregister", "");
 		
 		Name:SetScript("OnEnter", 	nil);
 		Name:SetScript("OnLeave", 	function() GameTooltip:Hide() end);
@@ -238,7 +304,7 @@ end
 function StriLi_CombineRaidmembersRequest(self, arg1, arg2, checked)
 		
 	HideUIPanel(StriLi_DropdownFrame);
-	Strili_ConfirmSelection("Sind Sie sicher, dass Sie "..arg1.." und "..arg2.." zusammenlegen wollen?", StriLi_CombineRaidmembers, nil, {arg1,arg2});
+	Strili_ConfirmSelection("Sind Sie sicher, dass Sie "..arg1.." und "..arg2.." zusammenlegen wollen?", function(argList) StriLi_CombineRaidmembers(argList); StriLi_SendDataChanged(argList[1], argList[2], "Combine") end, nil, {arg1,arg2});
 	
 end
 
@@ -449,17 +515,21 @@ function StriLi_OnClickPlusButton(self)
 	if parentFrameCell == Main then
 		StriLi_RaidMembers[text]["Main"] = StriLi_RaidMembers[text]["Main"] + 1;
 		count = StriLi_RaidMembers[text]["Main"];
+		StriLi_SendDataChanged(text, "Main", count);
 		even=false;
 	elseif parentFrameCell == Sec then
 		StriLi_RaidMembers[text]["Sec"] = StriLi_RaidMembers[text]["Sec"] + 1;
 		count = StriLi_RaidMembers[text]["Sec"];
+		StriLi_SendDataChanged(text, "Sec", count);
 	elseif parentFrameCell == Token then
 		StriLi_RaidMembers[text]["Token"] = StriLi_RaidMembers[text]["Token"] + 1;
 		count = StriLi_RaidMembers[text]["Token"];
+		StriLi_SendDataChanged(text, "Token", count);
 		even=false;
 	elseif parentFrameCell == Fail then
 		StriLi_RaidMembers[text]["Fail"] = StriLi_RaidMembers[text]["Fail"] + 1;
 		count = StriLi_RaidMembers[text]["Fail"];
+		StriLi_SendDataChanged(text, "Fail", count);
 	end	
 	
 	local fontString = parentFrameCounter:GetRegions();
@@ -489,6 +559,7 @@ function StriLi_OnClickMinusButton(self)
 		end
 		count = StriLi_RaidMembers[text]["Main"];
 		even = false;
+		StriLi_SendDataChanged(text, "Main", count);
 		
 	elseif parentFrameCell == Sec then
 	
@@ -496,6 +567,7 @@ function StriLi_OnClickMinusButton(self)
 			StriLi_RaidMembers[text]["Sec"] = StriLi_RaidMembers[text]["Sec"] - 1;
 		end
 		count = StriLi_RaidMembers[text]["Sec"];
+		StriLi_SendDataChanged(text, "Sec", count);
 		
 	elseif parentFrameCell == Token then
 	
@@ -504,6 +576,7 @@ function StriLi_OnClickMinusButton(self)
 		end
 		count = StriLi_RaidMembers[text]["Token"];
 		even = false;
+		StriLi_SendDataChanged(text, "Token", count);
 		
 	elseif parentFrameCell == Fail then
 	
@@ -511,6 +584,7 @@ function StriLi_OnClickMinusButton(self)
 			StriLi_RaidMembers[text]["Fail"] = StriLi_RaidMembers[text]["Fail"] - 1;
 		end
 		count = StriLi_RaidMembers[text]["Fail"];
+		StriLi_SendDataChanged(text, "Fail", count);
 		
 	end	
 	
@@ -557,11 +631,13 @@ end
 
 function StriLi_OnClickResetButton(self)
 
-	Strili_ConfirmSelection("Wirklich alle Daten zurücksetzen?", StriLi_ConfirmReset, nil, self)
+	Strili_ConfirmSelection("Wirklich alle Daten zurücksetzen?", function() StriLi_ConfirmReset(); StriLi_SendResetData() end, nil, self)
 	
 end
 
 function StriLi_ConfirmReset(self)
+
+	StriLi_newRaidGroup = false;
 
 	StriLi_RaidMembers = {};
 	StriLi_ResetUI();
@@ -595,8 +671,6 @@ function StriLi_OnClickUnlockButton(self)
 
 end
 
---StriLi_MainFrame_OnEvent(StriLi_MainFrame, "UNIT_SPELLCAST_SUCCEEDED", "raid1", "Wehklagen der Hochgeborenen")
-
 function StriLi_MainFrame_OnEvent(self, event, ...)
 
 	if(event == "PARTY_MEMBERS_CHANGED") then
@@ -615,7 +689,7 @@ end
 
 function StriLi_CHAT_MSG_SYSTEM(text)
 
-	local playername, _next = string.match(text, "(%a+)%s?(.*)");
+	local playername, _next = string.match(text, "([^%s]+)%s?(.*)");
 	local number, range = string.match(_next, "(%d+)%s?(.*)");
 	
 	if range == "(1-100)" then
@@ -662,14 +736,21 @@ function StriLi_On_PARTY_MEMBERS_CHANGED(self)
 
 	local numOfMembers = GetNumRaidMembers();	
 	
-	if(numOfMembers < 1) then return end
+	if(numOfMembers < 1) then 
+		StriLi_newRaidGroup = true;
+		StriLi_Master = "";	
+		StriLi_RefreshUI();
+		return 
+	end
 	
 	if(StriLi_newRaidGroup == true) then 
 		
 		StriLi_MainFrame:Show();
-	
+		
+		StriLi_Master = "";	
 		StriLi_newRaidGroup = false;
 		StriLi_OnClickResetButton();
+		StriLi_Req_checkForMaster();
 		return;
 	
 	end
@@ -703,6 +784,9 @@ function StriLi_MainFrame_OnLoad()
 	StriLi_MainFrame:RegisterEvent("PARTY_MEMBERS_CHANGED");
 	StriLi_RefreshUI();
 	
+	Strili_UPDATE_FRAME_Communication:RegisterEvent("CHAT_MSG_ADDON");
+	Strili_UPDATE_FRAME_Communication:SetScript("OnEvent", StriLi_Communication_OnEvent);
+	
 end
 
 function StriLi_RefreshUI()
@@ -716,6 +800,7 @@ function StriLi_RefreshUI()
 	end
 
 	StriLi_ResizeMainFrame();
+	StriLi_OnMasterChanged();
 
 end
 
@@ -770,5 +855,5 @@ function StriLi_GetFrameForChar(CharName)
 end
 
 function StriLi_DEBUG()
-
+	StriLi_DeactivateButtons()
 end
