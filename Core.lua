@@ -23,8 +23,10 @@ local StriLi_newRaidGroup = true;
 SLASH_STRILI1 = '/sl'
 
 local function StriLi_Commands(msg, editbox)
+
   -- pattern matching that skips leading whitespace and whitespace between cmd and args
   -- any whitespace at end of args is retained
+
   local _, _, t, args = string.find(msg, "%s?(%w+)%s?(.*)")
   t=tonumber(t)
   
@@ -259,6 +261,8 @@ function StriLi_InitDropDownMenu_PlayerNameFrame(frame, level, menuList)
 		UIDropDownMenu_AddButton(info);
 		info.text, info.hasArrow, info.func, info.arg1 = "Ummeldung", false, StriLi_ReregisterRequest, playerName;
 		UIDropDownMenu_AddButton(info);
+		info.text, info.hasArrow, info.func, info.arg1 = "Zu Master ernennen", false, StriLi_SetMasterRequest, playerName;
+		UIDropDownMenu_AddButton(info);
 		
 	elseif menuList == "Players" then
 	
@@ -297,6 +301,37 @@ function StriLi_ReregisterRequest(self, arg1, arg2, checked)
 		
 		Name:SetScript("OnEnter", 	nil);
 		Name:SetScript("OnLeave", 	function() GameTooltip:Hide() end);
+	end
+	
+end
+
+function StriLi_SetMasterRequest(self, arg1, arg2, checked)
+	
+	HideUIPanel(StriLi_DropdownFrame);
+	Strili_ConfirmSelection("Sind Sie sicher, dass Sie "..arg1.." zum Master ernennen wollen?", StriLi_SetMaster, nil, {arg1,arg2});
+	
+end
+
+function StriLi_SetMaster(argList)
+
+	local newMasterName = argList[1]; 
+	
+	local numOfMembers = GetNumRaidMembers();
+	
+	for i = 1, numOfMembers, 1 do 
+		local name, rank = GetRaidRosterInfo(i);
+		if (name == newMasterName) then
+			if (rank > 0) then
+				StriLi_Master = newMasterName;
+				StriLi_OnMasterChanged();
+				StriLi_Resp_CheckForMaster();
+			end
+			break;
+		end
+	end
+	
+	if (newMasterName ~= StriLi_Master) then
+		print("|cffFFFF00"..newMasterName.." Kann nicht zum Master ernannt werden. Rang zu niedrig|r");
 	end
 	
 end
