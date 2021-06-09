@@ -29,11 +29,13 @@ function StriLi_Req_checkForMaster()
 end
 
 function StriLi_SendDataChanged(name, data, arg)
+	if(UnitName("player") ~= StriLi_Master) then return end
 	SendAddonMessage("SL_DC", UnitName("player").." "..name.." "..data.." "..arg, "RAID");
 end
 
 function StriLi_Resp_CheckForMaster()
-	
+
+	if(UnitName("player") ~= StriLi_Master) then return end
 	if (StriLi_Master ~= "") then
 		SendAddonMessage("SL_RS_CFM", StriLi_Master, "RAID");
 	end
@@ -41,7 +43,10 @@ function StriLi_Resp_CheckForMaster()
 end
 
 function StriLi_SendResetData()
+
+	if(UnitName("player") ~= StriLi_Master) then return end
 	SendAddonMessage("SL_RD", "", "RAID");
+	
 end
 
 function StriLi_On_DataChanged(data)
@@ -147,6 +152,8 @@ function StriLi_Finalize_Resp_CheckForMaster()
 		end
 		
 	end
+	
 	print(StriLi_Master);
 	StriLi_Resp_CheckForMaster();
+	
 end
