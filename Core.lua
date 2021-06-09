@@ -322,16 +322,12 @@ function StriLi_SetMaster(argList)
 		local name, rank = GetRaidRosterInfo(i);
 		if (name == newMasterName) then
 			if (rank > 0) then
-				StriLi_Master = newMasterName;
-				StriLi_OnMasterChanged();
-				StriLi_Resp_CheckForMaster();
+				StriLi_Req_UserHasStriLi(newMasterName);
+			else
+				print("|cffFFFF00"..newMasterName.." Kann nicht zum Master ernannt werden. Rang zu niedrig|r");
 			end
 			break;
 		end
-	end
-	
-	if (newMasterName ~= StriLi_Master) then
-		print("|cffFFFF00"..newMasterName.." Kann nicht zum Master ernannt werden. Rang zu niedrig|r");
 	end
 	
 end

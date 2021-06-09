@@ -1,6 +1,10 @@
 Strili_UPDATE_FRAME_Communication = CreateFrame("FRAME");
 StriLi_TimeForCB_Communication = 0.0;
 
+local StiLi_WaitingFor = "";
+local StiLi_UserHasStriLi = false;
+local StiLi_UserHasStriLi_name = "";
+
 function StriLi_StopListeningIn_S(time_in_s)
 	StriLi_TimeForCB_Communication = time_in_s;
 	Strili_UPDATE_FRAME_Communication:SetScript("OnUpdate", function(self,arg1) StriLi_OnUpdate_Communication(self, arg1); end);
@@ -17,7 +21,11 @@ function StriLi_OnUpdate_Communication(self, elapsed)
 	if (self.TimeSinceLastUpdate > StriLi_TimeForCB_Communication) then
 		Strili_UPDATE_FRAME_Communication:SetScript("OnUpdate", nil);
 		self.TimeSinceLastUpdate = nil;
-		StriLi_Finalize_Resp_CheckForMaster();
+		if (StiLi_WaitingFor == "SL_RS_CFM") then
+			StriLi_Finalize_Resp_CheckForMaster();
+		elseif (StiLi_WaitingFor == "SL_RS_UHS") then
+			StriLi_Finalize_Resp_UserHasStriLi();
+		end
 	end
 	
 end
@@ -25,12 +33,29 @@ end
 function StriLi_Req_checkForMaster()
 
 	SendAddonMessage("SL_RQ_CFM", "", "RAID");
+	StiLi_WaitingFor = "SL_RS_CFM";
 	StriLi_StopListeningIn_S(2.0);
 	
 end
 
 function StriLi_Req_SyncData()
 	SendAddonMessage("SL_RQ_SD", UnitName("player"), "RAID");
+end
+
+function StriLi_Req_UserHasStriLi(name)
+	
+	SendAddonMessage("SL_RQ_UHS", name, "RAID");
+	StiLi_WaitingFor = "SL_RS_UHS";
+	StiLi_UserHasStriLi = false;
+	StiLi_UserHasStriLi_name = name;
+	StriLi_StopListeningIn_S(0.5);
+	
+end
+
+function StriLi_Resp_UserHasStriLi(name)
+	if (name == UnitName("Player")) then
+		SendAddonMessage("SL_RS_UHS", name, "RAID");
+	end
 end
 
 function StriLi_Resp_SyncData(sender)
@@ -79,6 +104,12 @@ function StriLi_SendResetData()
 	if(UnitName("player") ~= StriLi_Master) then return end
 	SendAddonMessage("SL_RD", "", "RAID");
 	
+end
+
+function StriLi_On_Resp_UserHasStriLi(name)
+	if (StiLi_UserHasStriLi_name == name) then
+		StiLi_UserHasStriLi = true;
+	end
 end
 
 function StriLi_On_DataChanged(data)
@@ -157,7 +188,11 @@ function StriLi_Communication_OnEvent(self, event, ...)
 	elseif (arg1 == "SL_RD") then
 		StriLi_ConfirmReset();
 	elseif (arg1 == "SL_RQ_SD") then
-		StriLi_Resp_SyncData(arg2);
+		StriLi_Resp_SyncData(arg2);	
+	elseif (arg1 == "SL_RQ_UHS") then
+		StriLi_Resp_UserHasStriLi(arg2);
+	elseif (arg1 == "SL_RS_UHS") then
+		StriLi_On_Resp_UserHasStriLi(arg2);
 	end
 	
 end
@@ -192,7 +227,23 @@ function StriLi_Finalize_Resp_CheckForMaster()
 	if (StriLi_Master == "") or (StriLi_Master == UnitName("player")) then
 		StriLi_OnClickResetButton();
 	else
+		StriLi_ConfirmReset();
 		StriLi_Req_SyncData();
 	end
 
 end
+
+function StriLi_Finalize_Resp_UserHasStriLi()
+
+	if(StiLi_UserHasStriLi) then
+		StriLi_Master = StiLi_UserHasStriLi_name;
+		StriLi_OnMasterChanged();
+		StriLi_Resp_CheckForMaster();
+	else
+		print("|cffFFFF00"..StiLi_UserHasStriLi_name.." Kann nicht zum Master ernannt werden. "..StiLi_UserHasStriLi_name.." hat StriLi nicht installiert oder besitzt eine veraltete Version|r");
+	end
+
+end
+
+
+
