@@ -790,8 +790,6 @@ function StriLi_On_PARTY_MEMBERS_CHANGED(self)
 		StriLi_MainFrame:Show();
 		
 		StriLi_newRaidGroup = false;
-		
-		return;
 	
 	end
 	

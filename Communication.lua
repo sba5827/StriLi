@@ -16,6 +16,7 @@ function StriLi_OnUpdate_Communication(self, elapsed)
 	
 	if (self.TimeSinceLastUpdate > StriLi_TimeForCB_Communication) then
 		Strili_UPDATE_FRAME_Communication:SetScript("OnUpdate", nil);
+		self.TimeSinceLastUpdate = nil;
 		StriLi_Finalize_Resp_CheckForMaster();
 	end
 	
@@ -186,7 +187,6 @@ function StriLi_Finalize_Resp_CheckForMaster()
 		
 	end
 	
-	print(StriLi_Master);
 	StriLi_Resp_CheckForMaster();
 	
 	if (StriLi_Master == "") or (StriLi_Master == UnitName("player")) then
