@@ -189,4 +189,10 @@ function StriLi_Finalize_Resp_CheckForMaster()
 	print(StriLi_Master);
 	StriLi_Resp_CheckForMaster();
 	
+	if (StriLi_Master == "") or (StriLi_Master == UnitName("player")) then
+		StriLi_OnClickResetButton();
+	else
+		StriLi_Req_SyncData();
+	end
+
 end
