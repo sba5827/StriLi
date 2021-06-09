@@ -635,6 +635,10 @@ function StriLi_OnClickResetButton(self)
 	
 end
 
+function StriLi_OnClickSyncButton(self)
+	StriLi_Req_SyncData();
+end
+
 function StriLi_ConfirmReset(self)
 
 	StriLi_newRaidGroup = false;

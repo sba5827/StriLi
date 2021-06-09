@@ -28,14 +28,45 @@ function StriLi_Req_checkForMaster()
 	
 end
 
-function StriLi_SendDataChanged(name, data, arg)
-	if(UnitName("player") ~= StriLi_Master) then return end
+function StriLi_Req_SyncData()
+	SendAddonMessage("SL_RQ_SD", UnitName("player"), "RAID");
+end
+
+function StriLi_Resp_SyncData(sender)
+
+	if ((sender ~= StriLi_Master) and (StriLi_Master ~= UnitName("player")) or (sender == UnitName("player"))) then
+		return;
+	end
+	
+	local numOfMembers = GetNumRaidMembers();
+	
+	for i = 1, numOfMembers, 1 do 
+	
+		local name = GetRaidRosterInfo(i);
+		
+		if(StriLi_RaidMembers[name] ~= nil) then 
+		
+			StriLi_SendDataChanged(name, "Main", StriLi_RaidMembers[name]["Main"], true);
+			StriLi_SendDataChanged(name, "Sec", StriLi_RaidMembers[name]["Sec"], true);
+			StriLi_SendDataChanged(name, "Token", StriLi_RaidMembers[name]["Token"], true);
+			StriLi_SendDataChanged(name, "Fail", StriLi_RaidMembers[name]["Fail"], true);
+			StriLi_SendDataChanged(name, "Reregister", StriLi_RaidMembers[name]["Reregister"], true);
+		
+		end
+		
+	end
+	
+end
+
+function StriLi_SendDataChanged(name, data, arg, forced)
+
+	if(UnitName("player") ~= StriLi_Master and not forced) then return end
 	SendAddonMessage("SL_DC", UnitName("player").." "..name.." "..data.." "..arg, "RAID");
+	
 end
 
 function StriLi_Resp_CheckForMaster()
 
-	if(UnitName("player") ~= StriLi_Master) then return end
 	if (StriLi_Master ~= "") then
 		SendAddonMessage("SL_RS_CFM", StriLi_Master, "RAID");
 	end
@@ -124,6 +155,8 @@ function StriLi_Communication_OnEvent(self, event, ...)
 		StriLi_On_DataChanged(arg2);
 	elseif (arg1 == "SL_RD") then
 		StriLi_ConfirmReset();
+	elseif (arg1 == "SL_RQ_SD") then
+		StriLi_Resp_SyncData(arg2);
 	end
 	
 end

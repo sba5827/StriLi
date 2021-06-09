@@ -271,6 +271,21 @@
 					<OnClick>StriLi_OnClickResetButton(self)</OnClick>
 				</Scripts>
 			</Button>
+			<Button name="StriLi_SyncButton" inherits="UIPanelButtonTemplate" text="Sync">
+				<Size>
+					<AbsDimension x="40" y="20"/>
+				</Size>
+				<Anchors>
+					<Anchor point="BOTTOMRIGHT">
+						<Offset>
+							<AbsDimension x="-65" y="12"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Scripts>
+					<OnClick>StriLi_OnClickSyncButton(self)</OnClick>
+				</Scripts>
+			</Button>
 			<Button name="StriLi_LockRegButton" inherits="UIPanelButtonTemplate" text="Lock">
 				<Size>
 					<AbsDimension x="40" y="20"/>
