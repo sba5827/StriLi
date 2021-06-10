@@ -14,7 +14,7 @@ Make sure that the folder name of the unzipped folder is StriLi, otherwise the a
 
 And **NOT** like:
 
-    C:\Users\USERNAME\..\WoW\Interface\AddOns\StriLi-1.0.2
+    C:\Users\USERNAME\..\WoW\Interface\AddOns\StriLi-1.2.0
     
 # Deutsch
 ## Info
@@ -31,4 +31,4 @@ Achten Sie darauf, dass der Ordnername des entpackten Ordners StriLi lautet, son
 
 Und **NICHT** wie:
 
-    C:\Benutzer\USERNAME\..\WoW\Interface\AddOns\StriLi-1.0.2
+    C:\Benutzer\USERNAME\..\WoW\Interface\AddOns\StriLi-1.2.0
