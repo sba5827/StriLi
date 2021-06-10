@@ -4,7 +4,7 @@
 This Addon was developed for WoW version 3.3.5a WotLK. No guarantee that it will work with other versions.
 
 ## How to Install
-Download the latest [releases](https://github.com/sba5827/StriLi/releases/tag/1.0.2). Unzip the folder to your WoW Addons folder. Eg.:
+Download the latest [releases](https://github.com/sba5827/StriLi/releases/tag/1.2.0). Unzip the folder to your WoW Addons folder. Eg.:
 
     C:\Users\USERNAME\..\WoW\Interface\AddOns\
     
@@ -21,7 +21,7 @@ And **NOT** like:
 Dieses Addon wurde für WoW Version 3.3.5a WotLK entwickelt. Es gibt keine Garantie, dass es mit anderen Versionen funktioniert.
 
 ## Wie man es installiert
-Laden Sie die neuesten [Versionen](https://github.com/sba5827/StriLi/releases/tag/1.0.2) herunter. Entpacken Sie den Ordner in Ihren WoW Addons Ordner. Z.B.:
+Laden Sie die neuesten [Versionen](https://github.com/sba5827/StriLi/releases/tag/1.2.0) herunter. Entpacken Sie den Ordner in Ihren WoW Addons Ordner. Z.B.:
 
     C:\Users\USERNAME\..\WoW\Interface\AddOns\
     
