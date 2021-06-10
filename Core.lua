@@ -798,7 +798,29 @@ function StriLi_On_PARTY_MEMBERS_CHANGED(self)
 		
 	end
 	
+	if(not StriLi_MasterIsInRaid()) then
+		StriLi_MasterExceptionHandling();
+	end
+	
 	StriLi_RefreshUI();
+	
+end
+
+function StriLi_MasterIsInRaid()
+
+	local numOfMembers = GetNumRaidMembers();
+	
+	for i = 1, numOfMembers, 1 do 
+	
+		local name = GetRaidRosterInfo(i);
+		
+		if(name == StriLi_Master) then
+			return true;
+		end
+		
+	end
+	
+	return false;
 	
 end
 

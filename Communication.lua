@@ -245,5 +245,11 @@ function StriLi_Finalize_Resp_UserHasStriLi()
 
 end
 
-
+function StriLi_MasterExceptionHandling()
+	
+	StriLi_Master = "";
+		
+	StriLi_Req_checkForMaster();
+	
+end
 
