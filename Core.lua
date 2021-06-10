@@ -44,7 +44,6 @@ local function StriLi_Commands(msg, editbox)
     "|?c?f?f?(%x*)|?H?([^:]*):?(%d+):?(%d*):?(%d*):?(%d*):?(%d*):?(%d*):?(%-?%d*):?(%-?%d*):?(%d*):?(%d*):?(%-?%d*)|?h?%[?([^%[%]]*)%]?|?h?|?r?")
 	
 	StriLi_ItemID = tonumber(Id);
-	print(Id);
 	
 	if itemLink == nil then return end
     SendChatMessage( itemLink,"RAID_WARNING");
@@ -791,14 +790,9 @@ end
 
 function StriLi_SortCondition(a,b)
 
-	print("793");
 	if (a["Count"] == b["Count"]) then
-		print("795");
-		print(a["Roll"] > b["Roll"]);
 		return a["Roll"] > b["Roll"];
 	else
-		print("798");
-		print(a["Count"] < b["Count"]);
 		return a["Count"] < b["Count"];
 	end
 
