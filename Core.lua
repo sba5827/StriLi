@@ -19,6 +19,7 @@ local StriLi_Sec_i = 0;
 local StriLi_Enchant_i = 0;
 
 local StriLi_newRaidGroup = true;
+local StriLi_ItemID = nil;
 
 SLASH_STRILI1 = '/sl'
 
@@ -35,10 +36,19 @@ local function StriLi_Commands(msg, editbox)
 	return;
   end
    
-  if args == " [@mouseover]" then
-	local mmi = select(2, GameTooltip:GetItem());
-	if mmi == nil then return end
-    SendChatMessage( mmi,"RAID_WARNING");
+  if args == "[@mouseover]" then
+	local itemName, itemLink = GameTooltip:GetItem();
+	
+	local _, _, Color, Ltype, Id, Enchant, Gem1, Gem2, Gem3, Gem4,
+    Suffix, Unique, LinkLvl, Name = string.find(itemLink,
+    "|?c?f?f?(%x*)|?H?([^:]*):?(%d+):?(%d*):?(%d*):?(%d*):?(%d*):?(%d*):?(%-?%d*):?(%-?%d*):?(%d*):?(%d*):?(%-?%d*)|?h?%[?([^%[%]]*)%]?|?h?|?r?")
+	
+	StriLi_ItemID = tonumber(Id);
+	print(Id);
+	
+	if itemLink == nil then return end
+    SendChatMessage( itemLink,"RAID_WARNING");
+	
   elseif args ~= "" then
 	SendChatMessage(args ,"RAID_WARNING");
   end
@@ -86,7 +96,7 @@ end
 
 function StriLi_StartListeningRolls(time_in_s)
 
-	StriLi_Rolls = {["Main"]={}, ["Sec"]={}, ["Enchant"]={}};
+	StriLi_Rolls = {["Main"]={}, ["Sec"]={}};
 	StriLi_Rolls_Main = {};
 	StriLi_Rolls_Sec = {};
 	StriLi_Rolls_Enchant = {};
@@ -110,11 +120,12 @@ function StriLi_StopListeningRolls()
 
 	StriLi_MainFrame:UnregisterEvent("CHAT_MSG_SYSTEM");
 	Strili_UPDATE_FRAME:SetScript("OnUpdate", nil);
+	StriLi_SortRolls();
 	
 	for k,v in pairs(StriLi_Rolls) do 
 		print("|cffFFFF00".."---"..k.."---|r");
-		for k2,v2 in pairs(v) do 
-			print(k2..": "..v2);
+		for k2,v2 in ipairs(v) do 
+			print(v2["Name"].." | Striche: "..v2["Count"].." | Roll: "..v2["Roll"]);
 		end
 	end
 	
@@ -728,18 +739,15 @@ function StriLi_CHAT_MSG_SYSTEM(text)
 	local number, range = string.match(_next, "(%d+)%s?(.*)");
 	
 	if range == "(1-100)" then
-		StriLi_MainRoll(playername, number);
+		StriLi_MainRoll2(playername, number);
 	elseif range == "(1-99)" then 
-		StriLi_SecRoll(playername, number);
-	elseif range == "(1-98)" then 
-		StriLi_EnchantRoll(playername, number);
+		StriLi_SecRoll2(playername, number);
 	end
 	
 	
 end
 
 function StriLi_MainRoll(playername, roll)
-	--StriLi_InsertSorted_MainRoll(playername, roll);
 	if (StriLi_Rolls["Main"][playername] == nil) and (StriLi_Rolls["Sec"][playername] == nil) and (StriLi_Rolls["Enchant"][playername] == nil) then
 		StriLi_Rolls["Main"][playername] = roll;
 	end
@@ -757,13 +765,50 @@ function StriLi_EnchantRoll(playername, roll)
 	end
 end
 
-function StriLi_InsertSorted_MainRoll(playername, roll)
-
-	if (StriLi_Rolls["Main"][1] == nil) then 
-		table.insert(StriLi_Rolls["Main"],{["Roll"]=roll, ["Name"]=playername, ["Count"]=StriLi_RaidMembers[playername]["Main"]});
-		return;
+function StriLi_MainRoll2(playername, roll)
+	
+	if(StriLi_ItemIsNHToken()) then
+		table.insert(StriLi_Rolls["Main"], {["Roll"]=roll, ["Name"]=playername, ["Count"]=StriLi_RaidMembers[playername]["Token"]});
+		--StriLi_Rolls["Main"][StriLi_Sec_i] = {["Roll"]=roll, ["Name"]=playername, ["Count"]=StriLi_RaidMembers[playername]["Token"]};
+	else
+		table.insert(StriLi_Rolls["Main"], {["Roll"]=roll, ["Name"]=playername, ["Count"]=StriLi_RaidMembers[playername]["Main"]});
+		--StriLi_Rolls["Main"][StriLi_Main_i] = {["Roll"]=roll, ["Name"]=playername, ["Count"]=StriLi_RaidMembers[playername]["Main"]};
 	end
 	
+end
+
+function StriLi_SecRoll2(playername, roll)
+
+	if(StriLi_ItemIsNHToken()) then
+		table.insert(StriLi_Rolls["Sec"], {["Roll"]=roll, ["Name"]=playername, ["Count"]=StriLi_RaidMembers[playername]["Token"]});
+		--StriLi_Rolls["Sec"][StriLi_Sec_i] = {["Roll"]=roll, ["Name"]=playername, ["Count"]=StriLi_RaidMembers[playername]["Token"]};
+	else
+		table.insert(StriLi_Rolls["Sec"], {["Roll"]=roll, ["Name"]=playername, ["Count"]=StriLi_RaidMembers[playername]["Sec"]});
+		--StriLi_Rolls["Sec"][StriLi_Sec_i] = {["Roll"]=roll, ["Name"]=playername, ["Count"]=StriLi_RaidMembers[playername]["Sec"]};
+	end
+	
+end
+
+function StriLi_SortCondition(a,b)
+
+	print("793");
+	if (a["Count"] == b["Count"]) then
+		print("795");
+		print(a["Roll"] > b["Roll"]);
+		return a["Roll"] > b["Roll"];
+	else
+		print("798");
+		print(a["Count"] < b["Count"]);
+		return a["Count"] < b["Count"];
+	end
+
+end
+
+function StriLi_SortRolls()
+
+	table.sort(StriLi_Rolls["Main"], function(a,b) return StriLi_SortCondition(a,b) end);
+	table.sort(StriLi_Rolls["Sec"], function(a,b) return StriLi_SortCondition(a,b) end);
+
 end
 
 
@@ -910,6 +955,26 @@ function StriLi_GetFrameForChar(CharName)
 
 end
 
+function StriLi_ItemIsNHToken()
+
+	if ((StriLi_ItemID == 52027) or (StriLi_ItemID == 52026) or (StriLi_ItemID == 52025)) then
+		return true;
+	end
+	
+	return false;
+	
+end
+
 function StriLi_DEBUG()
-	StriLi_DeactivateButtons()
+
+	StriLi_Rolls = {["Main"]={}, ["Sec"]={}};
+
+	StriLi_MainRoll2("Däthedr", 95)
+	StriLi_MainRoll2("Gannondorf", 99)
+	StriLi_SortRolls();
+	
+	for i, v in pairs(StriLi_Rolls["Main"]) do
+		print(v["Name"].." Roll: "..v["Roll"].." Striche:"..v["Count"]);
+	end
+	
 end
