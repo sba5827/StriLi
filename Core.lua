@@ -847,6 +847,10 @@ end
 
 function StriLi_MasterIsInRaid()
 
+	if(StriLi_Master == "") then
+		return;
+	end
+
 	local numOfMembers = GetNumRaidMembers();
 	
 	for i = 1, numOfMembers, 1 do 
