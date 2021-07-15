@@ -224,7 +224,7 @@ function StriLi_Finalize_Resp_CheckForMaster()
 	
 	StriLi_Resp_CheckForMaster();
 	
-	if (StriLi_Master == "") or (StriLi_Master == UnitName("player")) then
+	if (StriLi_Master == UnitName("player")) then
 		StriLi_OnClickResetButton();
 	else
 		StriLi_ConfirmReset();
