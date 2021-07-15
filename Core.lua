@@ -736,6 +736,7 @@ function StriLi_CHAT_MSG_SYSTEM(text)
 
 	local playername, _next = string.match(text, "([^%s]+)%s?(.*)");
 	local number, range = string.match(_next, "(%d+)%s?(.*)");
+	number = tonumber(number);
 	
 	if range == "(1-100)" then
 		StriLi_MainRoll2(playername, number);
