@@ -4,10 +4,11 @@ local StriLi_RowYBaseOffset=-35;
 
 local StriLi_RowCount = 0;
 local StriLi_RowFrames = {};
+local StriLi_LableRow = nil;
+local StriLi_RowStack = StriLi_newRowStack();
 local StriLi_ADDONLOADED = false;
 
 local StriLi_DropdownFrame = nil;
-local StriLi_Template_Counter = "StriLi_Counter_Template2"
 
 local StriLi_Timer = 0.0;
 local StriLi_3 = true;
@@ -164,7 +165,7 @@ end
 function StriLi_ActivateButtons()
 	for i = 1, StriLi_RowCount-1, 1 do
 	
-		local Name, Reregister, Main, Sec, Token, Fail = StriLi_RowFrames[i]:GetChildren();
+		local Name, Reregister, Main, Sec, Token, Fail = StriLi_RowFrames[i].frame:GetChildren();
 		
 		local CB = Reregister:GetChildren();
 		CB:Enable();
@@ -191,7 +192,7 @@ end
 function StriLi_DeactivateButtons()
 	for i = 1, StriLi_RowCount-1, 1 do
 	
-		local Name, Reregister, Main, Sec, Token, Fail = StriLi_RowFrames[i]:GetChildren();
+		local Name, Reregister, Main, Sec, Token, Fail = StriLi_RowFrames[i].frame:GetChildren();
 				
 		local CB = Reregister:GetChildren();
 		CB:Disable();
@@ -448,59 +449,19 @@ end
 
 function StriLi_AddRow(CharName, CharData)
 	
-	CharClass = CharData[1];
+	StriLi_RowFrames[StriLi_RowCount] = StriLi_RowStack:pop();
 	
-	StriLi_RowFrames[StriLi_RowCount] = CreateFrame("Frame", "StriLi_Row"..tostring(StriLi_RowCount), StriLi_MainFrame, "StriLi_Row_Template");
-	StriLi_RowFrames[StriLi_RowCount]:SetPoint("TOPLEFT", StriLi_MainFrame, "TOPLEFT", StriLi_RowXBaseOffset, StriLi_RowYBaseOffset - StriLi_RowCount*StriLi_RowHight);
+	if (StriLi_RowFrames[StriLi_RowCount] == nil) then
 	
-	local Name, Reregister, Main, Sec, Token, Fail = StriLi_RowFrames[StriLi_RowCount]:GetChildren();
-	
-	--Seting Playername
-	local PlayerName = Name:CreateFontString("PlayerName"..tostring(StriLi_RowCount),"ARTWORK", "GameFontNormal");
-	PlayerName:SetPoint("LEFT", 0, 0);
-	PlayerName:SetPoint("RIGHT", 0, 0);
-	PlayerName:SetText(CharName);
-	
-	StriLi_SetTextColorByClass(PlayerName, CharClass);
-	
-	-- Creating Checkbox. Toolotip added if Reregistered
-	local ReregisterCB = CreateFrame("CheckButton", "ReRegisterCheckButton"..tostring(StriLi_RowCount), Reregister, "ChatConfigCheckButtonTemplate");
-	ReregisterCB:SetPoint("CENTER", 0, 0);
-	ReregisterCB:SetHitRectInsets(0, 0, 0, 0);
-	if(CharData["Reregister"] ~= "") then 
-		ReregisterCB:SetChecked(true);
-		Name:SetScript("OnEnter", 	function()
-												GameTooltip_SetDefaultAnchor( GameTooltip, Name )
-												GameTooltip:SetOwner(Name,"ANCHOR_NONE")
-												GameTooltip:SetPoint("CENTER",Name,"CENTER",0,30)
-												GameTooltip:SetText( CharData["Reregister"] )
-												GameTooltip:Show()
-											end);
-		Name:SetScript("OnLeave", 	function() GameTooltip:Hide() end );
+		StriLi_RowFrames[StriLi_RowCount] = StriLi_newRow();
+		StriLi_SetupNewRow(StriLi_RowFrames[StriLi_RowCount], CharName, CharData);
+		
+	else
+		StriLi_ReworkRow(StriLi_RowFrames[StriLi_RowCount], CharName, CharData);
 	end
-	ReregisterCB:SetScript("OnClick", function(self) if(self:IsEnabled()) then StriLi_ReregisterRequest(self, CharName, nil, not self:GetChecked()) end end)
 	
-	local counterMain = CreateFrame("Frame", "CounterMain"..tostring(StriLi_RowCount), Main, StriLi_Template_Counter);
-	local counterSec = CreateFrame("Frame", "CounterSec"..tostring(StriLi_RowCount), Sec, StriLi_Template_Counter);
-	local counterToken = CreateFrame("Frame", "CounterToken"..tostring(StriLi_RowCount), Token, StriLi_Template_Counter);
-	local counterFail = CreateFrame("Frame", "CounterFail"..tostring(StriLi_RowCount), Fail, StriLi_Template_Counter);
-	
-	local counterMainFontString = counterMain:GetRegions();
-	local counterSecFontString = counterSec:GetRegions();
-	local counterTokenFontString = counterToken:GetRegions();
-	local counterFailFontString = counterFail:GetRegions();
-	
-	counterMainFontString:SetText(tostring(CharData["Main"]))
-	StriLi_ColorCounterCell(Main, CharData["Main"], false);
-	
-	counterSecFontString:SetText(tostring(CharData["Sec"]))
-	StriLi_ColorCounterCell(Sec, CharData["Sec"], true);
-	
-	counterTokenFontString:SetText(tostring(CharData["Token"]))
-	StriLi_ColorCounterCell(Token, CharData["Token"], false);
-	
-	counterFailFontString:SetText(tostring(CharData["Fail"]))
-	StriLi_ColorCounterCell(Fail, CharData["Fail"], true);
+	StriLi_RowFrames[StriLi_RowCount].frame:SetPoint("TOPLEFT", StriLi_MainFrame, "TOPLEFT", StriLi_RowXBaseOffset, StriLi_RowYBaseOffset - StriLi_RowCount*StriLi_RowHight);
+	StriLi_RowFrames[StriLi_RowCount].frame:Show();
 	
 	StriLi_RowCount = StriLi_RowCount + 1;
 
@@ -508,34 +469,42 @@ end
 
 function StriLi_AddLabelRow()
 
-	StriLi_RowFrames[StriLi_RowCount] = CreateFrame("Frame", "StriLi_Row"..tostring(StriLi_RowCount), StriLi_MainFrame, "StriLi_Row_Template");
-	StriLi_RowFrames[StriLi_RowCount]:SetPoint("TOPLEFT", StriLi_MainFrame, "TOPLEFT", StriLi_RowXBaseOffset, StriLi_RowYBaseOffset - StriLi_RowCount*StriLi_RowHight);
-	
-	local Name, Reregister, Main, Sec, Token, Fail = StriLi_RowFrames[StriLi_RowCount]:GetChildren();
-	Name:SetScript("OnMouseUp", nil);
-	
-	local Name2 = Name:CreateFontString("PlayerNameLable","ARTWORK", "GameFontNormal");
-	local Reregister2 = Reregister:CreateFontString("ReregisterLable","ARTWORK", "GameFontNormal");
-	local Main2 = Main:CreateFontString("MainLable","ARTWORK", "GameFontNormal");
-	local Sec2 = Sec:CreateFontString("SecLable","ARTWORK", "GameFontNormal");
-	local Token2 = Token:CreateFontString("TokenLabel","ARTWORK", "GameFontNormal");
-	local Fail2 = Fail:CreateFontString("FailLable","ARTWORK", "GameFontNormal");
-	
-	
-	Name2:SetPoint("CENTER", 0, 0);
-	Reregister2:SetPoint("CENTER", 0, 0);
-	Main2:SetPoint("CENTER", 0, 0);
-	Sec2:SetPoint("CENTER", 0, 0);
-	Token2:SetPoint("CENTER", 0, 0);
-	Fail2:SetPoint("CENTER", 0, 0);
-	
-	Name2:SetText("Name");
-	Reregister2:SetText("U");
-	Main2:SetText("Main");
-	Sec2:SetText("Sec");
-	Token2:SetText("Token");
-	Fail2:SetText("Fail");
+	if StriLi_LableRow ~= nil then
+		StriLi_RowFrames[StriLi_RowCount] = StriLi_LableRow;
+	else
 		
+		StriLi_RowFrames[StriLi_RowCount] = CreateFrame("Frame", "StriLi_Row"..tostring(StriLi_RowCount), StriLi_MainFrame, "StriLi_Row_Template");
+		StriLi_RowFrames[StriLi_RowCount]:SetPoint("TOPLEFT", StriLi_MainFrame, "TOPLEFT", StriLi_RowXBaseOffset, StriLi_RowYBaseOffset - StriLi_RowCount*StriLi_RowHight);
+		
+		local Name, Reregister, Main, Sec, Token, Fail = StriLi_RowFrames[StriLi_RowCount]:GetChildren();
+		Name:SetScript("OnMouseUp", nil);
+		
+		local Name2 = Name:CreateFontString("PlayerNameLable","ARTWORK", "GameFontNormal");
+		local Reregister2 = Reregister:CreateFontString("ReregisterLable","ARTWORK", "GameFontNormal");
+		local Main2 = Main:CreateFontString("MainLable","ARTWORK", "GameFontNormal");
+		local Sec2 = Sec:CreateFontString("SecLable","ARTWORK", "GameFontNormal");
+		local Token2 = Token:CreateFontString("TokenLabel","ARTWORK", "GameFontNormal");
+		local Fail2 = Fail:CreateFontString("FailLable","ARTWORK", "GameFontNormal");
+		
+		
+		Name2:SetPoint("CENTER", 0, 0);
+		Reregister2:SetPoint("CENTER", 0, 0);
+		Main2:SetPoint("CENTER", 0, 0);
+		Sec2:SetPoint("CENTER", 0, 0);
+		Token2:SetPoint("CENTER", 0, 0);
+		Fail2:SetPoint("CENTER", 0, 0);
+		
+		Name2:SetText("Name");
+		Reregister2:SetText("U");
+		Main2:SetText("Main");
+		Sec2:SetText("Sec");
+		Token2:SetText("Token");
+		Fail2:SetText("Fail");
+		
+		StriLi_LableRow = StriLi_RowFrames[StriLi_RowCount];
+
+	end
+	
 	StriLi_RowCount = StriLi_RowCount + 1;
 	
 end
@@ -693,7 +662,7 @@ end
 function StriLi_OnClickLockButton(self)
 
 	for i = 1, StriLi_RowCount-1, 1 do
-		local _, Reregister = StriLi_RowFrames[i]:GetChildren();
+		local _, Reregister = StriLi_RowFrames[i].frame:GetChildren();
 		local ReregisterCB = Reregister:GetChildren();
 		ReregisterCB:Disable();
 	end
@@ -706,7 +675,7 @@ end
 function StriLi_OnClickUnlockButton(self)
 
 	for i = 1, StriLi_RowCount-1, 1 do
-		local _, Reregister = StriLi_RowFrames[i]:GetChildren();
+		local _, Reregister = StriLi_RowFrames[i].frame:GetChildren();
 		Reregister = Reregister:GetChildren();
 		Reregister:Enable();
 	end
@@ -767,34 +736,38 @@ end
 
 function StriLi_MainRoll2(playername, roll)
 	
-	if(StriLi_ItemIsNHToken()) then
-		table.insert(StriLi_Rolls["Main"], {["Roll"]=roll, ["Name"]=playername, ["Count"]=StriLi_RaidMembers[playername]["Token"]});
-		--StriLi_Rolls["Main"][StriLi_Sec_i] = {["Roll"]=roll, ["Name"]=playername, ["Count"]=StriLi_RaidMembers[playername]["Token"]};
-	else
-		table.insert(StriLi_Rolls["Main"], {["Roll"]=roll, ["Name"]=playername, ["Count"]=StriLi_RaidMembers[playername]["Main"]});
-		--StriLi_Rolls["Main"][StriLi_Main_i] = {["Roll"]=roll, ["Name"]=playername, ["Count"]=StriLi_RaidMembers[playername]["Main"]};
+	if (StriLi_Rolls["Main"][playername] == nil) and (StriLi_Rolls["Sec"][playername] == nil) then
+		if(StriLi_ItemIsNHToken()) then
+				table.insert(StriLi_Rolls["Main"], {["Roll"]=roll, ["Name"]=playername, ["Count"]=StriLi_RaidMembers[playername]["Token"]});
+				--StriLi_Rolls["Main"][StriLi_Sec_i] = {["Roll"]=roll, ["Name"]=playername, ["Count"]=StriLi_RaidMembers[playername]["Token"]};
+		else
+			table.insert(StriLi_Rolls["Main"], {["Roll"]=roll, ["Name"]=playername, ["Count"]=StriLi_RaidMembers[playername]["Main"]});
+			--StriLi_Rolls["Main"][StriLi_Main_i] = {["Roll"]=roll, ["Name"]=playername, ["Count"]=StriLi_RaidMembers[playername]["Main"]};
+		end
 	end
 	
 end
 
 function StriLi_SecRoll2(playername, roll)
 
-	if(StriLi_ItemIsNHToken()) then
-		table.insert(StriLi_Rolls["Sec"], {["Roll"]=roll, ["Name"]=playername, ["Count"]=StriLi_RaidMembers[playername]["Token"]});
-		--StriLi_Rolls["Sec"][StriLi_Sec_i] = {["Roll"]=roll, ["Name"]=playername, ["Count"]=StriLi_RaidMembers[playername]["Token"]};
-	else
-		table.insert(StriLi_Rolls["Sec"], {["Roll"]=roll, ["Name"]=playername, ["Count"]=StriLi_RaidMembers[playername]["Sec"]});
-		--StriLi_Rolls["Sec"][StriLi_Sec_i] = {["Roll"]=roll, ["Name"]=playername, ["Count"]=StriLi_RaidMembers[playername]["Sec"]};
+	if (StriLi_Rolls["Main"][playername] == nil) and (StriLi_Rolls["Sec"][playername] == nil) then
+		if(StriLi_ItemIsNHToken()) then
+			table.insert(StriLi_Rolls["Sec"], {["Roll"]=roll, ["Name"]=playername, ["Count"]=StriLi_RaidMembers[playername]["Token"]});
+			--StriLi_Rolls["Sec"][StriLi_Sec_i] = {["Roll"]=roll, ["Name"]=playername, ["Count"]=StriLi_RaidMembers[playername]["Token"]};
+		else
+			table.insert(StriLi_Rolls["Sec"], {["Roll"]=roll, ["Name"]=playername, ["Count"]=StriLi_RaidMembers[playername]["Sec"]});
+			--StriLi_Rolls["Sec"][StriLi_Sec_i] = {["Roll"]=roll, ["Name"]=playername, ["Count"]=StriLi_RaidMembers[playername]["Sec"]};
+		end
 	end
 	
 end
 
 function StriLi_SortCondition(a,b)
-
+	
 	if (a["Count"] == b["Count"]) then
-		return a["Roll"] > b["Roll"];
+		return (a["Roll"] >= b["Roll"]);
 	else
-		return a["Count"] < b["Count"];
+		return (a["Count"] <= b["Count"]);
 	end
 
 end
@@ -849,7 +822,7 @@ end
 function StriLi_MasterIsInRaid()
 
 	if(StriLi_Master == "") then
-		return;
+		return false;
 	end
 
 	local numOfMembers = GetNumRaidMembers();
@@ -905,15 +878,22 @@ function StriLi_RefreshUI()
 end
 
 function StriLi_ResetUI()
-
-	for i = 0, StriLi_RowCount-1, 1 do
-		StriLi_RowFrames[i]:Hide();
-	end
 	
-	StriLi_RowFrames = {};
+	StriLi_ClearRowFramesArray();
 	StriLi_RowCount = 0;
 	StriLi_AddLabelRow();
 	StriLi_RefreshUI();
+
+end
+
+function StriLi_ClearRowFramesArray()
+
+	for i=1, StriLi_RowCount-1, 1 do
+	
+		StriLi_RowFrames[i].frame:Hide();
+		StriLi_RowStack:push(StriLi_RowFrames[i]);
+		
+	end
 
 end
 
@@ -937,16 +917,16 @@ function StriLi_GetFrameForChar(CharName)
 	
 	if StriLi_RowCount < 1 then return nil end
 
-	for i=0, StriLi_RowCount-1, 1 do
+	for i=1, StriLi_RowCount-1, 1 do
 	
-		local Name = StriLi_RowFrames[i]:GetChildren();
+		local Name = StriLi_RowFrames[i].frame:GetChildren();
 		local _, Name2 = Name:GetRegions();
 		
 		local text = Name2:GetText();
 		
 		
 		if (text == CharName) then
-			return StriLi_RowFrames[i];
+			return StriLi_RowFrames[i].frame;
 		end
 	end
 	
@@ -966,14 +946,6 @@ end
 
 function StriLi_DEBUG()
 
-	StriLi_Rolls = {["Main"]={}, ["Sec"]={}};
-
-	StriLi_MainRoll2("Däthedr", 95)
-	StriLi_MainRoll2("Gannondorf", 99)
-	StriLi_SortRolls();
-	
-	for i, v in pairs(StriLi_Rolls["Main"]) do
-		print(v["Name"].." Roll: "..v["Roll"].." Striche:"..v["Count"]);
-	end
+	StriLi_ResetUI();
 	
 end

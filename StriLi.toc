@@ -32,4 +32,5 @@ MainFrame.xml
 ConfirmDialogFrame.xml
 TextInputDialogFrame.xml
 Communication.lua
+RowManager.lua
 Core.lua
