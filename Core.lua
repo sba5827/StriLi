@@ -122,10 +122,36 @@ function StriLi_StopListeningRolls()
 	Strili_UPDATE_FRAME:SetScript("OnUpdate", nil);
 	StriLi_SortRolls();
 	
+	once = false
+	
 	for k,v in pairs(StriLi_Rolls) do 
-		print("|cffFFFF00".."---"..k.."---|r");
+		SendChatMessage("---"..k.."---", "RAID_WARNING");
 		for k2,v2 in ipairs(v) do 
-			print(v2["Name"].." | Striche: "..v2["Count"].." | Roll: "..v2["Roll"]);
+			if not once then
+			
+				once = true;
+				
+				local Name, Reregister, Main, Sec, Token, Fail = StriLi_GetFrameForChar(v2["Name"]):GetChildren();
+				
+				if StriLi_ItemIsNHToken() then
+					local counterFrame = Token:GetChildren();
+					local plusButton, minusButton = counterFrame:GetChildren();
+					StriLi_OnClickPlusButton(plusButton);
+				else
+					if k == "Main" then
+						local counterFrame = Main:GetChildren();
+						local plusButton, minusButton = counterFrame:GetChildren();
+						StriLi_OnClickPlusButton(plusButton);
+					else
+						local counterFrame = Sec:GetChildren();
+						local plusButton, minusButton = counterFrame:GetChildren();
+						StriLi_OnClickPlusButton(plusButton);
+					end
+				end
+				
+			end
+			s = v2["Name"].." || Striche: "..v2["Count"].." || Roll: "..v2["Roll"];
+			SendChatMessage(s, "RAID_WARNING");
 		end
 	end
 	
