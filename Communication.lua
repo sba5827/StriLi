@@ -1,5 +1,6 @@
 Strili_UPDATE_FRAME_Communication = CreateFrame("FRAME");
 StriLi_TimeForCB_Communication = 0.0;
+StriLi_Version = GetAddOnMetadata("StriLi", "Version");
 
 local StiLi_WaitingFor = "";
 local StiLi_UserHasStriLi = false;
@@ -193,6 +194,8 @@ function StriLi_Communication_OnEvent(self, event, ...)
 		StriLi_Resp_UserHasStriLi(arg2);
 	elseif (arg1 == "SL_RS_UHS") then
 		StriLi_On_Resp_UserHasStriLi(arg2);
+	elseif (arg1 == "SL_VC") then
+		StriLi_On_VersionCheck(arg2);
 	end
 	
 end
@@ -253,3 +256,46 @@ function StriLi_MasterExceptionHandling()
 	
 end
 
+function StriLi_TextCopyableDisplay(displayText, copyableText)
+
+	StriLi_TextInput_DialogFrame_FontString:SetText(displayText);
+	StriLi_TextInput_DialogFrame_Frame_EditBox:SetText(copyableText);
+	
+	StriLi_TextInput_DialogFrame_ConfirmButton:SetScript("OnClick", function() StriLi_TextInput_DialogFrame:Hide(); end);
+	StriLi_TextInput_DialogFrame_CancleButton:SetScript("OnClick", function() StriLi_TextInput_DialogFrame:Hide(); end);
+
+	
+	StriLi_TextInput_DialogFrame:Show();
+	StriLi_MainFrame:Show();
+
+end
+
+function StriLi_AddonVersionShout()
+
+	if GetNumRaidMembers() > 1 then
+		local _, instanceType = IsInInstance()
+		if instanceType == "pvp" then
+			SendAddonMessage("SL_VC", StriLi_Version, "BATTLEGROUND")
+		else
+			SendAddonMessage("SL_VC", StriLi_Version, "RAID")
+		end
+	elseif GetNumPartyMembers() > 0 then
+		SendAddonMessage("SL_VC", StriLi_Version, "PARTY")
+	elseif IsInGuild() then
+		SendAddonMessage("SL_VC", StriLi_Version, "GUILD")
+	end
+		
+end
+
+function StriLi_On_VersionCheck(arg2)
+
+	local ver = tonumber(StriLi_Version)
+	message = tonumber(arg2)
+	
+	if message then
+		if message > ver then
+			StriLi_TextCopyableDisplay("Your StiLi Version is outdated. Check for an update at:", "https://github.com/sba5827/StriLi");
+		end	
+	end
+	
+end

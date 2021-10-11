@@ -5,7 +5,7 @@
 ## Notes: StriLi
 ## SavedVariablesPerCharacter:  
 ## SavedVariables: StriLi_RaidMembers, StriLiDB, StriLi_Rolls, StriLi_Rolls_Main, StriLi_Rolls_Sec, StriLi_Rolls_Enchant, StriLi_Master
-## Version: 1.2.2
+## Version: 2.0
 
 #@no-lib-strip@
 Libs\LibStub\LibStub.lua

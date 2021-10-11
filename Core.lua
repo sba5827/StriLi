@@ -65,7 +65,7 @@ Strili_UPDATE_FRAME = CreateFrame("FRAME");
 
 StriLi_ConfirmDialogFrame = CreateFrame("FRAME", "StriLi_ConfirmDialogFrame", StriLi_MainFrame, "StriLi_ConfirmDialogFrame_Template");
 StriLi_TextInput_DialogFrame = CreateFrame("FRAME", "StriLi_TextInput_DialogFrame", StriLi_MainFrame, "StriLi_TextInputDialogFrame_Template");
-StriLi_TextInput_DialogFrame_Frame_EditBox:SetMaxLetters(20);
+StriLi_TextInput_DialogFrame_Frame_EditBox:SetMaxLetters(50);
 
 ---------------------------------------------------------Minimap Icon---------------------------------------------------------
 local StriLi = LibStub("AceAddon-3.0"):NewAddon("StriLi", "AceConsole-3.0")                                                   
@@ -715,10 +715,12 @@ function StriLi_MainFrame_OnEvent(self, event, ...)
 
 	if(event == "PARTY_MEMBERS_CHANGED") then
 		StriLi_On_PARTY_MEMBERS_CHANGED(self);
+		StriLi_AddonVersionShout();
 	elseif ((event == "ADDON_LOADED") and (not StriLi_ADDONLOADED)) then
 		print("|cffFFFF00StriLi loaded|r");
 		StriLi_ADDONLOADED = true;
 		StriLi_RefreshUI();
+		StriLi_AddonVersionShout();
 	elseif (event == "CHAT_MSG_SYSTEM") then
 		local text = ...;
 		StriLi_CHAT_MSG_SYSTEM(text);
