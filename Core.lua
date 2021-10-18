@@ -66,6 +66,8 @@ Strili_UPDATE_FRAME = CreateFrame("FRAME");
 StriLi_ConfirmDialogFrame = CreateFrame("FRAME", "StriLi_ConfirmDialogFrame", StriLi_MainFrame, "StriLi_ConfirmDialogFrame_Template");
 StriLi_TextInput_DialogFrame = CreateFrame("FRAME", "StriLi_TextInput_DialogFrame", StriLi_MainFrame, "StriLi_TextInputDialogFrame_Template");
 StriLi_TextInput_DialogFrame_Frame_EditBox:SetMaxLetters(50);
+StriLi_Update_DialogFrame = CreateFrame("FRAME", "StriLi_Update_DialogFrame", UIParent, "StriLi_TextInputDialogFrame_Template");
+StriLi_Update_DialogFrame_Frame_EditBox:SetMaxLetters(50);
 
 ---------------------------------------------------------Minimap Icon---------------------------------------------------------
 local StriLi = LibStub("AceAddon-3.0"):NewAddon("StriLi", "AceConsole-3.0")                                                   

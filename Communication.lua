@@ -258,15 +258,14 @@ end
 
 function StriLi_TextCopyableDisplay(displayText, copyableText)
 
-	StriLi_TextInput_DialogFrame_FontString:SetText(displayText);
-	StriLi_TextInput_DialogFrame_Frame_EditBox:SetText(copyableText);
+	StriLi_Update_DialogFrame_FontString:SetText(displayText);
+	StriLi_Update_DialogFrame_Frame_EditBox:SetText(copyableText);
 	
-	StriLi_TextInput_DialogFrame_ConfirmButton:SetScript("OnClick", function() StriLi_TextInput_DialogFrame:Hide(); end);
-	StriLi_TextInput_DialogFrame_CancleButton:SetScript("OnClick", function() StriLi_TextInput_DialogFrame:Hide(); end);
+	StriLi_Update_DialogFrame_ConfirmButton:SetScript("OnClick", function() StriLi_Update_DialogFrame:Hide(); end);
+	StriLi_Update_DialogFrame_CancleButton:SetScript("OnClick", function() StriLi_Update_DialogFrame:Hide(); end);
 
 	
-	StriLi_TextInput_DialogFrame:Show();
-	StriLi_MainFrame:Show();
+	StriLi_Update_DialogFrame:Show();
 
 end
 
