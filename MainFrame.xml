@@ -134,8 +134,9 @@
 		</Anchors>
 		<Backdrop edgeFile="Interface\DialogFrame\UI-DialogBox-Border">
 			<EdgeSize>
-				<AbsValue val="6"/>
+				<AbsValue val="2"/>
 			</EdgeSize>
+			<BorderColor a="1" r="0" g="0" b="0" />
 		</Backdrop>
 		<Frames>
 			<StatusBar name="StriLi_Name" inherits="StriLi_Template" useParentLevel="true">
@@ -218,28 +219,29 @@
 		</Anchors>
 		<Backdrop tile="true"
         bgFile="Interface\DialogFrame\UI-DialogBox-Background"
-        edgeFile="Interface\DialogFrame\UI-DialogBox-Border">
+        edgeFile="Interface/BUTTONS/UI-SliderBar-Border">
 			<BackgroundInsets>
-				<AbsInset left="11" right="12" top="12" bottom="11"/>
+				<AbsInset left="1" right="1" top="3" bottom="3"/>
 			</BackgroundInsets>
+			<BorderColor a="1" r="0" g="0" b="0" />
 			<TileSize>
 				<AbsValue val="32"/>
 			</TileSize>
 			<EdgeSize>
-				<AbsValue val="32"/>
+				<AbsValue val="8"/>
 			</EdgeSize>
 		</Backdrop>
 		<Layers>
 			<Layer level="ARTWORK">
 				<Texture name="StriLi_MainFrame_Header"
-            file="Interface\DialogFrame\UI-DialogBox-Header">
+            file="">
 					<Size>
 						<AbsDimension x="400" y="64"/>
 					</Size>
 					<Anchors>
 						<Anchor point="TOP">
 							<Offset>
-								<AbsDimension x="0" y="12"/>
+								<AbsDimension x="0" y="0"/>
 							</Offset>
 						</Anchor>
 					</Anchors>
@@ -256,7 +258,7 @@
 			</Layer>
 		</Layers>
 		<Frames>
-			<Button name="StriLi_ResetButton" inherits="UIPanelButtonTemplate" text="Reset">
+			<Button name="StriLi_ResetButton" inherits="StriLi_Button_Template" text="Reset">
 				<Size>
 					<AbsDimension x="40" y="20"/>
 				</Size>
@@ -271,7 +273,7 @@
 					<OnClick>StriLi_OnClickResetButton(self)</OnClick>
 				</Scripts>
 			</Button>
-			<Button name="StriLi_SyncButton" inherits="UIPanelButtonTemplate" text="Sync">
+			<Button name="StriLi_SyncButton" inherits="StriLi_Button_Template" text="Sync">
 				<Size>
 					<AbsDimension x="40" y="20"/>
 				</Size>
@@ -286,14 +288,14 @@
 					<OnClick>StriLi_OnClickSyncButton(self)</OnClick>
 				</Scripts>
 			</Button>
-			<Button name="StriLi_LockRegButton" inherits="UIPanelButtonTemplate" text="Lock">
+			<Button name="StriLi_LockRegButton" inherits="StriLi_Button_Template" text="Lock">
 				<Size>
-					<AbsDimension x="40" y="20"/>
+					<AbsDimension x="50" y="20"/>
 				</Size>
 				<Anchors>
 					<Anchor point="BOTTOMLEFT">
 						<Offset>
-							<AbsDimension x="122" y="12"/>
+							<AbsDimension x="117" y="12"/>
 						</Offset>
 					</Anchor>
 				</Anchors>
@@ -301,14 +303,14 @@
 					<OnClick>StriLi_OnClickLockButton(self);</OnClick>
 				</Scripts>
 			</Button>
-			<Button name="StriLi_Close" inherits="UIPanelButtonTemplate" text="X">
+			<Button name="StriLi_Close" inherits="UIPanelCloseButton" text="X">
 				<Size>
 					<AbsDimension x="20" y="20"/>
 				</Size>
 				<Anchors>
 					<Anchor point="TOPRIGHT">
 						<Offset>
-							<AbsDimension x="0" y="0"/>
+							<AbsDimension x="-5" y="-7"/>
 						</Offset>
 					</Anchor>
 				</Anchors>

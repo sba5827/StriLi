@@ -717,7 +717,7 @@ function StriLi_MainFrame_OnEvent(self, event, ...)
 		StriLi_On_PARTY_MEMBERS_CHANGED(self);
 		StriLi_AddonVersionShout();
 	elseif ((event == "ADDON_LOADED") and (not StriLi_ADDONLOADED)) then
-		print("|cffFFFF00StriLi loaded|r");
+		print("|cffFFFF00StriLi Version "..StriLi_Version.." loaded|r");
 		StriLi_ADDONLOADED = true;
 		StriLi_RefreshUI();
 		StriLi_AddonVersionShout();
