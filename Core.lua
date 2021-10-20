@@ -60,6 +60,7 @@ end
 SlashCmdList["STRILI"] = StriLi_Commands
 
 CreateFrame("FRAME", "StriLi_MainFrame", UIParent, "StriLi_MainFrame_Template");
+StriLi_MainFrame:RegisterEvent("ADDON_LOADED");
 
 Strili_UPDATE_FRAME = CreateFrame("FRAME");
 
@@ -718,11 +719,12 @@ function StriLi_MainFrame_OnEvent(self, event, ...)
 	if(event == "PARTY_MEMBERS_CHANGED") then
 		StriLi_On_PARTY_MEMBERS_CHANGED(self);
 		StriLi_AddonVersionShout();
-	elseif ((event == "ADDON_LOADED") and (not StriLi_ADDONLOADED)) then
+	elseif ((event == "ADDON_LOADED") and (not StriLi_ADDONLOADED)) and (arg1 == "StriLi") then
 		print("|cffFFFF00StriLi Version "..StriLi_Version.." loaded|r");
 		StriLi_ADDONLOADED = true;
 		StriLi_RefreshUI();
 		StriLi_AddonVersionShout();
+		StriLi_VersionCheck();
 	elseif (event == "CHAT_MSG_SYSTEM") then
 		local text = ...;
 		StriLi_CHAT_MSG_SYSTEM(text);
@@ -979,3 +981,4 @@ function StriLi_DEBUG()
 	StriLi_ResetUI();
 	
 end
+

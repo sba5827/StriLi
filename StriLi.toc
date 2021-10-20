@@ -4,8 +4,8 @@
 ## OptionalDeps: Ace3, LibSharedMedia-3.0, AceGUI-3.0-SharedMediaWidgets, LibSink-2.0, LibDBIcon-1.0
 ## Notes: StriLi
 ## SavedVariablesPerCharacter:  
-## SavedVariables: StriLi_RaidMembers, StriLiDB, StriLi_Rolls, StriLi_Rolls_Main, StriLi_Rolls_Sec, StriLi_Rolls_Enchant, StriLi_Master
-## Version: 2.02
+## SavedVariables: StriLi_RaidMembers, StriLiDB, StriLi_Rolls, StriLi_Rolls_Main, StriLi_Rolls_Sec, StriLi_Rolls_Enchant, StriLi_Master, StriLi_LatestVersion
+## Version: 2.03
 
 #@no-lib-strip@
 Libs\LibStub\LibStub.lua

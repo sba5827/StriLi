@@ -5,6 +5,7 @@ StriLi_Version = GetAddOnMetadata("StriLi", "Version");
 local StiLi_WaitingFor = "";
 local StiLi_UserHasStriLi = false;
 local StiLi_UserHasStriLi_name = "";
+local StiLi_NotifiedOnece = false;
 
 function StriLi_StopListeningIn_S(time_in_s)
 	StriLi_TimeForCB_Communication = time_in_s;
@@ -280,7 +281,8 @@ function StriLi_AddonVersionShout()
 		end
 	elseif GetNumPartyMembers() > 0 then
 		SendAddonMessage("SL_VC", StriLi_Version, "PARTY")
-	elseif IsInGuild() then
+	end
+	if IsInGuild() then
 		SendAddonMessage("SL_VC", StriLi_Version, "GUILD")
 	end
 		
@@ -291,10 +293,24 @@ function StriLi_On_VersionCheck(arg2)
 	local ver = tonumber(StriLi_Version)
 	message = tonumber(arg2)
 	
-	if message then
-		if message > ver then
-			StriLi_TextCopyableDisplay("Your StiLi Version is outdated. Check for an update at:", "https://github.com/sba5827/StriLi");
-		end	
+	if StriLi_LatestVersion == nil then
+		StriLi_LatestVersion = ver;
+	end
+	
+	if (StriLi_LatestVersion < message) then
+		StriLi_LatestVersion = message;
+	end
+	
+end
+
+function StriLi_VersionCheck()
+
+	if StriLi_LatestVersion == nil then
+		StriLi_LatestVersion = tonumber(StriLi_Version);
+	end
+
+	if StriLi_LatestVersion > tonumber(StriLi_Version) then
+		StriLi_TextCopyableDisplay("Your StiLi Version is outdated. Check for an update at:", "https://github.com/sba5827/StriLi");
 	end
 	
 end
