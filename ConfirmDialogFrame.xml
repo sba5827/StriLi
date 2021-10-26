@@ -42,7 +42,7 @@
 			</Layer>
 		</Layers>
 		<Frames>
-			<Button name="$parent_ConfirmButton" inherits="UIPanelButtonTemplate" text="Yes">
+			<Button name="$parent_ConfirmButton" inherits="StriLi_Custom_Button_Template" text="Yes">
 				<Size>
 					<AbsDimension x="60" y="20"/>
 				</Size>
@@ -54,7 +54,7 @@
 					</Anchor>
 				</Anchors>
 			</Button>
-			<Button name="$parent_CancleButton" inherits="UIPanelButtonTemplate" text="Cancle">
+			<Button name="$parent_CancleButton" inherits="StriLi_Custom_Button_Template" text="Cancle">
 				<Size>
 					<AbsDimension x="60" y="20"/>
 				</Size>

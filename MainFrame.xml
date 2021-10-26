@@ -10,7 +10,7 @@
 		<BarColor r="1" g="1" b="1"/>
 	</StatusBar>
 	
-	<Button name="StriLi_Button_Template" virtual="true" inherits="UIPanelButtonTemplate">
+	<Button name="StriLi_Button_Template" virtual="true" inherits="StriLi_Custom_Button_Template">
 		<Size>
 			<AbsDimension x="15" y="15"/>
 		</Size>
@@ -205,7 +205,7 @@
 		</Frames>
 	</Frame>
 	
-	<Frame name="StriLi_MainFrame_Template" toplevel="true" frameStrata="DIALOG" 
+	<Frame name="StriLi_MainFrame_Template" toplevel="false" frameStrata="DIALOG" 
       movable="true" parent="UIParent" enableMouse="true" hidden="true" virtual="true">
 		<Size>
 			<AbsDimension x="540" y="555"/>
