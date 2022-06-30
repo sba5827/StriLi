@@ -895,6 +895,10 @@ function StriLi_MainFrame_OnLoad()
 end
 
 function StriLi_RefreshUI()
+	
+	if StriLi_RaidMembers == nil then
+		StriLi_RaidMembers = {}
+	end
 
 	for name, data in pairs(StriLi_RaidMembers) do
 	
