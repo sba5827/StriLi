@@ -875,7 +875,7 @@ end
 
 function StriLi_AddMember(CharName, CharClass)
 
-	if (StriLi_RaidMembers[CharName] == nil) then
+	if (StriLi_RaidMembers[CharName] == nil) and UnitIsConnected(name) then
 		StriLi_RaidMembers[CharName] = {CharClass, ["Main"]=0, ["Sec"]=0, ["Token"]=0, ["Fail"]=0, ["Reregister"]=""};
 	end
 	
@@ -902,7 +902,7 @@ function StriLi_RefreshUI()
 
 	for name, data in pairs(StriLi_RaidMembers) do
 	
-		if not StriLi_DoesFrameForCharExist(name) and UnitIsConnected(name) then
+		if not StriLi_DoesFrameForCharExist(name) then
 			StriLi_AddRow(name, data);
 		end
 
