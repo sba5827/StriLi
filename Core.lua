@@ -828,7 +828,7 @@ function StriLi_On_PARTY_MEMBERS_CHANGED(self)
 		StriLi_Master = "";	
 		StriLi_Req_checkForMaster();
 		
-		StriLi_MainFrame:Show();
+		--StriLi_MainFrame:Show();
 		
 		StriLi_newRaidGroup = false;
 	
