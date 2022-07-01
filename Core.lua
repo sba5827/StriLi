@@ -902,7 +902,7 @@ function StriLi_RefreshUI()
 
 	for name, data in pairs(StriLi_RaidMembers) do
 	
-		if not StriLi_DoesFrameForCharExist(name) then
+		if not StriLi_DoesFrameForCharExist(name) and UnitIsConnected(name) then
 			StriLi_AddRow(name, data);
 		end
 
