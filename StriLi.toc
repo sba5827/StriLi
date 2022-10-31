@@ -5,7 +5,7 @@
 ## Notes: StriLi
 ## SavedVariablesPerCharacter:  
 ## SavedVariables: StriLi_Master, StriLi_LatestVersion, StriLi_RaidMembersDB_members, StriLi_newRaidGroup
-## Version: 0.01
+## Version: 2.04
 
 #@no-lib-strip@
 Libs\LibStub\LibStub.lua
@@ -23,6 +23,7 @@ Button.xml
 MainFrame.xml
 ConfirmDialogFrame.xml
 TextInputDialogFrame.xml
+CopyVersionFrame.xml
 observableNumber.lua
 RaidMembersDB.lua
 UtilityFunctions.lua

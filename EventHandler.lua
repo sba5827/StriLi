@@ -33,6 +33,13 @@ function StriLi.EventHandler:OnEvent(event, ...)
         print("|cff00ffffStriLi Version " .. GetAddOnMetadata("StriLi", "Version") .. " loaded|r");
         StriLi_initAddon();
         StriLi.MainFrame:init();
+        if tonumber(StriLi_LatestVersion) > tonumber(GetAddOnMetadata("StriLi", "Version")) then
+            local versionFrame = CreateFrame("FRAME", "StriLi_VersionFrame", UIParent, "StriLi_CopyVersionFrame_Template");
+            local editBox = versionFrame:GetChildren():GetChildren();
+            editBox:SetText("https://github.com/sba5827/StriLi");
+            editBox:HighlightText();
+            versionFrame:Show();
+        end
     elseif event == "PARTY_MEMBERS_CHANGED" then
         self:OnPartyMembersChanged();
     elseif event == "PLAYER_LOGOUT" then
