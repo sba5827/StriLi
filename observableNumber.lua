@@ -68,7 +68,7 @@ function ObservableNumber:notify()
         return ;
     end
 
-    for key, observer in pairs(self.observers) do
+    for _, observer in pairs(self.observers) do
         observer:OnValueChanged(self);
     end
 

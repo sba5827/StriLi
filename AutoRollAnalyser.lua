@@ -1,9 +1,26 @@
 --[[
-Class: AutoRollAnalyser
+Class: StriLi.AutoRollAnalyser
 
 variables:
+    itemID
+    timerFrame
+    time
+    rolls
+    rollInProgress
+    item
 
 methods:
+    setItemID
+    setTimeForRolls
+    setItem
+    start
+    finalize
+    On_CHAT_MSG_SYSTEM
+    registerRoll
+    isNHToken
+    sortRolls
+    shoutRolls
+    increaseWinnerCount
 
 --]]
 
@@ -41,7 +58,7 @@ function StriLi.AutoRollAnalyser:start()
         self:On_CHAT_MSG_SYSTEM(text)
     end);
 
-    self.timerFrame:SetScript("OnUpdate", function(this, elapsedTime)
+    self.timerFrame:SetScript("OnUpdate", function(_, elapsedTime)
         self.time = self.time - elapsedTime;
 
         if self.time < 0.0 then
@@ -136,7 +153,7 @@ function StriLi.AutoRollAnalyser:shoutRolls()
 
     for k,v in pairs(self.rolls) do
         SendChatMessage("---"..k.."---", "RAID");
-        for k2,v2 in ipairs(v) do
+        for _,v2 in ipairs(v) do
             s = v2["Name"].." || Striche: "..v2["Count"].." || Roll: "..v2["Roll"];
             SendChatMessage(s, "RAID");
         end

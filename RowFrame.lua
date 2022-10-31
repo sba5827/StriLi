@@ -97,11 +97,7 @@ function RowFrame:new(o, frameName, parentFrame, posIndex, raidMember)
 
 end
 
-function RowFrame:reInit(o, frameName, parentFrame, posIndex, raidMember)
-
-    -- o=o; frameName=frameName;parentFrame=parentFrame;  Not needed, but relevant for compatibility with InfiniteStack
-
-    -- self:unlinkCounters(self.raidMember[2]); --stop observing old Data
+function RowFrame:reInit(_, _, _, posIndex, raidMember)
 
     self:setPosIndex(posIndex);
     self.raidMember = raidMember;
@@ -188,7 +184,7 @@ function RowFrame:linkCounter(charData)
 
     local aTable = { ["Main"] = self.Regions.MainCounter, ["Sec"] = self.Regions.SecCounter, ["Token"] = self.Regions.TokenCounter, ["Fail"] = self.Regions.FailCounter };
 
-    for key, counter in pairs(aTable) do
+    for key, _ in pairs(aTable) do
 
         local plusButton, minusButton = aTable[key]:GetChildren();
         plusButton:SetScript("OnClick", function()
@@ -309,7 +305,7 @@ function RowFrame.ReregisterRequest(self, overwrite)
         local reregisterInputFrame = TextInputFrame:new(nil, "Gib den Spec an auf den Umgemeldet wird: ", function(input)
             self.raidMember[2]["Reregister"] = input;
             self:UpdateReregister(input);
-        end, function(input)
+        end, function(_)
             self:UpdateReregister(self.raidMember[2]["Reregister"]);
         end);
 
@@ -408,7 +404,7 @@ function RowFrame:initDropdownMenu(frame, level, menuList)
 
                 info.text = k;
                 info.colorCode = "|cff" .. Strili_GetHexClassCollerCode(v[1]);
-                info.func = function(this, arg1, arg2)
+                info.func = function(_, arg1, arg2)
 
                     StriLi.dropdownFrame:Hide()
 
@@ -453,7 +449,7 @@ function RowFrame:enableButtons()
 
     local aTable = { ["Main"] = self.Regions.MainCounter, ["Sec"] = self.Regions.SecCounter, ["Token"] = self.Regions.TokenCounter, ["Fail"] = self.Regions.FailCounter };
 
-    for key, counter in pairs(aTable) do
+    for key, _ in pairs(aTable) do
 
         local plusButton, minusButton = aTable[key]:GetChildren();
         plusButton:Enable();
@@ -471,7 +467,7 @@ function RowFrame:disableButtons()
 
     local aTable = { ["Main"] = self.Regions.MainCounter, ["Sec"] = self.Regions.SecCounter, ["Token"] = self.Regions.TokenCounter, ["Fail"] = self.Regions.FailCounter };
 
-    for key, counter in pairs(aTable) do
+    for key, _ in pairs(aTable) do
 
         local plusButton, minusButton = aTable[key]:GetChildren();
         plusButton:Disable();

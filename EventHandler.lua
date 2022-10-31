@@ -17,7 +17,7 @@ function StriLi.EventHandler:init()
         self.frame = CreateFrame("FRAME");
     end
 
-    self.frame:SetScript("OnEvent", function(this, event, ...)
+    self.frame:SetScript("OnEvent", function(_, event, ...)
         self:OnEvent(event, ...)
     end);
     self.frame:RegisterEvent("ADDON_LOADED");
@@ -71,7 +71,7 @@ function StriLi.EventHandler:OnPartyMembersChanged()
                 masterIsInRaid = true;
             end
 
-            local localizedClass, englishClass = UnitClass("raid" .. tostring(i));
+            local _, englishClass = UnitClass("raid" .. tostring(i));
             local existingMember = RaidMembersDB:checkForMember(name);
 
             if not existingMember then
@@ -85,7 +85,7 @@ function StriLi.EventHandler:OnPartyMembersChanged()
 
             StriLi.CommunicationHandler:checkForMaster(function(master)
 
-                local name, rank = GetRaidRosterInfo(UnitInRaid("player")+1)
+                local _, rank = GetRaidRosterInfo(UnitInRaid("player")+1)
 
                 if master == "" and rank > 0 then
 
@@ -130,7 +130,7 @@ function StriLi.EventHandler:OnJoiningNewRaidgoup()
 
     StriLi.CommunicationHandler:checkForMaster(function(master)
 
-        local name, rank = GetRaidRosterInfo(UnitInRaid("player")+1)
+        local _, rank = GetRaidRosterInfo(UnitInRaid("player")+1)
 
         if master == "" and rank > 0 then
 

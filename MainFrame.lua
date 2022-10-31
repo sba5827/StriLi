@@ -232,7 +232,7 @@ function StriLi.MainFrame:OnMasterChanged()
 
     if StriLi.master ~= UnitName("player") and StriLi.master ~= "" then
 
-        for player, rowFrame in pairs(self.rows) do
+        for _, rowFrame in pairs(self.rows) do
             rowFrame:disableButtons();
         end
 
@@ -241,7 +241,7 @@ function StriLi.MainFrame:OnMasterChanged()
 
     else
 
-        for player, rowFrame in pairs(self.rows) do
+        for _, rowFrame in pairs(self.rows) do
             rowFrame:enableButtons();
         end
 

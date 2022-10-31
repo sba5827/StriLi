@@ -1,9 +1,32 @@
 --[[
-Class: CommunicationHandler
+Class: StriLi.CommunicationHandler
 
 variables:
+    waitingForRespond
+    time
+    timerFrame
+    checkForMaster_cbf
+    checkUserHasStriLi_cbf
+    requestedSyncAsMaster
 
 methods:
+    requestedSyncAsMaster
+    On_Request_CheckForMaster
+    On_Respond_CheckForMaster
+    On_MasterChanged
+    sendMasterChanged
+    On_DataChanged
+    sendDataChanged
+    checkForMaster
+    On_ResetData
+    sendResetData
+    On_Request_SyncData
+    sendSycRequest
+    On_Request_UserHasStriLi
+    On_Respond_UserHasStriLi
+    checkIfUserHasStriLi
+    On_VersionCheck
+    ShoutVersion
 
 CommunicationStrings:
     Setup of Strings:
@@ -92,7 +115,7 @@ function StriLi.CommunicationHandler:checkForMaster(cbf)
 
     self.waitingForRespond = "SL_RS_CFM";
     self.time = 2.0;
-    self.timerFrame:SetScript("OnUpdate", function(this, elapsed)
+    self.timerFrame:SetScript("OnUpdate", function(_, elapsed)
 
         self.time = self.time - elapsed;
         if self.time < 0.0 then
@@ -217,7 +240,7 @@ function StriLi.CommunicationHandler:sendSycRequest()
         self.requestedSyncAsMaster = true;
         self.time = 5.0;
         self.waitingForRespond = "SL_RQ_SD"
-        self.timerFrame:SetScript("OnUpdate", function(this, elapsed)
+        self.timerFrame:SetScript("OnUpdate", function(_, elapsed)
             self.time = self.time - elapsed;
 
             if self.time < 0.0 then
@@ -264,7 +287,7 @@ function StriLi.CommunicationHandler:checkIfUserHasStriLi(name, cbf)
     self.waitingForRespond = "SL_RS_UHS";
     self.checkUserHasStriLi_cbf = cbf;
     self.time = 2.0;
-    self.timerFrame:SetScript("OnUpdate", function(this, elapsed)
+    self.timerFrame:SetScript("OnUpdate", function(_, elapsed)
 
         self.time = self.time - elapsed;
         if self.time < 0.0 then

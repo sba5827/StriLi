@@ -1,3 +1,5 @@
 * ASCII text, with CRLF line terminators
 # Default ignored files
 /.idea
+/Libs
+*.lua.bak

@@ -1,15 +1,11 @@
 --[[
 Class: ---
 
-variables:
-
-methods:
-
 --]]
 
 SLASH_STRILI1 = '/sl'
 
-SlashCmdList["STRILI"] = function(msg, editBox)
+SlashCmdList["STRILI"] = function(msg, _)
 
     -- pattern matching that skips leading whitespace and whitespace between cmd and args
     -- any whitespace at end of args is retained
@@ -23,10 +19,10 @@ SlashCmdList["STRILI"] = function(msg, editBox)
     end
 
     if args == "[@mouseover]" then
-        local itemName, itemLink = GameTooltip:GetItem();
+        local _, itemLink = GameTooltip:GetItem();
 
-        local _, _, Color, Ltype, Id, Enchant, Gem1, Gem2, Gem3, Gem4,
-        Suffix, Unique, LinkLvl, Name = string.find(itemLink,
+        local _, _, _, _, Id, _, _, _, _, _,
+        _, _, _, _ = string.find(itemLink,
                 "|?c?f?f?(%x*)|?H?([^:]*):?(%d+):?(%d*):?(%d*):?(%d*):?(%d*):?(%d*):?(%-?%d*):?(%-?%d*):?(%d*):?(%d*):?(%-?%d*)|?h?%[?([^%[%]]*)%]?|?h?|?r?")
 
         if itemLink == nil then return end
@@ -39,8 +35,8 @@ SlashCmdList["STRILI"] = function(msg, editBox)
         local firstChar = string.sub(args, 1, 1)
 
         if firstChar == "|" then
-            local _, _, Color, Ltype, Id, Enchant, Gem1, Gem2, Gem3, Gem4,
-            Suffix, Unique, LinkLvl, Name = string.find(args,
+            local _, _, _, _, Id, _, _, _, _, _,
+            _, _, _, _ = string.find(args,
                     "|?c?f?f?(%x*)|?H?([^:]*):?(%d+):?(%d*):?(%d*):?(%d*):?(%d*):?(%d*):?(%-?%d*):?(%-?%d*):?(%d*):?(%d*):?(%-?%d*)|?h?%[?([^%[%]]*)%]?|?h?|?r?")
 
             StriLi.AutoRollAnalyser:setItemID(tonumber(Id));
