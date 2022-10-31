@@ -94,8 +94,6 @@ function StriLi.CommunicationHandler:On_Respond_CheckForMaster(transmittedMaster
 
     if self.waitingForRespond == "SL_RS_CFM" then
 
-        --print(transmittedMaster)
-
         StriLi.master = transmittedMaster;
         self.waitingForRespond = "";
         self.timerFrame:SetScript("OnUpdate", nil);

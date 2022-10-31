@@ -4,9 +4,12 @@ function StriLi_SetMaster(arg1)
 
     local numOfMembers = GetNumRaidMembers();
 
+    local found = false;
+
     for i = 1, numOfMembers, 1 do
         local name, rank = GetRaidRosterInfo(i);
         if (name == newMasterName) then
+            found = true;
             if (rank > 0) then
                 StriLi_tryToSetNewMaster(newMasterName);
             else
@@ -15,6 +18,11 @@ function StriLi_SetMaster(arg1)
             break;
         end
     end
+
+    if not found then
+        print("|cffFFFF00"..newMasterName.." Kann nicht zum Master ernannt werden. "..newMasterName.." befindet sich nicht in der Raidgruppe.|r");
+    end
+
 end
 
 function StriLi_tryToSetNewMaster(newMasterName)

@@ -53,7 +53,9 @@ function StriLi.EventHandler:OnEvent(event, ...)
 end
 
 function StriLi.EventHandler:OnPartyMembersChanged()
+
     StriLi.CommunicationHandler:ShoutVersion();
+    StriLi.CommunicationHandler:sendMasterChanged(StriLi.master);
 
     local numOfMembers = GetNumRaidMembers();
 
@@ -172,6 +174,8 @@ function StriLi.EventHandler:OnJoiningNewRaidgoup()
     else
         self:OnPartyMembersChanged();
     end
+
+    StriLi.CommunicationHandler:sendSycRequest();
 
 end
 
