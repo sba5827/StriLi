@@ -7,7 +7,8 @@ variables:
 	observers
 	
 methods:
-	--can be called-- 
+	--can be called--
+	new
 	add
 	sub
 	mul
@@ -15,6 +16,7 @@ methods:
 	set
 	get
 	registerObserver
+	unregisterObserver
 		
 	--for local use only--
 	notify

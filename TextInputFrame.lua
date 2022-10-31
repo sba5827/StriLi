@@ -4,6 +4,7 @@ Class: TextInputFrame
 variables:
     frame
     confirm_function
+    cancel_fnc
 
 methods:
     new

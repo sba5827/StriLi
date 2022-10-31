@@ -20,9 +20,12 @@ methods:
 	toggle
 	addPlayer
 	removePlayer
+	combineMembers
 	OnClickLockButton
 	OnClickSyncButton
 	OnClickResetButton
+	resetData
+	OnMasterChanged
 	
 	--for local use only--
 	setupLabelRow

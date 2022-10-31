@@ -32,6 +32,7 @@ variables:
 methods:
 	--can be called-- 
 	new
+	reInit
 	redraw
 	setPosIndex
 	UpdateName
@@ -49,14 +50,17 @@ methods:
 	getY_offset
 	getX_offset
 	getHeight
-	onMouseUp_Name
+	onMouseUp
 	toggleReregisterLock
+	setCombineFunction
+	enableButtons
+	disableButtons
 	
 	--for local use only--	
 	setColumnContent
-	linkCounter
-	unlinkCounter
-	
+	linkCounters
+	unlinkCounters
+	initDropdownMenu
 
 --]]
 

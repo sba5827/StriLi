@@ -3,6 +3,7 @@ Class: RaidMembersDB
 
 variables:
     raidMembers -- gets initialized in StriLi_initAddon for error prevention
+    size
 
 methods:
     checkForMember
@@ -12,6 +13,7 @@ methods:
     getRawData
     initFromRawData
     combineMembers
+    getSize
 
 --]]
 --[[

@@ -1,5 +1,5 @@
 --[[
-Class: LableRowFrame
+Class: LabelRowFrame
 
 variables:
 	frame
@@ -22,7 +22,7 @@ variables:
 	posIndex
 	x_offset
 	y_offset
-	hight
+	height
 
 methods:
 	--can be called-- 

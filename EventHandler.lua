@@ -6,6 +6,12 @@ variables:
 
 methods:
     init
+    OnEvent
+    OnPartyMembersChanged
+    OnRaidLeft
+    OnJoiningNewRaidgoup
+    enable_CHAT_MSG_SYSTEM_event
+    disable_CHAT_MSG_SYSTEM_event
 
 ]]--
 

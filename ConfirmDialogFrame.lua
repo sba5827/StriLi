@@ -1,11 +1,15 @@
 --[[
-Class: RowFrame
+Class: ConfirmDialogFrame
 
 variables:
 	frame
+	fontString
+	confirmButton
+	cancelButton
 
 methods:
     new
+    show
 
 --]]
 

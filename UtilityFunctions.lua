@@ -1,3 +1,5 @@
+
+
 function StriLi_SetMaster(arg1)
 
     local newMasterName = arg1;
