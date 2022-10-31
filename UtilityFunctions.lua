@@ -1,5 +1,3 @@
-
-
 function StriLi_SetMaster(arg1)
 
     local newMasterName = arg1;
@@ -15,14 +13,14 @@ function StriLi_SetMaster(arg1)
             if (rank > 0) then
                 StriLi_tryToSetNewMaster(newMasterName);
             else
-                print("|cffFFFF00"..newMasterName.." Kann nicht zum Master ernannt werden. Rang zu niedrig|r");
+                print("|cffFFFF00"..newMasterName.." kann nicht zum Master ernannt werden. Rang zu niedrig|r");
             end
             break;
         end
     end
 
     if not found then
-        print("|cffFFFF00"..newMasterName.." Kann nicht zum Master ernannt werden. "..newMasterName.." befindet sich nicht in der Raidgruppe.|r");
+        print("|cffFFFF00"..newMasterName.." kann nicht zum Master ernannt werden. "..newMasterName.." befindet sich nicht in der Raidgruppe.|r");
     end
 
 end
@@ -40,10 +38,10 @@ function StriLi_tryToSetNewMaster(newMasterName)
                     end
                 end
             else
-                print("|cffFFFF00"..newMasterName.." Kann nicht zum Master ernannt werden. Mögliche Ursachen:\n - "
+                print("|cffFFFF00"..newMasterName.." kann nicht zum Master ernannt werden. Mögliche Ursachen:\n - "
                         ..newMasterName.." ist Ausgeloggt.\n - "
                         ..newMasterName.." hat einen Disconect.\n - "
-                        .."Du".." hat einen Disconect.\n - "
+                        .."Du".." hast einen Disconect.\n - "
                         ..newMasterName.." hat StriLi nicht.\n - "
                         ..newMasterName.." hat eine stark veraltete Version von StriLi.|r");
             end

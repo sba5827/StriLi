@@ -72,53 +72,7 @@ function StriLi.EventHandler:OnPartyMembersChanged()
     elseif StriLi_newRaidGroup then
         self:OnJoiningNewRaidgoup();
     else
-
-        local masterIsInRaid = false;
-
-        for i = 1, numOfMembers do
-
-            local name = GetRaidRosterInfo(i);
-            if (name == nil) then
-                return ;
-            end
-
-            if name == StriLi.master then
-                masterIsInRaid = true;
-            end
-
-            local _, englishClass = UnitClass("raid" .. tostring(i));
-            local existingMember = RaidMembersDB:checkForMember(name);
-
-            if not existingMember then
-                RaidMembersDB:add(name, englishClass);
-                StriLi.MainFrame:addPlayer({ name, RaidMembersDB:get(name) });
-            end
-
-        end
-
-        if not masterIsInRaid then
-
-            StriLi.CommunicationHandler:checkForMaster(function(master)
-
-                local _, rank = GetRaidRosterInfo(UnitInRaid("player")+1)
-
-                if master == "" and rank > 0 then
-
-                    local newMaster = UnitName("player");
-                    if StriLi.CommunicationHandler:sendMasterChanged(newMaster) then
-                        StriLi.master = newMaster;
-                    else
-                        error("Master can not be initialized");
-                    end
-
-                else
-                    StriLi.master = master;
-                end
-
-            end);
-
-        end
-
+        self:addNewPlayers();
     end
 
 
@@ -193,4 +147,55 @@ end
 function StriLi.EventHandler:disable_CHAT_MSG_SYSTEM_event()
     self.frame:UnregisterEvent("CHAT_MSG_SYSTEM");
     self.chatMsgSystem_cbFnc = nil;
+end
+
+function StriLi.EventHandler:addNewPlayers()
+
+    local numOfMembers = GetNumRaidMembers();
+    local masterIsInRaid = false;
+
+    for i = 1, numOfMembers do
+
+        local name = GetRaidRosterInfo(i);
+        if (name == nil) then
+            return ;
+        end
+
+        if name == StriLi.master then
+            masterIsInRaid = true;
+        end
+
+        local _, englishClass = UnitClass("raid" .. tostring(i));
+        local existingMember = RaidMembersDB:checkForMember(name);
+
+        if not existingMember then
+            RaidMembersDB:add(name, englishClass);
+            StriLi.MainFrame:addPlayer({ name, RaidMembersDB:get(name) });
+        end
+
+    end
+
+    if not masterIsInRaid then
+
+        StriLi.CommunicationHandler:checkForMaster(function(master)
+
+            local _, rank = GetRaidRosterInfo(UnitInRaid("player")+1)
+
+            if master == "" and rank > 0 then
+
+                local newMaster = UnitName("player");
+                if StriLi.CommunicationHandler:sendMasterChanged(newMaster) then
+                    StriLi.master = newMaster;
+                else
+                    error("Master can not be initialized");
+                end
+
+            else
+                StriLi.master = master;
+            end
+
+        end);
+
+    end
+
 end

@@ -169,7 +169,7 @@ function StriLi.CommunicationHandler:On_DataChanged(msgString)
     end
 
     if not RaidMembersDB:checkForMember(name) then
-        StriLi.EventHandler:OnPartyMembersChanged();
+        StriLi.EventHandler:addNewPlayers();
         if not RaidMembersDB:checkForMember(name) then error("Failed to find Member "..name.." in Raid. Sender has send invalid data.") end
     end
 
@@ -203,7 +203,7 @@ function StriLi.CommunicationHandler:sendMembersCombined(mem1Name, mem2Name)
 end
 
 function StriLi.CommunicationHandler:On_ResetData(sender)
-    if sender == StriLi.master and not sender == UnitName("player") then
+    if sender == StriLi.master and not (sender == UnitName("player")) then
         StriLi.MainFrame:resetData();
     end
 end
