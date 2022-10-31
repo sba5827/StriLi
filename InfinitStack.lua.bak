@@ -1,0 +1,49 @@
+--[[
+Class: InfinitStack
+
+variables:
+	stackType - A Class that needs to implement the function new and reInit, reciving the same arguments
+	stack
+	count
+
+methods:
+	--can be called-- 
+	new
+	push
+	pop
+	
+	--for local use only--	
+	
+--]]
+
+InfinitStack = {stackType=nil,stack={},count=0}
+
+function InfinitStack:new(o,stackType)
+
+	o = o or {};
+	setmetatable(o, self);
+	self.__index = self;
+	
+	self.stackType=stackType;
+	
+	return o;
+	
+end
+
+function InfinitStack:push(element)
+	
+	count = count+1;
+	self.stack[count]=element;
+	
+end
+
+function InfinitStack:pop(...)
+	
+	if count < 1 then
+		return self.stackType:new(...);
+	else
+		count = count-1;
+		return self.stack[count+1]:reInit(...);
+	end
+	
+end

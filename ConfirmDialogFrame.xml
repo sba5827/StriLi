@@ -29,7 +29,7 @@
 			</EdgeSize>
 		</Backdrop>
 		<Layers>
-			<Layer>
+			<Layer level="OVERLAY">
 				<FontString name="$parent_FontString" inherits="GameFontNormal" text="StriLi">
 					<Anchors>
 						<Anchor point="CENTER">

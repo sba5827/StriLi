@@ -92,9 +92,6 @@
 						</Offset>
 					</Anchor>
 				</Anchors>
-				<Scripts>
-					<OnClick>StriLi_OnClickPlusButton(self)</OnClick>
-				</Scripts>
 			</Button>
 			<Button name="StriLi_MinusButton" inherits="StriLi_Button_Template" text="-">
 				<Anchors>
@@ -104,9 +101,6 @@
 						</Offset>
 					</Anchor>
 				</Anchors>
-				<Scripts>
-					<OnClick>StriLi_OnClickMinusButton(self)</OnClick>
-				</Scripts>
 			</Button>
 		</Frames>
 		<Layers>
@@ -147,9 +141,6 @@
 						</Offset>
 					</Anchor>
 				</Anchors>
-				<Scripts>
-					<OnMouseUp>StriLi_OnMouseUp_NameFrame(self, button);</OnMouseUp>
-				</Scripts>
 			</StatusBar>
 			<StatusBar name="StriLi_Reregisration" inherits="StriLi_Template" useParentLevel="true">
 				<Size>
@@ -269,9 +260,6 @@
 						</Offset>
 					</Anchor>
 				</Anchors>
-				<Scripts>
-					<OnClick>StriLi_OnClickResetButton(self)</OnClick>
-				</Scripts>
 			</Button>
 			<Button name="StriLi_SyncButton" inherits="StriLi_Button_Template" text="Sync">
 				<Size>
@@ -284,9 +272,6 @@
 						</Offset>
 					</Anchor>
 				</Anchors>
-				<Scripts>
-					<OnClick>StriLi_OnClickSyncButton(self)</OnClick>
-				</Scripts>
 			</Button>
 			<Button name="StriLi_LockRegButton" inherits="StriLi_Button_Template" text="Lock">
 				<Size>
@@ -299,9 +284,6 @@
 						</Offset>
 					</Anchor>
 				</Anchors>
-				<Scripts>
-					<OnClick>StriLi_OnClickLockButton(self);</OnClick>
-				</Scripts>
 			</Button>
 			<Button name="StriLi_Close" inherits="UIPanelCloseButton" text="X">
 				<Size>
@@ -319,9 +301,5 @@
 				</Scripts>
 			</Button>
 		</Frames>
-		<Scripts>
-			<OnMouseDown>StriLi_StartMoving(self);</OnMouseDown>
-			<OnMouseUp>StriLi_StopMoving(self);</OnMouseUp>
-		</Scripts>
 	</Frame>
 </Ui>
