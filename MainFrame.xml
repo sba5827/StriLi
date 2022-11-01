@@ -285,6 +285,18 @@
 					</Anchor>
 				</Anchors>
 			</Button>
+			<Button name="StriLi_SortButton" inherits="StriLi_Button_Template" text="Sort">
+				<Size>
+					<AbsDimension x="40" y="20"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="60" y="-12"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</Button>
 			<Button name="StriLi_Close" inherits="UIPanelCloseButton" text="X">
 				<Size>
 					<AbsDimension x="20" y="20"/>

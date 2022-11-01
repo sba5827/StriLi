@@ -71,17 +71,21 @@ function StriLi.MainFrame:init()
         self.unusedRowFrameStack = InfiniteStack:new(nil, RowFrame);    -- InfiniteStack creates a new object based on the class passed to it as the second parameter, if no elements are left in the stack.
     end
 
-    self.children.resetButton, self.children.syncButton, self.children.lockButton = self.frame:GetChildren();
+    self.children.resetButton, self.children.syncButton, self.children.lockButton, self.children.sortButton = self.frame:GetChildren();
 
     self.children.resetButton:SetScript("OnClick", function()
-        self:OnClickResetButton()
+        self:OnClickResetButton();
     end);
     self.children.syncButton:SetScript("OnClick", function()
-        self:OnClickSyncButton()
+        self:OnClickSyncButton();
     end);
     self.children.lockButton:SetScript("OnClick", function()
-        self:OnClickLockButton()
+        self:OnClickLockButton();
     end);
+    self.children.sortButton:SetScript("OnClick", function()
+        self:OnClickSortButton();
+    end);
+
 
     self.frame:SetScript("OnMouseDown", function(frame)
         if (not frame.isMoving) and (frame.isLocked ~= 1) then
@@ -103,7 +107,7 @@ function StriLi.MainFrame:init()
         self:addPlayer({ charName, charData });
     end
 
-    self.sortType:set(SortType_t.MAIN_DESCENDING);
+    self.sortType:set(SortType_t.CLASS_ASCENDING);
 
    self:OnMasterChanged();
 
@@ -297,6 +301,73 @@ function StriLi.MainFrame:OnClickLockButton()
 
 end
 
+function StriLi.MainFrame:OnClickSortButton()
+
+    self.SortDropDownFrame = CreateFrame("Frame", "StriLi_DropdownFrame", self.children.sortButton, "UIDropDownMenuTemplate");
+    -- Bind an initializer function to the dropdown;
+
+    UIDropDownMenu_Initialize(self.SortDropDownFrame, function(_frame, _level, _menuList)
+        self:initDropdownMenu(_frame, _level, _menuList)
+    end, "MENU");
+
+    ToggleDropDownMenu(1, nil, self.SortDropDownFrame, "cursor", 3, -3, nil, nil, 0.2);
+
+end
+
+function StriLi.MainFrame:initDropdownMenu(frame, level, menuList)
+
+    local info = UIDropDownMenu_CreateInfo();
+
+    info.text, info.hasArrow, info.func = "Name '", false, function()
+        self.sortType:set(SortType_t.NAME_DESCENDING);
+    end;
+    UIDropDownMenu_AddButton(info);
+    info.text, info.hasArrow, info.func = "Name ,", false, function()
+        self.sortType:set(SortType_t.NAME_ASCENDING);
+    end;
+    UIDropDownMenu_AddButton(info);
+    info.text, info.hasArrow, info.func = "Main '", false, function()
+        self.sortType:set(SortType_t.MAIN_ASCENDING);
+    end;
+    UIDropDownMenu_AddButton(info);
+    info.text, info.hasArrow, info.func = "Main ,", false, function()
+        self.sortType:set(SortType_t.MAIN_DESCENDING);
+    end;
+    UIDropDownMenu_AddButton(info);
+    info.text, info.hasArrow, info.func = "Sec '", false, function()
+        self.sortType:set(SortType_t.SEC_ASCENDING);
+    end;
+    UIDropDownMenu_AddButton(info);
+    info.text, info.hasArrow, info.func = "Sec ,", false, function()
+        self.sortType:set(SortType_t.SEC_DESCENDING);
+    end;
+    UIDropDownMenu_AddButton(info);
+    info.text, info.hasArrow, info.func = "Token '", false, function()
+        self.sortType:set(SortType_t.TOKEN_ASCENDING);
+    end;
+    UIDropDownMenu_AddButton(info);
+    info.text, info.hasArrow, info.func = "Token ,", false, function()
+        self.sortType:set(SortType_t.TOKEN_DESCENDING);
+    end;
+    UIDropDownMenu_AddButton(info);
+    info.text, info.hasArrow, info.func = "Fail '", false, function()
+        self.sortType:set(SortType_t.FAIL_ASCENDING);
+    end;
+    UIDropDownMenu_AddButton(info);
+    info.text, info.hasArrow, info.func = "Fail ,", false, function()
+        self.sortType:set(SortType_t.FAIL_DESCENDING);
+    end;
+    UIDropDownMenu_AddButton(info);
+    info.text, info.hasArrow, info.func = "Klasse '", false, function()
+        self.sortType:set(SortType_t.CLASS_ASCENDING);
+    end;
+    UIDropDownMenu_AddButton(info);
+    info.text, info.hasArrow, info.func = "Klasse ,", false, function()
+        self.sortType:set(SortType_t.CLASS_DESCENDING);
+    end;
+    UIDropDownMenu_AddButton(info);
+end
+
 function StriLi.MainFrame:resetData()
     for player, _ in pairs(self.rows) do
         self:removePlayer(player);
@@ -332,35 +403,51 @@ end
 
 function StriLi.MainFrame:sortRowFrames()
 
+    self.labelRow.Regions.NameFS:SetText("Name".."");
+    self.labelRow.Regions.MainFS:SetText("Main".."");
+    self.labelRow.Regions.SecFS:SetText("Sec".."");
+    self.labelRow.Regions.TokenFS:SetText("Token".."");
+    self.labelRow.Regions.FailFS:SetText("Fail".."");
+
     if      self.sortType:get() == SortType_t.NAME_ASCENDING      then
         self:sortByName(false);
+        self.labelRow.Regions.NameFS:SetText("Name".." ,");
 
     elseif  self.sortType:get() == SortType_t.NAME_DESCENDING     then
         self:sortByName(true);
+        self.labelRow.Regions.NameFS:SetText("Name".." '");
 
     elseif  self.sortType:get() == SortType_t.MAIN_ASCENDING      then
         self:sortByCounter(true,"Main");
+        self.labelRow.Regions.MainFS:SetText("Main".." '");
 
     elseif  self.sortType:get() == SortType_t.MAIN_DESCENDING     then
         self:sortByCounter(false, "Main");
+        self.labelRow.Regions.MainFS:SetText("Main".." ,");
 
     elseif  self.sortType:get() == SortType_t.SEC_ASCENDING       then
         self:sortByCounter(true,"Sec");
+        self.labelRow.Regions.SecFS:SetText("Sec".." '");
 
     elseif  self.sortType:get() == SortType_t.SEC_DESCENDING      then
         self:sortByCounter(false, "Sec");
+        self.labelRow.Regions.SecFS:SetText("Sec".." ,");
 
     elseif  self.sortType:get() == SortType_t.TOKEN_ASCENDING     then
         self:sortByCounter(true,"Token");
+        self.labelRow.Regions.TokenFS:SetText("Token".." '");
 
     elseif  self.sortType:get() == SortType_t.TOKEN_DESCENDING    then
         self:sortByCounter(false, "Token");
+        self.labelRow.Regions.TokenFS:SetText("Token".." ,");
 
     elseif  self.sortType:get() == SortType_t.FAIL_ASCENDING      then
         self:sortByCounter(true,"Fail");
+        self.labelRow.Regions.FailFS:SetText("Fail".." '");
 
     elseif  self.sortType:get() == SortType_t.FAIL_DESCENDING     then
         self:sortByCounter(false, "Fail");
+        self.labelRow.Regions.FailFS:SetText("Fail".." ,");
 
     elseif  self.sortType:get() == SortType_t.CLASS_ASCENDING     then
         self:sortByClass(true);
