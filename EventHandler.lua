@@ -179,6 +179,8 @@ function StriLi.EventHandler:addNewPlayers()
 
         StriLi.CommunicationHandler:checkForMaster(function(master)
 
+            if UnitInRaid("player") == nil then return end;
+
             local _, rank = GetRaidRosterInfo(UnitInRaid("player")+1)
 
             if master == "" and rank > 0 then

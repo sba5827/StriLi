@@ -85,6 +85,22 @@ function Strili_GetHexClassCollerCode(Class) -- Returns RRGGBB
 
 end
 
+function StriLi_GetClassIndex(Class)
+
+    if( Class == "WARRIOR" ) 		then return 1 end
+    if( Class == "PALADIN" ) 		then return 2 end
+    if( Class == "HUNTER" ) 		then return 3 end
+    if( Class == "ROGUE" ) 			then return 4 end
+    if( Class == "PRIEST" ) 		then return 5 end
+    if( Class == "DEATHKNIGHT" ) 	then return 6 end
+    if( Class == "SHAMAN" ) 		then return 7 end
+    if( Class == "MAGE" ) 			then return 8 end
+    if( Class == "WARLOCK" ) 		then return 9 end
+    if( Class == "DRUID" ) 			then return 10 end
+
+    return 0;
+end
+
 function StriLi_ColorCounterCell(cell, count, even)
 
     local R,G,B = 0,0,0;
@@ -145,4 +161,13 @@ end
 function StriLi_finalizeAddon()
     StriLi_RaidMembersDB_members = RaidMembersDB:getRawData();
     StriLi_Master = StriLi.master;
+end
+
+-- removes the first occurring 'value'
+function table.removeByValue(list, value)
+    for i, v in pairs(list) do
+        if v == value then
+            return table.remove(list,i);
+        end
+    end
 end

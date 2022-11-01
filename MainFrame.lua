@@ -42,8 +42,22 @@ methods:
 		
 --]]
 
+-- SortType_t is used as an Enumeration;
+local SortType_t = { NAME_ASCENDING = 1,
+                     NAME_DESCENDING = 2,
+                     MAIN_ASCENDING = 3,
+                     MAIN_DESCENDING = 4,
+                     SEC_ASCENDING = 5,
+                     SEC_DESCENDING = 6,
+                     TOKEN_ASCENDING = 7,
+                     TOKEN_DESCENDING = 8,
+                     FAIL_ASCENDING = 9,
+                     FAIL_DESCENDING = 10,
+                     CLASS_ASCENDING = 11,
+                     CLASS_DESCENDING = 12};
+
 StriLi = LibStub("AceAddon-3.0"):NewAddon("StriLi", "AceConsole-3.0");
-StriLi.MainFrame = { frame = nil, labelRow = nil, rows = {}, children = {}, unusedRowFrameStack = nil, rowCount = 0 }
+StriLi.MainFrame = { frame = nil, labelRow = nil, rows = {}, children = {}, unusedRowFrameStack = nil, rowCount = 0,  sortType = ObservableNumber:new(nil), nameTable = {}};
 
 function StriLi.MainFrame:init()
 
@@ -82,9 +96,14 @@ function StriLi.MainFrame:init()
         end
     end);
 
+
+    self.sortType:registerObserver(self);
+
     for charName, charData in pairs(RaidMembersDB.raidMembers) do
         self:addPlayer({ charName, charData });
     end
+
+    self.sortType:set(SortType_t.MAIN_DESCENDING);
 
    self:OnMasterChanged();
 
@@ -111,10 +130,56 @@ end
 function StriLi.MainFrame:setupLabelRow()
 
     if self.labelRow == nil then
+
         self.labelRow = LabelRowFrame:new(nil, "LabelRow", self.frame, 0);
+
+        self.labelRow.Children.Name:SetScript("OnMouseUp", function()
+            if self.sortType:get() == SortType_t.NAME_ASCENDING then
+                self.sortType:set(SortType_t.NAME_DESCENDING);
+            else
+                self.sortType:set(SortType_t.NAME_ASCENDING);
+            end
+        end);
+        self.labelRow.Children.Main:SetScript("OnMouseUp", function()
+            if self.sortType:get() == SortType_t.MAIN_ASCENDING then
+                self.sortType:set(SortType_t.MAIN_DESCENDING);
+            else
+                self.sortType:set(SortType_t.MAIN_ASCENDING);
+            end
+        end);
+        self.labelRow.Children.Sec:SetScript("OnMouseUp", function()
+            if self.sortType:get() == SortType_t.SEC_ASCENDING then
+                self.sortType:set(SortType_t.SEC_DESCENDING);
+            else
+                self.sortType:set(SortType_t.SEC_ASCENDING);
+            end
+        end);
+        self.labelRow.Children.Token:SetScript("OnMouseUp", function()
+            if self.sortType:get() == SortType_t.TOKEN_ASCENDING then
+                self.sortType:set(SortType_t.TOKEN_DESCENDING);
+            else
+                self.sortType:set(SortType_t.TOKEN_ASCENDING);
+            end
+        end);
+        self.labelRow.Children.Fail:SetScript("OnMouseUp", function()
+            if self.sortType:get() == SortType_t.FAIL_ASCENDING then
+                self.sortType:set(SortType_t.FAIL_DESCENDING);
+            else
+                self.sortType:set(SortType_t.FAIL_ASCENDING);
+            end
+        end);
+
+        self.labelRow.Children.Name:EnableMouse(true);
+        self.labelRow.Children.Main:EnableMouse(true);
+        self.labelRow.Children.Sec:EnableMouse(true);
+        self.labelRow.Children.Token:EnableMouse(true);
+        self.labelRow.Children.Fail:EnableMouse(true);
+
+
         self.labelRow:show();
 
         self:resize();
+
     end
 
 end
@@ -122,12 +187,14 @@ end
 function StriLi.MainFrame:addPlayer(raidMember)
 
     self.rows[raidMember[1]] = self.unusedRowFrameStack:pop(nil, "StriLi_RowFrame" .. tostring(self.rowCount), self.frame, self.rowCount + 1, raidMember);
-    self.rows[raidMember[1]]:show();
+    self.rowCount = self.rowCount + 1;
     self.rows[raidMember[1]]:setCombineFunction(function(memName1, memName2) self:combineMembers(memName1, memName2) end);
 
-    self.rowCount = self.rowCount + 1;
+    table.insert(self.nameTable,raidMember[1]);
+    self:sortRowFrames();
 
     self:resize();
+    self.rows[raidMember[1]]:show();
 
 end
 
@@ -136,6 +203,7 @@ function StriLi.MainFrame:removePlayer(raidMemberName)
     if self.rows[raidMemberName] ~= nil then
 
         RaidMembersDB:remove(raidMemberName);
+        table.removeByValue(self.nameTable, raidMemberName);
 
         self.unusedRowFrameStack:push(self.rows[raidMemberName])
         self.rows[raidMemberName]:hide();
@@ -164,13 +232,18 @@ end
 
 function StriLi.MainFrame:reIndexFrames()
 
-    local i = 1;
+    for i, name in pairs(self.nameTable) do
+        self.rows[name]:setPosIndex(i)
+    end
 
-    for _, frame in pairs(self.rows) do
+end
 
-        frame:setPosIndex(i)
-        i = i + 1;
+function StriLi.MainFrame:OnValueChanged(sender)
 
+    if sender == self.sortType then
+        self:sortRowFrames();
+    else
+        error("WTF?!");
     end
 
 end
@@ -252,5 +325,121 @@ function StriLi.MainFrame:OnMasterChanged()
         self.children.lockButton:Enable();
 
     end
+
+end
+
+
+
+function StriLi.MainFrame:sortRowFrames()
+
+    if      self.sortType:get() == SortType_t.NAME_ASCENDING      then
+        self:sortByName(false);
+
+    elseif  self.sortType:get() == SortType_t.NAME_DESCENDING     then
+        self:sortByName(true);
+
+    elseif  self.sortType:get() == SortType_t.MAIN_ASCENDING      then
+        self:sortByCounter(true,"Main");
+
+    elseif  self.sortType:get() == SortType_t.MAIN_DESCENDING     then
+        self:sortByCounter(false, "Main");
+
+    elseif  self.sortType:get() == SortType_t.SEC_ASCENDING       then
+        self:sortByCounter(true,"Sec");
+
+    elseif  self.sortType:get() == SortType_t.SEC_DESCENDING      then
+        self:sortByCounter(false, "Sec");
+
+    elseif  self.sortType:get() == SortType_t.TOKEN_ASCENDING     then
+        self:sortByCounter(true,"Token");
+
+    elseif  self.sortType:get() == SortType_t.TOKEN_DESCENDING    then
+        self:sortByCounter(false, "Token");
+
+    elseif  self.sortType:get() == SortType_t.FAIL_ASCENDING      then
+        self:sortByCounter(true,"Fail");
+
+    elseif  self.sortType:get() == SortType_t.FAIL_DESCENDING     then
+        self:sortByCounter(false, "Fail");
+
+    elseif  self.sortType:get() == SortType_t.CLASS_ASCENDING     then
+        self:sortByClass(true);
+
+    elseif  self.sortType:get() == SortType_t.CLASS_DESCENDING    then
+        self:sortByClass(false);
+
+    end
+
+    self:reIndexFrames();
+
+end
+
+function StriLi.MainFrame:sortByName(invertedOrder)
+
+    local cmpFnc;
+
+    if invertedOrder then
+        cmpFnc = function(a, b)
+            return string.lower(a) > string.lower(b)
+        end
+    else
+        cmpFnc = function(a, b)
+            return string.lower(a) < string.lower(b)
+        end
+    end
+
+    table.sort(self.nameTable,cmpFnc);
+
+end
+
+function StriLi.MainFrame:sortByCounter(invertedOrder, counter)
+
+    local cmpFnc;
+
+    if invertedOrder then
+        cmpFnc = function(a, b)
+            if RaidMembersDB:get(a)[counter]:get() == RaidMembersDB:get(b)[counter]:get() then
+                return string.lower(a) > string.lower(b);
+            else
+                return RaidMembersDB:get(a)[counter]:get() > RaidMembersDB:get(b)[counter]:get();
+            end
+        end
+    else
+        cmpFnc = function(a, b)
+            if RaidMembersDB:get(a)[counter]:get() == RaidMembersDB:get(b)[counter]:get() then
+                return string.lower(a) < string.lower(b);
+            else
+                return RaidMembersDB:get(a)[counter]:get() < RaidMembersDB:get(b)[counter]:get();
+            end
+        end
+    end
+
+    table.sort(self.nameTable,cmpFnc);
+
+end
+
+function StriLi.MainFrame:sortByClass(invertedOrder)
+
+    local cmpFnc;
+
+    if invertedOrder then
+        cmpFnc = function(a, b)
+            if RaidMembersDB:get(a)[1] == RaidMembersDB:get(b)[1] then
+                return string.lower(a) > string.lower(b);
+            else
+                return StriLi_GetClassIndex(RaidMembersDB:get(a)[1]) > StriLi_GetClassIndex(RaidMembersDB:get(b)[1]);
+            end
+        end
+    else
+        cmpFnc = function(a, b)
+            if RaidMembersDB:get(a)[1] == RaidMembersDB:get(b)[1] then
+                return string.lower(a) < string.lower(b);
+            else
+                return StriLi_GetClassIndex(RaidMembersDB:get(a)[1]) < StriLi_GetClassIndex(RaidMembersDB:get(b)[1]);
+            end
+        end
+    end
+
+    table.sort(self.nameTable,cmpFnc);
 
 end

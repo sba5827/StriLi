@@ -23,13 +23,17 @@ methods:
 	
 --]]
 
-ObservableNumber = { number = 0, numberOld = 0, observers = {} }
+ObservableNumber = {}
 
 function ObservableNumber:new(o)
 
     o = o or {};
     setmetatable(o, self);
     self.__index = self;
+
+    o.number = 0;
+    o.numberOld = 0;
+    o.observers = {};
 
     return o;
 
