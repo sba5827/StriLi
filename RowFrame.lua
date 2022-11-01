@@ -300,6 +300,8 @@ function RowFrame:OnValueChanged(sender)
 
     end
 
+    StriLi.MainFrame:sortRowFrames();
+
 end
 
 function RowFrame.ReregisterRequest(self, overwrite)
@@ -375,7 +377,7 @@ function RowFrame:initDropdownMenu(frame, level, menuList)
 
     local pFrame = frame:GetParent();
     local _, fString = pFrame:GetRegions();
-    local playerName = fString:GetText();
+    local playerName = fString:GetText():gsub('%®', ''):gsub('%•', '');
 
     if level == 1 then
 

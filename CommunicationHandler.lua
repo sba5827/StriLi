@@ -140,6 +140,8 @@ function StriLi.CommunicationHandler:On_MasterChanged(msgString)
         StriLi.master = newMaster;
         if newMaster ~= "" then
             StriLi.MainFrame:OnMasterChanged();
+            StriLi.MainFrame.rows[sender]:UpdateName("•"..sender);
+            StriLi.MainFrame.rows[newMaster]:UpdateName("®"..newMaster);
         end
     end
 

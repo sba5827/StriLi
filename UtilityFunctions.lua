@@ -35,6 +35,8 @@ function StriLi_tryToSetNewMaster(newMasterName)
                     StriLi.master = newMasterName;
                     if newMasterName ~= "" then
                         StriLi.MainFrame:OnMasterChanged();
+                        StriLi.MainFrame.rows[UnitName("player")]:UpdateName("•"..UnitName("player"));
+                        StriLi.MainFrame.rows[newMasterName]:UpdateName("®"..newMasterName);
                     end
                 end
             else

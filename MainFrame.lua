@@ -200,6 +200,24 @@ function StriLi.MainFrame:addPlayer(raidMember)
     self:resize();
     self.rows[raidMember[1]]:show();
 
+    if raidMember[1] == StriLi.master then
+
+        self.rows[raidMember[1]]:UpdateName("®"..raidMember[1]);
+
+    else
+
+        if UnitName("player") == raidMember[1] then
+            self.rows[raidMember[1]]:UpdateName("•"..raidMember[1]);
+        else
+            StriLi.CommunicationHandler:checkIfUserHasStriLi(raidMember[1], function(userHasStriLi)
+                if userHasStriLi then
+                    self.rows[raidMember[1]]:UpdateName("•"..raidMember[1]);
+                end
+            end);
+        end
+
+    end
+
 end
 
 function StriLi.MainFrame:removePlayer(raidMemberName)
