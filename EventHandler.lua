@@ -60,21 +60,23 @@ end
 
 function StriLi.EventHandler:OnPartyMembersChanged()
 
-    StriLi.CommunicationHandler:ShoutVersion();
-    StriLi.CommunicationHandler:sendMasterChanged(StriLi.master);
-
     local numOfMembers = GetNumRaidMembers();
 
     if numOfMembers < 1 and not StriLi_newRaidGroup then
         self:OnRaidLeft();
-    elseif numOfMembers < 1 and  StriLi_newRaidGroup then
+    elseif numOfMembers < 1 and StriLi_newRaidGroup then
         -- just entered or left a Group no Raid
-    elseif StriLi_newRaidGroup then
+        if not (StriLi.master == "") then
+            StriLi.master = "";
+        end
+    elseif numOfMembers > 1 and StriLi_newRaidGroup then
         self:OnJoiningNewRaidgoup();
-    else
+    elseif numOfMembers > 1 then
         self:addNewPlayers();
     end
 
+    StriLi.CommunicationHandler:ShoutVersion();
+    StriLi.CommunicationHandler:sendMasterChanged(StriLi.master);
 
 end
 
@@ -99,7 +101,7 @@ function StriLi.EventHandler:OnJoiningNewRaidgoup()
 
     StriLi.CommunicationHandler:checkForMaster(function(master)
 
-        local _, rank = GetRaidRosterInfo(UnitInRaid("player")+1)
+        local _, rank = GetRaidRosterInfo(UnitInRaid("player")+1);
 
         if master == "" and rank > 0 then
 

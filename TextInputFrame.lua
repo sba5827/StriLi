@@ -49,4 +49,7 @@ end
 
 function TextInputFrame:show()
     self.frame:Show();
+    self.frame:Raise();
+    self.frame:Raise();
+    self.frame:Raise();
 end
