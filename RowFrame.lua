@@ -229,25 +229,25 @@ end
 function RowFrame:UpdateMainCounter(count)
     self.Regions.MainCounterFS:SetText(tostring(count));
     StriLi_ColorCounterCell(self.Children.Main, count, false);
-    StriLi.CommunicationHandler:sendDataChanged(self:getName(), "Main", count, false);
+    StriLi.CommunicationHandler:sendDataChanged(self:getName():gsub('%®', ''):gsub('%•', ''), "Main", count, false);
 end
 
 function RowFrame:UpdateSecCounter(count)
     self.Regions.SecCounterFS:SetText(tostring(count));
     StriLi_ColorCounterCell(self.Children.Sec, count, true);
-    StriLi.CommunicationHandler:sendDataChanged(self:getName(), "Sec", count, false);
+    StriLi.CommunicationHandler:sendDataChanged(self:getName():gsub('%®', ''):gsub('%•', ''), "Sec", count, false);
 end
 
 function RowFrame:UpdateTokenCounter(count)
     self.Regions.TokenCounterFS:SetText(tostring(count));
     StriLi_ColorCounterCell(self.Children.Token, count, false);
-    StriLi.CommunicationHandler:sendDataChanged(self:getName(), "Token", count, false);
+    StriLi.CommunicationHandler:sendDataChanged(self:getName():gsub('%®', ''):gsub('%•', ''), "Token", count, false);
 end
 
 function RowFrame:UpdateFailCounter(count)
     self.Regions.FailCounterFS:SetText(tostring(count));
     StriLi_ColorCounterCell(self.Children.Fail, count, true);
-    StriLi.CommunicationHandler:sendDataChanged(self:getName(), "Fail", count, false);
+    StriLi.CommunicationHandler:sendDataChanged(self:getName():gsub('%®', ''):gsub('%•', ''), "Fail", count, false);
 end
 
 function RowFrame:UpdateReregister(reregister)
@@ -270,7 +270,7 @@ function RowFrame:UpdateReregister(reregister)
         self.Children.Name:SetScript("OnLeave", nil);
     end
 
-    StriLi.CommunicationHandler:sendDataChanged(self:getName(), "Reregister", reregister, false);
+    StriLi.CommunicationHandler:sendDataChanged(self:getName():gsub('%®', ''):gsub('%•', ''), "Reregister", reregister, false);
 
 end
 
