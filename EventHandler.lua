@@ -177,6 +177,12 @@ function StriLi.EventHandler:addNewPlayers()
         if not existingMember then
             RaidMembersDB:add(name, englishClass);
             StriLi.MainFrame:addPlayer({ name, RaidMembersDB:get(name) });
+        else
+            StriLi.CommunicationHandler:checkIfUserHasStriLi(name, function(userHasStriLi)
+                if userHasStriLi and not (StriLi.master == name) then
+                    StriLi.MainFrame.rows[name]:UpdateName("•"..name);
+                end
+            end);
         end
 
     end
