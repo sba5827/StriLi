@@ -129,9 +129,9 @@ function StriLi.AutoRollAnalyser:registerRoll(rollType, playername, number)
         self.playerRolled[playername] = true;
 
         if self:isNHToken() then
-            table.insert(self.rolls[rollType], {["Roll"]=number, ["Name"]=playername, ["Count"]=RaidMembersDB:get(playername)["Token"]:get()});
+            table.insert(self.rolls[rollType], {["Roll"]=number, ["Name"]=playername, ["Count"]=RaidMembersDB:get(playername)["Token"]:get(), ["Fail"]=RaidMembersDB:get(playername)["Fail"]:get()});
         else
-            table.insert(self.rolls[rollType], {["Roll"]=number, ["Name"]=playername, ["Count"]=RaidMembersDB:get(playername)[rollType]:get()});
+            table.insert(self.rolls[rollType], {["Roll"]=number, ["Name"]=playername, ["Count"]=RaidMembersDB:get(playername)[rollType]:get(), ["Fail"]=RaidMembersDB:get(playername)["Fail"]:get()});
         end
 
     end
@@ -152,10 +152,10 @@ function StriLi.AutoRollAnalyser:sortRolls()
 
     local function condition(a,b)
 
-        if (a["Count"] == b["Count"]) then
+        if ((a["Count"]+a["Fail"]) == (b["Count"]+b["Fail"])) then
             return (a["Roll"] >= b["Roll"]);
         else
-            return (a["Count"] <= b["Count"]);
+            return ((a["Count"]+a["Fail"]) <= (b["Count"]+b["Fail"]));
         end
 
     end
@@ -170,7 +170,7 @@ function StriLi.AutoRollAnalyser:shoutRolls()
     for k,v in pairs(self.rolls) do
         SendChatMessage("---"..k.."---", "RAID");
         for _,v2 in ipairs(v) do
-            s = v2["Name"].." || Striche: "..v2["Count"].." || Roll: "..v2["Roll"];
+            s = v2["Name"].." || Striche: "..v2["Count"].." || Fails: "..v2["Fail"].." || Roll: "..v2["Roll"];
             SendChatMessage(s, "RAID");
         end
     end
