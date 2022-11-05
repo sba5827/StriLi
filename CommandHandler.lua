@@ -11,10 +11,28 @@ SlashCmdList["STRILI"] = function(msg, _)
     -- any whitespace at end of args is retained
 
     local _, _, t, args = string.find(msg, "%s?(%w+)%s?(.*)")
-    t=tonumber(t)
 
-    if ( t == nil) then
-        print ("|cffFFFF00StriLiStrili: First argument must be a NUMBER|r");
+    if ( tonumber(t) == nil) then
+        if ( t == "c" )then
+            if not StriLi.AutoRollAnalyser:getRollInProgress() then
+                print("|cffFFFF00StriLiNo roll to cancel in progress.|r");
+                return;
+            end
+
+            print("|cffFFFF00StriLiRoll canceled.|r");
+            StriLi.AutoRollAnalyser:cancelRoll();
+            return;
+
+        else
+
+            print ("|cffFFFF00StriLiStrili: First argument must be a NUMBER|r");
+            return;
+
+        end
+    end
+
+    if StriLi.AutoRollAnalyser:getRollInProgress() then
+        print ("|cffFFFF00StriLiYou have already a roll in progress. To cancel a current roll type '/sl c'.|r");
         return;
     end
 
@@ -49,7 +67,7 @@ SlashCmdList["STRILI"] = function(msg, _)
 
     end
 
-    StriLi.AutoRollAnalyser:setTimeForRolls(t);
+    StriLi.AutoRollAnalyser:setTimeForRolls(tonumber(t));
     StriLi.AutoRollAnalyser:start();
 
 end

@@ -13,6 +13,7 @@ methods:
     setItemID
     setTimeForRolls
     setItem
+    getRollInProgress
     start
     finalize
     On_CHAT_MSG_SYSTEM
@@ -27,17 +28,24 @@ methods:
 StriLi.AutoRollAnalyser = { itemID = nil, timerFrame = CreateFrame("Frame"), time = 0.0, rolls = {}, rollInProgress = false, item = "" };
 
 function StriLi.AutoRollAnalyser:setItemID(ID)
+    if self.rollInProgress then return end;
     assert(type(ID) == "number", "Expected number as ItemID!")
     self.itemID = ID;
 end
 
 function StriLi.AutoRollAnalyser:setTimeForRolls(time)
+    if self.rollInProgress then return end;
     assert(type(time) == "number", "Expected number as time!")
     self.time = time;
 end
 
 function StriLi.AutoRollAnalyser:setItem(item)
+    if self.rollInProgress then return end;
     self.item = item;
+end
+
+function StriLi.AutoRollAnalyser:getRollInProgress()
+    return self.rollInProgress;
 end
 
 function StriLi.AutoRollAnalyser:start()
@@ -90,6 +98,14 @@ function StriLi.AutoRollAnalyser:finalize()
 
     self.rollInProgress = false;
 
+end
+
+function StriLi.AutoRollAnalyser:cancelRoll()
+    if self.rollInProgress then
+        StriLi.EventHandler:disable_CHAT_MSG_SYSTEM_event();
+        self.timerFrame:SetScript("OnUpdate", nil);
+        self.rollInProgress = false;
+    end
 end
 
 function StriLi.AutoRollAnalyser:On_CHAT_MSG_SYSTEM(text)
