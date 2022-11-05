@@ -121,21 +121,25 @@ function StriLi.EventHandler:OnJoiningNewRaidgoup()
     if RaidMembersDB:getSize() > 0 then
         local confirmFrame = ConfirmDialogFrame:new(nil, "Du hast eine neue Raidgruppe betreten. Möchtest du alle Daten zurücksetzen?",
                 function()
+
                     for player, _ in pairs(StriLi.MainFrame.rows) do
                         StriLi.MainFrame:removePlayer(player);
                     end
 
-                    self:OnPartyMembersChanged()
+                    self:addNewPlayers();
+                    StriLi.CommunicationHandler:sendSycRequest();
 
                 end,
-                function() self:OnPartyMembersChanged() end);
+                function()
+                    self:addNewPlayers();
+                    StriLi.CommunicationHandler:sendSycRequest();
+                end);
 
         confirmFrame:show();
     else
-        self:OnPartyMembersChanged();
+        self:addNewPlayers();
+        StriLi.CommunicationHandler:sendSycRequest();
     end
-
-    StriLi.CommunicationHandler:sendSycRequest();
 
 end
 
