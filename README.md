@@ -20,13 +20,26 @@ Example Screenshot:
     ![Sceenshot_README](https://user-images.githubusercontent.com/38493688/200170842-d6c7f710-3bb1-491a-9796-1b8fb252d9c7.PNG)
     
 ## StriLi slash commands:
+    /sl h
+    /sl help
+List of all commands.
+
     /sl <time in s> <Item>
     /sl <time in s> [@mouseover]
-Starts an item roll. Auto detects rolls in the specified time. Automatically determines the winner based on the tally marks and the roll.
+Starts an item roll. Auto-detect rolls in the specified time. Automatically determines the winner based on the tally marks and the roll.
+
+    /sl c
+Cancels recent roll.
+
+    /sl m
+    /sl makro
+    /sl macro
+Opens textFrame with copyable mouseover macro.
+
 
 \<Item\> - Version: you need to shift-click on the Item to add it.
 
-[@mouseover] - Version: use as makro. Hover over item and press makro. Item will be posted.
+[@mouseover] - Version: use as macro. Hover over item and press macro. Item will be posted.
 
 Examples:
 
@@ -54,9 +67,21 @@ Beispiel Screenshot:
     ![Sceenshot_README](https://user-images.githubusercontent.com/38493688/200170842-d6c7f710-3bb1-491a-9796-1b8fb252d9c7.PNG)
     
 ## StriLi Slash-Befehle:
+    /sl h
+    /sl help
+Liste aller Befehle.
+
     /sl <time in s> <Item>
     /sl <time in s> [@mouseover]
 Startet das Verrollen eines Items. Automatische Erkennung von Würfen in der angegebenen Zeit. Ermittelt automatisch den Gewinner anhand der Striche und des Wurfs.
+
+    /sl c
+Bricht aktuelles Verrollen ab.
+
+    /sl m
+    /sl makro
+    /sl macro
+Öffnet ein Textfenster aus dem das mouseover Makro kopiert werden kann.
 
 \<Item\> - Version: Zum Hinzufügen des Items in den Befehl müssen Sie einen Shift-klick auf das Item machen.
 

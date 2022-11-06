@@ -13,26 +13,42 @@ SlashCmdList["STRILI"] = function(msg, _)
     local _, _, t, args = string.find(msg, "%s?(%w+)%s?(.*)")
 
     if ( tonumber(t) == nil) then
-        if ( t == "c" )then
+        if ( t == "c" ) then
             if not StriLi.AutoRollAnalyser:getRollInProgress() then
-                print("|cffFFFF00StriLiNo roll to cancel in progress.|r");
+                print("|cffFFFF00StriLi: No roll to cancel in progress.|r");
                 return;
             end
 
-            print("|cffFFFF00StriLiRoll canceled.|r");
+            print("|cffFFFF00StriLi: Roll canceled.|r");
             StriLi.AutoRollAnalyser:cancelRoll();
+            return;
+
+        elseif (t == "h") or (t == "help")then
+
+            print("|cffFFFF00StriLi: Available commands: \n/sl h\n/sl help\n/sl <time in s> <Item>\n/sl <time in s> [@mouseover]\n/sl c\n/sl macro|r");
+            return;
+
+        elseif t == "makro" or t == "macro" or t == "m" then
+
+            local copyMacroBox = CreateFrame("FRAME", "StriLi_MakroFrame", UIParent, "StriLi_CopyVersionFrame_Template");
+            local editBox = copyMacroBox:GetChildren():GetChildren();
+            StriLi_MakroFrame_FontString:SetText("");
+            editBox:SetText("/sl <time in s> [@mouseover]");
+            editBox:HighlightText();
+            copyMacroBox:Show();
+
             return;
 
         else
 
-            print ("|cffFFFF00StriLiStrili: First argument must be a NUMBER|r");
+            print ("|cffFFFF00StriLi: First argument must be a NUMBER|r");
             return;
 
         end
     end
 
     if StriLi.AutoRollAnalyser:getRollInProgress() then
-        print ("|cffFFFF00StriLiYou have already a roll in progress. To cancel a current roll type '/sl c'.|r");
+        print ("|cffFFFF00StriLi: You have already a roll in progress. To cancel a current roll type '/sl c'.|r");
         return;
     end
 
