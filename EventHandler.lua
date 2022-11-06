@@ -177,25 +177,44 @@ function StriLi.EventHandler:addNewPlayers()
         if not existingMember then
             RaidMembersDB:add(name, englishClass);
             StriLi.MainFrame:addPlayer({ name, RaidMembersDB:get(name) });
-        else
-            StriLi.CommunicationHandler:checkIfUserHasStriLi(name, function(userHasStriLi)
-                if userHasStriLi and not (StriLi.master == name) then
-                    StriLi.MainFrame.rows[name]:UpdateName("•"..name);
-                end
-            end);
         end
+
+        StriLi.CommunicationHandler:checkIfUserHasStriLi(name, function(userHasStriLi)
+            if userHasStriLi and not (StriLi.master == name) then
+                StriLi.MainFrame.rows[name]:UpdateName("•"..name);
+            end
+        end);
 
     end
 
     if not masterIsInRaid then
 
+        if StriLi.MainFrame.rows[StriLi.master] ~= nil then
+            StriLi.MainFrame.rows[StriLi.master]:UpdateName(StriLi.master);
+        end
+
         StriLi.CommunicationHandler:checkForMaster(function(master)
 
             if UnitInRaid("player") == nil then return end;
 
+            masterIsInRaid = false;
+
+            for i = 1, numOfMembers do
+
+                local name = GetRaidRosterInfo(i);
+                if (name == nil) then
+                    return ;
+                end
+
+                if name == master then
+                    masterIsInRaid = true;
+                end
+
+            end
+
             local _, rank = GetRaidRosterInfo(UnitInRaid("player")+1)
 
-            if master == "" and rank > 0 then
+            if not masterIsInRaid  and rank > 0 then
 
                 local newMaster = UnitName("player");
                 if StriLi.CommunicationHandler:sendMasterChanged(newMaster) then

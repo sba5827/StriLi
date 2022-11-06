@@ -50,13 +50,15 @@ CommunicationStrings:
 --]]
 
 
-
+local respondTimeToExpire = 0.5
 StriLi.CommunicationHandler = { waitingForRespond = "",
                                 time = 0.0,
                                 timerFrame = CreateFrame("Frame"),
                                 checkForMaster_cbf = nil,
                                 checkUserHasStriLi_cbf = nil,
-                                requestedSyncAsMaster = false };
+                                requestedSyncAsMaster = false,
+                                requestQueue = {}
+};
 
 function StriLi.CommunicationHandler:On_CHAT_MSG_ADDON(...)
 
@@ -95,9 +97,9 @@ function StriLi.CommunicationHandler:On_Respond_CheckForMaster(transmittedMaster
     if self.waitingForRespond == "SL_RS_CFM" then
 
         StriLi.master = transmittedMaster;
-        self.waitingForRespond = "";
         self.timerFrame:SetScript("OnUpdate", nil);
         self.checkForMaster_cbf(StriLi.master); -- master check done callback
+        self:respondReceived();
 
     end
 
@@ -106,29 +108,28 @@ end
 function StriLi.CommunicationHandler:checkForMaster(cbf)
 
     if self.waitingForRespond ~= "" then
-        return false; -- Can't check for Master, already waiting for some Respond
+        self:addToQueue(StriLi.CommunicationHandler.checkForMaster,cbf);
+        return; -- Can't check for Master, already waiting for some Respond
     end
 
     self.checkForMaster_cbf = cbf;
 
     self.waitingForRespond = "SL_RS_CFM";
-    self.time = 2.0;
+    self.time = respondTimeToExpire;
     self.timerFrame:SetScript("OnUpdate", function(_, elapsed)
 
         self.time = self.time - elapsed;
         if self.time < 0.0 then
             -- Respond time exceeded
             StriLi.master = "";
-            self.waitingForRespond = "";
             self.timerFrame:SetScript("OnUpdate", nil);
             self.checkForMaster_cbf(StriLi.master); -- master check done callback
+            self:respondReceived();
         end
 
     end);
 
     SendAddonMessage("SL_RQ_CFM", "", "RAID");
-
-    return true; -- Check for master in progress
 
 end
 
@@ -246,17 +247,22 @@ end
 
 function StriLi.CommunicationHandler:sendSycRequest()
 
+    if self.waitingForRespond ~= "" then
+        self:addToQueue(StriLi.CommunicationHandler.sendSycRequest,nil);
+        return;
+    end
+
     if StriLi.master == UnitName("player") then
         self.requestedSyncAsMaster = true;
-        self.time = 5.0;
+        self.time = 3.0;
         self.waitingForRespond = "SL_RQ_SD"
         self.timerFrame:SetScript("OnUpdate", function(_, elapsed)
             self.time = self.time - elapsed;
 
             if self.time < 0.0 then
-                self.waitingForRespond = "";
                 self.requestedSyncAsMaster = false;
                 self.timerFrame:SetScript("OnUpdate", nil);
+                self:respondReceived();
             end
 
 
@@ -280,8 +286,8 @@ function StriLi.CommunicationHandler:On_Respond_UserHasStriLi(nameOfRespondingPl
 
         self.timerFrame:SetScript("OnUpdate", nil);
         self.requestedPlayer = "";
-        self.waitingForRespond = "";
         self.checkUserHasStriLi_cbf(true);
+        self:respondReceived();
 
     end
 
@@ -290,13 +296,14 @@ end
 function StriLi.CommunicationHandler:checkIfUserHasStriLi(name, cbf)
 
     if self.waitingForRespond ~= "" then
-        return false; -- cant check if user has StriLi while other checks are in progress
+        self:addToQueue(StriLi.CommunicationHandler.checkIfUserHasStriLi,{[1]=name, [2]=cbf});
+        return;
     end
 
     self.requestedPlayer = name;
     self.waitingForRespond = "SL_RS_UHS";
     self.checkUserHasStriLi_cbf = cbf;
-    self.time = 2.0;
+    self.time = respondTimeToExpire;
     self.timerFrame:SetScript("OnUpdate", function(_, elapsed)
 
         self.time = self.time - elapsed;
@@ -305,8 +312,8 @@ function StriLi.CommunicationHandler:checkIfUserHasStriLi(name, cbf)
 
             self.timerFrame:SetScript("OnUpdate", nil);
             self.requestedPlayer = "";
-            self.waitingForRespond = "";
             self.checkUserHasStriLi_cbf(false);
+            self:respondReceived();
 
         end
 
@@ -341,6 +348,30 @@ function StriLi.CommunicationHandler:ShoutVersion()
 
     if IsInGuild() then
         SendAddonMessage("SL_VC", tostring(StriLi_LatestVersion), "GUILD");
+    end
+
+end
+
+function StriLi.CommunicationHandler:addToQueue(queuedRequest, arguments)
+    table.insert(self.requestQueue,{[1]=queuedRequest,[2]=arguments});
+end
+
+function StriLi.CommunicationHandler:respondReceived()
+
+    self.waitingForRespond = "";
+
+    local next = table.remove(self.requestQueue);
+
+    if next == nil then
+        return
+    end
+
+    if next[1] == StriLi.CommunicationHandler.checkForMaster then
+        StriLi.CommunicationHandler:checkForMaster(next[2])
+    elseif next[1] == StriLi.CommunicationHandler.sendSycRequest then
+        StriLi.CommunicationHandler:sendSycRequest()
+    elseif next[1] == StriLi.CommunicationHandler.checkIfUserHasStriLi then
+        StriLi.CommunicationHandler:checkIfUserHasStriLi(next[2][1],next[2][2])
     end
 
 end
