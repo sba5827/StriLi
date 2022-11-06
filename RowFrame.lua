@@ -402,6 +402,21 @@ function RowFrame:initDropdownMenu(frame, level, menuList)
 
         end;
         UIDropDownMenu_AddButton(info);
+        info.text, info.hasArrow, info.func = "Entfernen", false, function()
+
+            StriLi.dropdownFrame:Hide();
+
+            local confirmFrame = ConfirmDialogFrame:new(nil, "Bist du sicher, dass du "..playerName.." entfernen möchtest?",
+                    function()
+                        self.removeFnc(playerName);
+                        StriLi.CommunicationHandler:sendMemberRemoved(playerName);
+                    end,
+                    nil);
+
+            confirmFrame:show();
+
+        end;
+        UIDropDownMenu_AddButton(info);
 
     elseif menuList == "Players" then
         for k, v in pairs(RaidMembersDB.raidMembers) do
@@ -449,6 +464,10 @@ function RowFrame:setCombineFunction(fnc)
 
     self.combineFnc = fnc;
 
+end
+
+function RowFrame:setRemoveFunction(fnc)
+    self.removeFnc = fnc;
 end
 
 function RowFrame:enableButtons()

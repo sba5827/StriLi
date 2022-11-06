@@ -182,6 +182,8 @@ function StriLi.CommunicationHandler:On_DataChanged(msgString)
         if not StriLi.MainFrame:combineMembers(name, data) then
             error("Combine of members " .. name .. " and " .. data .. " failed, while receiving Data Changed Msg.")
         end
+    elseif (data == "Remove") then
+        StriLi.MainFrame:removePlayer(name);
     else
         RaidMembersDB:get(name)[data]:set(tonumber(arg));
     end
@@ -200,6 +202,14 @@ function StriLi.CommunicationHandler:sendMembersCombined(mem1Name, mem2Name)
 
     if StriLi.master == UnitName("player") then
         SendAddonMessage("SL_DC", UnitName("player") .. " " .. mem1Name .. " " .. mem2Name .. " " .. "Combine", "RAID");
+    end
+
+end
+
+function StriLi.CommunicationHandler:sendMemberRemoved(name)
+
+    if StriLi.master == UnitName("player") then
+        SendAddonMessage("SL_DC", UnitName("player") .. " " .. name .. " " .. "Remove" .. " non", "RAID");
     end
 
 end

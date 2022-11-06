@@ -193,6 +193,7 @@ function StriLi.MainFrame:addPlayer(raidMember)
     self.rows[raidMember[1]] = self.unusedRowFrameStack:pop(nil, "StriLi_RowFrame" .. tostring(self.rowCount), self.frame, self.rowCount + 1, raidMember);
     self.rowCount = self.rowCount + 1;
     self.rows[raidMember[1]]:setCombineFunction(function(memName1, memName2) self:combineMembers(memName1, memName2) end);
+    self.rows[raidMember[1]]:setRemoveFunction(function(n) self:removePlayer(n) end);
 
     table.insert(self.nameTable,raidMember[1]);
     self:sortRowFrames();
