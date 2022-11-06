@@ -193,9 +193,11 @@ function StriLi.EventHandler:addNewPlayers()
             StriLi.MainFrame.rows[StriLi.master]:UpdateName(StriLi.master);
         end
 
+        StriLi.master = "";
+
         StriLi.CommunicationHandler:checkForMaster(function(master)
 
-            if UnitInRaid("player") == nil then return end;
+            --if UnitInRaid("player") == nil then return end;
 
             masterIsInRaid = false;
 
@@ -212,7 +214,7 @@ function StriLi.EventHandler:addNewPlayers()
 
             end
 
-            local _, rank = GetRaidRosterInfo(UnitInRaid("player")+1)
+            local _, rank = 0,1;--GetRaidRosterInfo(UnitInRaid("player")+1)
 
             if not masterIsInRaid  and rank > 0 then
 
@@ -227,7 +229,7 @@ function StriLi.EventHandler:addNewPlayers()
                 StriLi.master = master;
             end
 
-        end);
+        end, math.random()*10);
 
     end
 
