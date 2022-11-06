@@ -86,7 +86,7 @@ end
 
 function StriLi.CommunicationHandler:On_Request_CheckForMaster()
 
-    if StriLi.master ~= "" and StriLi.master == UnitName("player") then
+    if (StriLi.master ~= "") and (StriLi.master == UnitName("player")) then
         SendAddonMessage("SL_RS_CFM", StriLi.master, "RAID");
     end
 
@@ -105,18 +105,28 @@ function StriLi.CommunicationHandler:On_Respond_CheckForMaster(transmittedMaster
 
 end
 
-function StriLi.CommunicationHandler:checkForMaster(cbf)
+function StriLi.CommunicationHandler:checkForMaster(cbf, time)
+
+    if time == nil then
+        time = respondTimeToExpire;
+    end
 
     if self.waitingForRespond ~= "" then
-        self:addToQueue(StriLi.CommunicationHandler.checkForMaster,cbf);
+        self:addToQueue(StriLi.CommunicationHandler.checkForMaster,{cbf,time});
         return; -- Can't check for Master, already waiting for some Respond
     end
 
     self.checkForMaster_cbf = cbf;
 
     self.waitingForRespond = "SL_RS_CFM";
-    self.time = respondTimeToExpire;
+    self.time = time;
+    
     self.timerFrame:SetScript("OnUpdate", function(_, elapsed)
+
+        if waitingForRespond ~= "SL_RS_CFM" then
+            self.timerFrame:SetScript("OnUpdate", nil);
+            self.checkForMaster_cbf(StriLi.master);
+        end
 
         self.time = self.time - elapsed;
         if self.time < 0.0 then
@@ -137,12 +147,15 @@ function StriLi.CommunicationHandler:On_MasterChanged(msgString)
 
     local sender, newMaster = string.match(msgString, "([^%s]+)%s?(.*)");
 
-    if sender == StriLi.master or StriLi.master == "" then
+    if (sender == StriLi.master) or (StriLi.master == "") then
         StriLi.master = newMaster;
         if newMaster ~= "" then
             StriLi.MainFrame:OnMasterChanged();
             StriLi.MainFrame.rows[sender]:UpdateName("•"..sender);
             StriLi.MainFrame.rows[newMaster]:UpdateName("®"..newMaster);
+        end
+        if self.waitingForRespond == "SL_RS_CFM" then
+            self:respondReceived();
         end
     end
 
@@ -150,7 +163,7 @@ end
 
 function StriLi.CommunicationHandler:sendMasterChanged(newMaster)
 
-    if StriLi.master == UnitName("player") or StriLi.master == "" then
+    if (StriLi.master == UnitName("player")) or (StriLi.master == "") then
         SendAddonMessage("SL_MC", UnitName("player") .. " " .. newMaster, "RAID");
         return true;
     end
@@ -167,7 +180,7 @@ function StriLi.CommunicationHandler:On_DataChanged(msgString)
     name, _next = string.match(_next, "([^%s]+)%s?(.*)");
     data, arg = string.match(_next, "([^%s]+)%s?(.*)");
 
-    if ((SenderName == UnitName("player")) or SenderName ~= StriLi.master) and not self.requestedSyncAsMaster then
+    if ((SenderName == UnitName("player")) or (SenderName ~= StriLi.master)) and not self.requestedSyncAsMaster then
         return ;
     end
 
@@ -193,7 +206,7 @@ end
 
 function StriLi.CommunicationHandler:sendDataChanged(name, counterName, counterData, masterIsRequesting)
 
-    if StriLi.master == UnitName("player") or masterIsRequesting then
+    if (StriLi.master == UnitName("player")) or masterIsRequesting then
         SendAddonMessage("SL_DC", UnitName("player") .. " " .. name .. " " .. counterName .. " " .. counterData, "RAID");
     end
 
@@ -282,7 +295,7 @@ end
 
 function StriLi.CommunicationHandler:On_Respond_UserHasStriLi(nameOfRespondingPlayer)
 
-    if nameOfRespondingPlayer == self.requestedPlayer and self.waitingForRespond == "SL_RS_UHS" then
+    if (nameOfRespondingPlayer == self.requestedPlayer) and (self.waitingForRespond == "SL_RS_UHS") then
 
         self.timerFrame:SetScript("OnUpdate", nil);
         self.requestedPlayer = "";
@@ -367,7 +380,7 @@ function StriLi.CommunicationHandler:respondReceived()
     end
 
     if next[1] == StriLi.CommunicationHandler.checkForMaster then
-        StriLi.CommunicationHandler:checkForMaster(next[2])
+        StriLi.CommunicationHandler:checkForMaster(next[2][1],next[2][2])
     elseif next[1] == StriLi.CommunicationHandler.sendSycRequest then
         StriLi.CommunicationHandler:sendSycRequest()
     elseif next[1] == StriLi.CommunicationHandler.checkIfUserHasStriLi then

@@ -193,41 +193,56 @@ function StriLi.EventHandler:addNewPlayers()
             StriLi.MainFrame.rows[StriLi.master]:UpdateName(StriLi.master);
         end
 
-        StriLi.CommunicationHandler:checkForMaster(function(master)
+        StriLi.master = "";
 
-            if UnitInRaid("player") == nil then return end;
+        local _t = math.random()*10;
+        
+        self.frame:SetScript("OnUpdate",function(_, elapsed)
+            _t = _t -elapsed;
 
-            masterIsInRaid = false;
+            if _t < 0.0 then
 
-            for i = 1, numOfMembers do
+                StriLi.CommunicationHandler:checkForMaster(function(master)
 
-                local name = GetRaidRosterInfo(i);
-                if (name == nil) then
-                    return ;
-                end
+                    if UnitInRaid("player") == nil then return end;
 
-                if name == master then
-                    masterIsInRaid = true;
-                end
+                    masterIsInRaid = false;
+
+                    for i = 1, numOfMembers do
+
+                        local name = GetRaidRosterInfo(i);
+                        if (name == nil) then
+                            return ;
+                        end
+
+                        if name == master then
+                            masterIsInRaid = true;
+                        end
+
+                    end
+
+                    local _, rank = GetRaidRosterInfo(UnitInRaid("player")+1)
+
+                    if not masterIsInRaid  and rank > 0 then
+
+                        local newMaster = UnitName("player");
+                        if StriLi.CommunicationHandler:sendMasterChanged(newMaster) then
+                            StriLi.master = newMaster;
+                        else
+                            error("Master can not be initialized");
+                        end
+
+                    else
+                        StriLi.master = master;
+                    end
+
+                end);
+
+                self.frame:SetScript("OnUpdate", nil);
 
             end
 
-            local _, rank = GetRaidRosterInfo(UnitInRaid("player")+1)
-
-            if not masterIsInRaid  and rank > 0 then
-
-                local newMaster = UnitName("player");
-                if StriLi.CommunicationHandler:sendMasterChanged(newMaster) then
-                    StriLi.master = newMaster;
-                else
-                    error("Master can not be initialized");
-                end
-
-            else
-                StriLi.master = master;
-            end
-
-        end);
+        end)
 
     end
 
