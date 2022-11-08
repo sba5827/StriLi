@@ -186,7 +186,9 @@ function StriLi.CommunicationHandler:On_DataChanged(msgString)
 
     if not RaidMembersDB:checkForMember(name) then
         StriLi.EventHandler:addNewPlayers();
-        if not RaidMembersDB:checkForMember(name) then error("Failed to find Member "..name.." in Raid. Sender has send invalid data.") end
+        if not RaidMembersDB:checkForMember(name) then
+            return  --error("Failed to find Member "..name.." in Raid. Sender has send invalid data.")
+        end
     end
 
     if (data == "Reregister") then
