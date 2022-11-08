@@ -392,13 +392,17 @@ function RowFrame:initDropdownMenu(frame, level, menuList)
 
             StriLi.dropdownFrame:Hide();
 
-            local confirmFrame = ConfirmDialogFrame:new(nil, "Bist du sicher, dass du "..playerName.." zum Master ernennen möchtest?",
+            if StriLi.confirmFrame ~= nil then
+                StriLi.confirmFrame:hide();
+            end
+
+            StriLi.confirmFrame = ConfirmDialogFrame:new(nil, "Bist du sicher, dass du "..playerName.." zum Master ernennen möchtest?",
             function()
                 StriLi_SetMaster(playerName);
             end,
             nil);
 
-            confirmFrame:show();
+            StriLi.confirmFrame:show();
 
         end;
         UIDropDownMenu_AddButton(info);

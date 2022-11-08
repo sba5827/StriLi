@@ -291,14 +291,18 @@ end
 
 function StriLi.MainFrame:OnClickResetButton()
 
-    local confirmFrame = ConfirmDialogFrame:new(nil, "Bist du sicher, das du alle Daten zurücksetzen willst?",
+    if StriLi.confirmFrame ~= nil then
+        StriLi.confirmFrame:hide();
+    end
+
+    StriLi.confirmFrame = ConfirmDialogFrame:new(nil, "Bist du sicher, das du alle Daten zurücksetzen willst?",
             function()
                 StriLi.CommunicationHandler:sendResetData();
                 self:resetData();
             end,
             nil);
 
-    confirmFrame:show();
+    StriLi.confirmFrame:show();
 
 end
 

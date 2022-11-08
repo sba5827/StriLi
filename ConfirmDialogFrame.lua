@@ -51,3 +51,7 @@ function ConfirmDialogFrame:show()
     self.frame:Raise();
     self.frame:Raise();
 end
+
+function ConfirmDialogFrame:hide()
+    self.frame:Hide();
+end

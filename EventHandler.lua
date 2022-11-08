@@ -82,7 +82,11 @@ end
 
 function StriLi.EventHandler:OnRaidLeft()
 
-    local confirmFrame = ConfirmDialogFrame:new(nil, "Du hast den Raid verlassen. Möchtest du alle Daten zurücksetzen?",
+    if StriLi.confirmFrame ~= nil then
+        StriLi.confirmFrame:hide();
+    end
+
+    StriLi.confirmFrame = ConfirmDialogFrame:new(nil, "Du hast den Raid verlassen. Möchtest du alle Daten zurücksetzen?",
             function()
                 for player, _ in pairs(StriLi.MainFrame.rows) do
                     StriLi.MainFrame:removePlayer(player);
@@ -90,7 +94,7 @@ function StriLi.EventHandler:OnRaidLeft()
             end,
             nil);
 
-    confirmFrame:show();
+    StriLi.confirmFrame:show();
 
     StriLi_newRaidGroup = true;
     StriLi.master = "";
@@ -121,7 +125,12 @@ function StriLi.EventHandler:OnJoiningNewRaidgoup()
     StriLi_newRaidGroup = false;
 
     if RaidMembersDB:getSize() > 0 then
-        local confirmFrame = ConfirmDialogFrame:new(nil, "Du hast eine neue Raidgruppe betreten. Möchtest du alle Daten zurücksetzen?",
+
+        if StriLi.confirmFrame ~= nil then
+            StriLi.confirmFrame:hide();
+        end
+
+        StriLi.confirmFrame = ConfirmDialogFrame:new(nil, "Du hast eine neue Raidgruppe betreten. Möchtest du alle Daten zurücksetzen?",
                 function()
 
                     for player, _ in pairs(StriLi.MainFrame.rows) do
@@ -137,7 +146,7 @@ function StriLi.EventHandler:OnJoiningNewRaidgoup()
                     StriLi.CommunicationHandler:sendSycRequest();
                 end);
 
-        confirmFrame:show();
+        StriLi.confirmFrame:show();
     else
         self:addNewPlayers();
         StriLi.CommunicationHandler:sendSycRequest();
