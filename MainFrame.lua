@@ -122,6 +122,10 @@ function StriLi.MainFrame:hide()
 end
 
 function StriLi.MainFrame:toggle()
+	
+    if self.frame == nil then
+        self:init();
+    end
 
     if (self.frame:IsVisible()) then
         self:hide();
