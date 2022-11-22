@@ -109,7 +109,9 @@ function StriLi.MainFrame:init()
 
     self.sortType:set(SortType_t.CLASS_ASCENDING);
 
-   self:OnMasterChanged();
+    self:OnMasterChanged();
+
+    StriLi.ItemHistory:init();
 
 end
 

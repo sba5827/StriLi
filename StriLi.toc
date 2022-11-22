@@ -4,7 +4,7 @@
 ## OptionalDeps: Ace3, LibSharedMedia-3.0, AceGUI-3.0-SharedMediaWidgets, LibSink-2.0, LibDBIcon-1.0
 ## Notes: StriLi
 ## SavedVariablesPerCharacter:  
-## SavedVariables: StriLi_Master, StriLi_LatestVersion, StriLi_RaidMembersDB_members, StriLi_newRaidGroup
+## SavedVariables: StriLi_Master, StriLi_LatestVersion, StriLi_RaidMembersDB_members, StriLi_newRaidGroup, StriLi_ITEMLINK
 ## Version: 3.00
 
 #@no-lib-strip@
@@ -24,6 +24,7 @@ MainFrame.xml
 ConfirmDialogFrame.xml
 TextInputDialogFrame.xml
 CopyVersionFrame.xml
+ItemHistory.xml
 observableNumber.lua
 RaidMembersDB.lua
 UtilityFunctions.lua
@@ -37,4 +38,5 @@ EventHandler.lua
 AutoRollAnalyser.lua
 CommandHandler.lua
 CommunicationHandler.lua
+ItemHistory.lua
 Core.lua

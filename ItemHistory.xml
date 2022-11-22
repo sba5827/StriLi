@@ -1,0 +1,145 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd">
+
+    <Frame name="StriLi_ItemHistory_Template" virtual="true" toplevel="true" movable="true" enableMouse="true" hidden="false" frameStrata = "MEDIUM">
+        <Size>
+            <AbsDimension x="300" y="200"/>
+        </Size>
+        <Anchors>
+            <Anchor point="RIGHT">
+                <Offset>
+                    <AbsDimension x="300" y="0"/>
+                </Offset>
+            </Anchor>
+        </Anchors>
+        <Backdrop tile="true"
+                  bgFile="Interface\DialogFrame\UI-DialogBox-Background"
+                  edgeFile="Interface/BUTTONS/UI-SliderBar-Border">
+            <BackgroundInsets>
+                <AbsInset left="1" right="1" top="3" bottom="3"/>
+            </BackgroundInsets>
+            <BorderColor a="1" r="0" g="0" b="0" />
+            <TileSize>
+                <AbsValue val="32"/>
+            </TileSize>
+            <EdgeSize>
+                <AbsValue val="8"/>
+            </EdgeSize>
+        </Backdrop>
+        <Frames>
+            <ScrollFrame name="$parent_ScrollFrame" EnableMouseWheel="true" inherits="UIPanelScrollFrameTemplate" parentKey="ScrollFrame">
+                <Size>
+                    <AbsDimension x="260" y="180"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="CENTER">
+                        <Offset>
+                            <AbsDimension x="-10" y="0"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Backdrop tile="true"
+                          bgFile="Interface\DialogFrame\UI-DialogBox-Background"
+                          edgeFile="Interface/BUTTONS/UI-SliderBar-Border">
+                    <BackgroundInsets>
+                        <AbsInset left="1" right="1" top="3" bottom="3"/>
+                    </BackgroundInsets>
+                    <BorderColor a="1" r="0" g="0" b="0" />
+                    <TileSize>
+                        <AbsValue val="32"/>
+                    </TileSize>
+                    <EdgeSize>
+                        <AbsValue val="8"/>
+                    </EdgeSize>
+                </Backdrop>
+                <ScrollChild>
+                    <Frame name="$parent_Content" parentKey="Content">
+                        <Size>
+                            <AbsDimension x="260" y="0"/>
+                        </Size>
+                        <Anchors point="CENTER"/>
+                    </Frame>
+                </ScrollChild>
+                <Scripts>
+                    <OnMouseWheel>StriLi.ItemHistory:OnMouseWheel(arg1)</OnMouseWheel>
+                </Scripts>
+            </ScrollFrame>
+        </Frames>
+
+    </Frame>
+
+    <Frame name="StriLi_ItemHistoryPlate_Template" virtual="true" toplevel="true" movable="true" enableMouse="true" hidden="false" frameStrata = "MEDIUM" parentKey="ItemPlate">
+        <Size>
+            <AbsDimension x="260" y="30"/>
+        </Size>
+        <Anchors>
+            <Anchor point="TOPLEFT">
+                <Offset>
+                    <AbsDimension x="0" y="-2"/>
+                </Offset>
+            </Anchor>
+        </Anchors>
+        <Backdrop tile="true"
+                  bgFile="Interface\DialogFrame\UI-DialogBox-Background"
+                  edgeFile="Interface\DialogFrame\UI-DialogBox-Border">
+            <BackgroundInsets>
+                <AbsInset left="1" right="1" top="3" bottom="3"/>
+            </BackgroundInsets>
+            <BorderColor a="1" r="1" g="0" b="0" />
+            <TileSize>
+                <AbsValue val="32"/>
+            </TileSize>
+            <EdgeSize>
+                <AbsValue val="8"/>
+            </EdgeSize>
+        </Backdrop>
+        <Layers>
+            <Layer>
+                <Texture file="Interface\Icons\inv_axe_113" parentKey="ItemIcon">
+                    <Size>
+                        <AbsDimension x="23" y="23"/>
+                    </Size>
+                    <Anchors>
+                        <Anchor point="LEFT">
+                            <Offset>
+                                <AbsDimension x="6" y="0"/>
+                            </Offset>
+                        </Anchor>
+                    </Anchors>
+                </Texture>
+                <FontString text="|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r" inherits="GameFontNormal" parentKey="ItemText">
+                    <Size x="130" y="20"/>
+                    <Anchors>
+                        <Anchor point="LEFT">
+                            <Offset>
+                                <AbsDimension x="30" y="0"/>
+                            </Offset>
+                        </Anchor>
+                        <Anchor point="RIGHT">
+                            <Offset>
+                                <AbsDimension x="-100" y="0"/>
+                            </Offset>
+                        </Anchor>
+                    </Anchors>
+                </FontString>
+                <FontString text="|cffC69B6DPlayer|r" inherits="GameFontNormal" parentKey="ItemPlayer">
+                    <Size x="80" y="20"/>
+                    <Anchors>
+                        <Anchor point="LEFT">
+                            <Offset>
+                                <AbsDimension x="162" y="0"/>
+                            </Offset>
+                        </Anchor>
+                        <Anchor point="RIGHT">
+                            <Offset>
+                                <AbsDimension x="0" y="0"/>
+                            </Offset>
+                        </Anchor>
+                    </Anchors>
+                </FontString>
+            </Layer>
+        </Layers>
+    </Frame>
+
+</Ui>
