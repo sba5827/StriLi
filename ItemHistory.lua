@@ -8,14 +8,28 @@ methods:
 
 --]]
 
+StriLi.ItemHistory = { items = {}, players = {}, rollType = {}, frame = nil, contentFrame = nil, count = 0};
 
-StriLi.ItemHistory = { items = {}, players = {}, frame = nil, count = 0};
+local function getItemID_fromLink(itemLink)
+
+    assert(type(itemLink) == "string", "Argument itemLink was not a string type.");
+    local firstChar = string.sub(itemLink, 1, 1);
+    assert(firstChar == "|", "Argument itemLink is not an item link.");
+
+    local _, _, Color, Ltype, Id, Enchant, Gem1, Gem2, Gem3, Gem4,
+    Suffix, Unique, LinkLvl, Name = string.find(itemLink,
+            "|?c?f?f?(%x*)|?H?([^:]*):?(%d+):?(%d*):?(%d*):?(%d*):?(%d*):?(%d*):?(%-?%d*):?(%-?%d*):?(%d*):?(%d*):?(%-?%d*)|?h?%[?([^%[%]]*)%]?|?h?|?r?")
+
+    return Id;
+
+end
 
 -- CreateFrame("Frame","NAME", StriLi.ItemHistory.frame.ScrollFrame, "StriLi_Row_Template");
 
 function StriLi.ItemHistory:init()
 
     self.frame = CreateFrame("Frame","StriLi_ItemHistory_Frame", StriLi.MainFrame.frame,"StriLi_ItemHistory_Template");
+    self.contentFrame = self.frame.ScrollFrame.Content;
     self.frame.ScrollFrame.ScrollBar = StriLi_ItemHistory_Frame_ScrollFrameScrollBar;
     self.frame.ScrollFrame.ScrollBar:SetPoint("TOPLEFT",StriLi_ItemHistory_Frame_ScrollFrame,266,-16);
     self.frame.ScrollFrame.ScrollBar:SetPoint("BOTTOMLEFT",StriLi_ItemHistory_Frame_ScrollFrame,266,16);
@@ -23,107 +37,69 @@ function StriLi.ItemHistory:init()
     self.frame.ScrollFrame.ScrollBar:SetMinMaxValues(0, 1000);
     self.frame.ScrollFrame.ScrollBar:Hide();
 
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "1","SHAMAN");
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "2","SHAMAN");
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "3","SHAMAN");
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "4","SHAMAN");
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "5","SHAMAN");
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "6","SHAMAN");
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "7","SHAMAN");
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "8","SHAMAN");
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "9","SHAMAN");
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "2","SHAMAN");
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "3","SHAMAN");
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "4","SHAMAN");
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "5","SHAMAN");
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "6","SHAMAN");
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "7","SHAMAN");
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "8","SHAMAN");
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "9","SHAMAN");
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "2","SHAMAN");
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "3","SHAMAN");
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "4","SHAMAN");
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "5","SHAMAN");
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "6","SHAMAN");
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "7","SHAMAN");
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "8","SHAMAN");
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "9","SHAMAN");
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "2","SHAMAN");
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "3","SHAMAN");
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "4","SHAMAN");
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "5","SHAMAN");
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "6","SHAMAN");
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "7","SHAMAN");
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "8","SHAMAN");
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "9","SHAMAN");
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "2","SHAMAN");
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "3","SHAMAN");
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "4","SHAMAN");
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "5","SHAMAN");
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "6","SHAMAN");
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "7","SHAMAN");
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "8","SHAMAN");
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "9","SHAMAN");
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "2","SHAMAN");
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "3","SHAMAN");
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "4","SHAMAN");
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "5","SHAMAN");
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "6","SHAMAN");
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "7","SHAMAN");
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "8","SHAMAN");
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "9","SHAMAN");
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "2","SHAMAN");
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "3","SHAMAN");
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "4","SHAMAN");
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "5","SHAMAN");
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "6","SHAMAN");
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "7","SHAMAN");
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "8","SHAMAN");
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "9","SHAMAN");
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "2","SHAMAN");
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "3","SHAMAN");
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "4","SHAMAN");
-
-
-
+    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "player","SHAMAN", "Main", 65);
 
 end
 
-function StriLi.ItemHistory:add(itemLink, player, playerClass)
+function StriLi.ItemHistory:add(itemLink, player, playerClass, rollType, roll)
 
-    assert(type(itemLink) == "string"); --should be an itemLink.
-    assert(type(player) == "string");
-    assert(type(playerClass) == "string");
+    assert(type(player) == "string", "Argument player was not a string type.");
+    assert(type(playerClass) == "string", "Argument playerClass was not a string type.");
+    assert(type(rollType) == "string", "Argument rollType was not a string type.");
+    assert(type(roll), "number", "Argument roll was not a number type.");
 
-    local _, _, Color, Ltype, Id, Enchant, Gem1, Gem2, Gem3, Gem4,
-    Suffix, Unique, LinkLvl, Name = string.find(itemLink,
-            "|?c?f?f?(%x*)|?H?([^:]*):?(%d+):?(%d*):?(%d*):?(%d*):?(%d*):?(%d*):?(%-?%d*):?(%-?%d*):?(%d*):?(%d*):?(%-?%d*)|?h?%[?([^%[%]]*)%]?|?h?|?r?")
+    local itemId = getItemID_fromLink(itemLink);
 
-    table.insert(self.items, Name);
+    table.insert(self.items, itemLink);
     table.insert(self.players, player);
+    table.insert(self.rollType, rollType);
 
-    local frame = CreateFrame("Frame",nil, self.frame.ScrollFrame.Content, "StriLi_ItemHistoryPlate_Template");
+    local frame = CreateFrame("Frame",nil, self.contentFrame, "StriLi_ItemHistoryPlate_Template");
     frame:SetPoint("TOPLEFT", 0, -30*self.count-2);
 
-    frame.ItemIcon:SetTexture(GetItemIcon(Id));
+    frame.ItemIcon:SetTexture(GetItemIcon(itemId));
     frame.ItemText:SetText(itemLink);
     frame.ItemPlayer:SetText(player);
 
+    frame:SetScript("OnMouseUp", nil); ---todo
+
     StriLi_SetTextColorByClass(frame.ItemPlayer, playerClass);
 
-    self.frame.ScrollFrame.Content:SetHeight(self.frame.ScrollFrame.Content:GetHeight() + 30);
+    self.contentFrame:SetHeight(self.contentFrame:GetHeight() + 30);
 
     self.count = self.count + 1;
-    frame.itemHistoryIndex = self.count;
+
+    if self.contentFrame.children == nil then
+        self.contentFrame.children = {};
+    end
+
+    self.contentFrame.children[self.count] = frame;
 
 end
 
-function StriLi.ItemHistory:editItem(item, index)
-    self.items[index] = item;
+function StriLi.ItemHistory:editItem(itemLink, index)
+
+    assert(type(index), "number", "Argument index was not a number type.");
+
+    local itemId = getItemID_fromLink(itemLink);
+
+    self.items[index] = itemLink;
+    self.contentFrame.children[index].ItemIcon:SetTexture(GetItemIcon(itemId));
+    self.contentFrame.children[index].ItemText:SetText(itemLink);
+
 end
 
-function StriLi.ItemHistory:editPlayer(player, index)
+function StriLi.ItemHistory:editPlayer(player, playerClass, index)
+
+    assert(type(player) == "string", "Argument player was not a string type.");
+    assert(type(playerClass) == "string", "Argument playerClass was not a string type.");
+    assert(type(index), "number", "Argument index was not a number type.");
+
     self.players[index] = player;
+
+    self.contentFrame.children[index].ItemPlayer:SetText(player)
+    StriLi_SetTextColorByClass(self.contentFrame.children[index].ItemPlayer, playerClass);
+
 end
 
 function StriLi.ItemHistory:OnMouseWheel(value)
@@ -131,7 +107,7 @@ function StriLi.ItemHistory:OnMouseWheel(value)
     self.frame.ScrollFrame.ScrollBar:SetValueStep(1);
     self.frame.ScrollFrame.ScrollBar:SetMinMaxValues(0, 1000);
 
-    local height, viewHeight = self.frame.ScrollFrame:GetHeight(), self.frame.ScrollFrame.Content:GetHeight();
+    local height, viewHeight = self.frame.ScrollFrame:GetHeight(), self.contentFrame:GetHeight();
 
     if height > viewHeight then
         self.frame.ScrollFrame.ScrollBar:Hide()
