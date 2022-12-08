@@ -4,12 +4,12 @@
 
     <Frame name="StriLi_ItemHistory_Template" virtual="true" toplevel="true" movable="true" enableMouse="true" hidden="false" frameStrata = "MEDIUM">
         <Size>
-            <AbsDimension x="300" y="200"/>
+            <AbsDimension x="460" y="200"/>
         </Size>
         <Anchors>
             <Anchor point="RIGHT">
                 <Offset>
-                    <AbsDimension x="300" y="0"/>
+                    <AbsDimension x="460" y="0"/>
                 </Offset>
             </Anchor>
         </Anchors>
@@ -30,12 +30,12 @@
         <Frames>
             <ScrollFrame name="$parent_ScrollFrame" EnableMouseWheel="true" inherits="UIPanelScrollFrameTemplate" parentKey="ScrollFrame">
                 <Size>
-                    <AbsDimension x="260" y="180"/>
+                    <AbsDimension x="420" y="180"/>
                 </Size>
                 <Anchors>
                     <Anchor point="CENTER">
                         <Offset>
-                            <AbsDimension x="-10" y="0"/>
+                            <AbsDimension x="0" y="0"/>
                         </Offset>
                     </Anchor>
                 </Anchors>
@@ -56,7 +56,7 @@
                 <ScrollChild>
                     <Frame name="$parent_Content" parentKey="Content">
                         <Size>
-                            <AbsDimension x="260" y="0"/>
+                            <AbsDimension x="420" y="0"/>
                         </Size>
                         <Anchors point="CENTER"/>
                     </Frame>
@@ -71,7 +71,7 @@
 
     <Frame name="StriLi_ItemHistoryPlate_Template" virtual="true" toplevel="true" movable="true" enableMouse="true" hidden="false" frameStrata = "MEDIUM" parentKey="ItemPlate">
         <Size>
-            <AbsDimension x="260" y="30"/>
+            <AbsDimension x="420" y="30"/>
         </Size>
         <Anchors>
             <Anchor point="TOPLEFT">
@@ -94,52 +94,85 @@
                 <AbsValue val="8"/>
             </EdgeSize>
         </Backdrop>
-        <Layers>
-            <Layer>
-                <Texture file="Interface\Icons\inv_axe_113" parentKey="ItemIcon">
-                    <Size>
-                        <AbsDimension x="23" y="23"/>
-                    </Size>
-                    <Anchors>
-                        <Anchor point="LEFT">
-                            <Offset>
-                                <AbsDimension x="6" y="0"/>
-                            </Offset>
-                        </Anchor>
-                    </Anchors>
-                </Texture>
-                <FontString text="|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r" inherits="GameFontNormal" parentKey="ItemText">
-                    <Size x="130" y="20"/>
-                    <Anchors>
-                        <Anchor point="LEFT">
-                            <Offset>
-                                <AbsDimension x="30" y="0"/>
-                            </Offset>
-                        </Anchor>
-                        <Anchor point="RIGHT">
-                            <Offset>
-                                <AbsDimension x="-100" y="0"/>
-                            </Offset>
-                        </Anchor>
-                    </Anchors>
-                </FontString>
-                <FontString text="|cffC69B6DPlayer|r" inherits="GameFontNormal" parentKey="ItemPlayer">
-                    <Size x="80" y="20"/>
-                    <Anchors>
-                        <Anchor point="LEFT">
-                            <Offset>
-                                <AbsDimension x="162" y="0"/>
-                            </Offset>
-                        </Anchor>
-                        <Anchor point="RIGHT">
-                            <Offset>
-                                <AbsDimension x="0" y="0"/>
-                            </Offset>
-                        </Anchor>
-                    </Anchors>
-                </FontString>
-            </Layer>
-        </Layers>
+        <Frames>
+            <Frame parentKey="ItemIcon">
+                <Size>
+                    <AbsDimension x="23" y="23"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="LEFT">
+                        <Offset>
+                            <AbsDimension x="6" y="0"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Layers>
+                    <Layer>
+                        <Texture file="Interface\Icons\inv_axe_113" parentKey="Texture"/>
+                    </Layer>
+                </Layers>
+            </Frame>
+            <Frame parentKey="ItemText">
+                <Size x="130" y="20"/>
+                <Anchors>
+                    <Anchor point="LEFT">
+                        <Offset>
+                            <AbsDimension x="30" y="0"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Layers>
+                    <Layer>
+                        <FontString text="|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r" inherits="GameFontNormal" parentKey="FontString"/>
+                    </Layer>
+                </Layers>
+            </Frame>
+            <Frame parentKey="ItemPlayer">
+                <Size x="160" y="20"/>
+                <Anchors>
+                    <Anchor point="LEFT">
+                        <Offset>
+                            <AbsDimension x="160" y="0"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Layers>
+                    <Layer>
+                        <FontString text="|cffC69B6DPlayer|r" inherits="GameFontNormal" parentKey="FontString"/>
+                    </Layer>
+                </Layers>
+            </Frame>
+            <Frame parentKey="ItemRollType">
+                <Size x="60" y="20"/>
+                <Anchors>
+                    <Anchor point="LEFT">
+                        <Offset>
+                            <AbsDimension x="320" y="0"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Layers>
+                    <Layer>
+                        <FontString text="Main" inherits="GameFontNormal" parentKey="FontString"/>
+                    </Layer>
+                </Layers>
+            </Frame>
+            <Frame parentKey="ItemRoll">
+                <Size x="40" y="20"/>
+                <Anchors>
+                    <Anchor point="LEFT">
+                        <Offset>
+                            <AbsDimension x="380" y="0"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Layers>
+                    <Layer>
+                        <FontString text="99" inherits="GameFontNormal" parentKey="FontString"/>
+                    </Layer>
+                </Layers>
+            </Frame>
+        </Frames>
     </Frame>
 
 </Ui>
