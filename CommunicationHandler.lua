@@ -80,6 +80,8 @@ function StriLi.CommunicationHandler:On_CHAT_MSG_ADDON(...)
         self:On_Respond_UserHasStriLi(arg2);
     elseif arg1 == "SL_VC" then
         self:On_VersionCheck(arg2);
+    elseif arg1 == "SL_IHA" then
+        self:On_ItemHistoryAdd(arg2);
     end
 
 end
@@ -292,7 +294,6 @@ function StriLi.CommunicationHandler:On_Request_UserHasStriLi(nameOfRequestedPla
     if nameOfRequestedPlayer == UnitName("player") then
         SendAddonMessage("SL_RS_UHS", UnitName("player"), "RAID");
     end
-
 end
 
 function StriLi.CommunicationHandler:On_Respond_UserHasStriLi(nameOfRespondingPlayer)
@@ -365,6 +366,25 @@ function StriLi.CommunicationHandler:ShoutVersion()
         SendAddonMessage("SL_VC", tostring(StriLi_LatestVersion), "GUILD");
     end
 
+end
+
+function StriLi.CommunicationHandler:On_ItemHistoryAdd(arguments)
+
+    local sender, _next = string.match(arguments, "([^%s]+)%s?(.*)");
+    if sender == UnitName("player") or (sender ~= StriLi.master and StriLi.master ~= "") then return end
+    local itemLink, _next = string.match(_next, "([^%]]+)%s?(.*)");
+    local _, _next = string.match(_next, "([^%s]+)%s?(.*)");
+    local player, _next = string.match(_next, "([^%s]+)%s?(.*)");
+    local playerClass, _next = string.match(_next, "([^%s]+)%s?(.*)");
+    local rollType, _next = string.match(_next, "([^%s]+)%s?(.*)");
+    local roll, _next = string.match(_next, "([^%s]+)%s?(.*)");
+
+    StriLi.ItemHistory:add(itemLink.."]|h|r", player, playerClass, rollType, roll);
+
+end
+
+function StriLi.CommunicationHandler:Send_ItemHistoryAdd(itemLink, player, playerClass, rollType, roll)
+    SendAddonMessage("SL_IHA", UnitName("player").." "..tostring(itemLink).." "..tostring(player).." "..tostring(playerClass).." "..tostring(rollType).." "..tostring(roll), "RAID");
 end
 
 function StriLi.CommunicationHandler:addToQueue(queuedRequest, arguments)
