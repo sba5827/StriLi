@@ -31,21 +31,20 @@ function StriLi.ItemHistory:init()
     self.frame = CreateFrame("FRAME","StriLi_ItemHistory_Frame", StriLi.MainFrame.frame,"StriLi_ItemHistory_Template");
     self.contentFrame = self.frame.ScrollFrame.Content;
     self.frame.ScrollFrame.ScrollBar = StriLi_ItemHistory_Frame_ScrollFrameScrollBar;
-    self.frame.ScrollFrame.ScrollBar:SetPoint("TOPLEFT",StriLi_ItemHistory_Frame_ScrollFrame,420,-16);
-    self.frame.ScrollFrame.ScrollBar:SetPoint("BOTTOMLEFT",StriLi_ItemHistory_Frame_ScrollFrame,420,16);
+    self.frame.ScrollFrame.ScrollBar:SetPoint("TOPLEFT",StriLi_ItemHistory_Frame_ScrollFrame,490,-16);
+    self.frame.ScrollFrame.ScrollBar:SetPoint("BOTTOMLEFT",StriLi_ItemHistory_Frame_ScrollFrame,490,16);
     self.frame.ScrollFrame.ScrollBar:SetValueStep(1);
     self.frame.ScrollFrame.ScrollBar:SetMinMaxValues(0, 1000);
-    self.frame.ScrollFrame.ScrollBar:Hide();
 
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "1","SHAMAN", "Main", 65);
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "2","SHAMAN", "Main", 65);
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "3","SHAMAN", "Main", 65);
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "4","SHAMAN", "Main", 65);
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "5","SHAMAN", "Main", 65);
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "6","SHAMAN", "Main", 65);
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "7","SHAMAN", "Main", 65);
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "8","SHAMAN", "Main", 65);
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "9","SHAMAN", "Main", 65);
+    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengrammmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm]|h|r", "WWWWWWWWWWWWWW","SHAMAN", "Main", 65);
+    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengrammmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm]|h|r", "2","SHAMAN", "Main", 65);
+    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengrammmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm]|h|r", "3","SHAMAN", "Main", 65);
+    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengrammmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm]|h|r", "4","SHAMAN", "Main", 65);
+    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengrammmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm]|h|r", "5","SHAMAN", "Main", 65);
+    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengrammmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm]|h|r", "6","SHAMAN", "Main", 65);
+    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengrammmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm]|h|r", "7","SHAMAN", "Main", 65);
+    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengrammmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm]|h|r", "8","SHAMAN", "Main", 65);
+    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengrammmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm]|h|r", "9","SHAMAN", "Main", 65);
 
 end
 
@@ -62,18 +61,20 @@ function StriLi.ItemHistory:add(itemLink, player, playerClass, rollType, roll)
     table.insert(self.players, player);
     table.insert(self.rollType, rollType);
 
+    self.contentFrame:SetHeight(self.contentFrame:GetHeight() + 30);
+
     local frame = CreateFrame("Frame",nil, self.contentFrame, "StriLi_ItemHistoryPlate_Template");
-    frame:SetPoint("TOPLEFT", 0, -30*self.count-2);
+    frame:SetPoint("BOTTOMLEFT", 0, 30*self.count-2);
 
     frame.ItemIcon.Texture:SetTexture(GetItemIcon(itemId));
     frame.ItemText.FontString:SetText(itemLink);
     frame.ItemPlayer.FontString:SetText(player);
+    frame.ItemRollType.FontString:SetText(rollType);
+    frame.ItemRoll.FontString:SetText(roll);
 
     frame:SetScript("OnMouseUp", nil); ---todo
 
     StriLi_SetTextColorByClass(frame.ItemPlayer.FontString, playerClass);
-
-    self.contentFrame:SetHeight(self.contentFrame:GetHeight() + 30);
 
     self.count = self.count + 1;
 
@@ -117,7 +118,7 @@ function StriLi.ItemHistory:OnMouseWheel(value)
     local height, viewHeight = self.frame.ScrollFrame:GetHeight(), self.contentFrame:GetHeight();
 
     if height > viewHeight then
-        self.frame.ScrollFrame.ScrollBar:Hide()
+        --self.frame.ScrollFrame.ScrollBar:Hide()
     else
         self.frame.ScrollFrame.ScrollBar:Show()
         local diff = height - viewHeight
@@ -139,7 +140,7 @@ function StriLi.ItemHistory:reset()
         --self.contentFrame:
     end
 
-    self.contentFrame:SetHeight(180);
+    self.contentFrame:SetHeight(0);
     self.count = 0;
 
 end

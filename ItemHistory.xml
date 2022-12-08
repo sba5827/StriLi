@@ -4,12 +4,12 @@
 
     <Frame name="StriLi_ItemHistory_Template" virtual="true" toplevel="true" movable="true" enableMouse="true" hidden="false" frameStrata = "MEDIUM">
         <Size>
-            <AbsDimension x="460" y="200"/>
+            <AbsDimension x="530" y="200"/>
         </Size>
         <Anchors>
             <Anchor point="RIGHT">
                 <Offset>
-                    <AbsDimension x="460" y="0"/>
+                    <AbsDimension x="530" y="0"/>
                 </Offset>
             </Anchor>
         </Anchors>
@@ -30,7 +30,7 @@
         <Frames>
             <ScrollFrame name="$parent_ScrollFrame" EnableMouseWheel="true" inherits="UIPanelScrollFrameTemplate" parentKey="ScrollFrame">
                 <Size>
-                    <AbsDimension x="420" y="180"/>
+                    <AbsDimension x="490" y="180"/>
                 </Size>
                 <Anchors>
                     <Anchor point="CENTER">
@@ -56,7 +56,7 @@
                 <ScrollChild>
                     <Frame name="$parent_Content" parentKey="Content">
                         <Size>
-                            <AbsDimension x="420" y="0"/>
+                            <AbsDimension x="490" y="0"/>
                         </Size>
                         <Anchors point="CENTER"/>
                     </Frame>
@@ -71,10 +71,10 @@
 
     <Frame name="StriLi_ItemHistoryPlate_Template" virtual="true" toplevel="true" movable="true" enableMouse="true" hidden="false" frameStrata = "MEDIUM" parentKey="ItemPlate">
         <Size>
-            <AbsDimension x="420" y="30"/>
+            <AbsDimension x="490" y="30"/>
         </Size>
         <Anchors>
-            <Anchor point="TOPLEFT">
+            <Anchor point="BOTTOMLEFT">
                 <Offset>
                     <AbsDimension x="0" y="-2"/>
                 </Offset>
@@ -113,7 +113,7 @@
                 </Layers>
             </Frame>
             <Frame parentKey="ItemText">
-                <Size x="130" y="20"/>
+                <Size x="200" y="20"/>
                 <Anchors>
                     <Anchor point="LEFT">
                         <Offset>
@@ -123,7 +123,9 @@
                 </Anchors>
                 <Layers>
                     <Layer>
-                        <FontString text="|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r" inherits="GameFontNormal" parentKey="FontString"/>
+                        <FontString text="|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengrammmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm]|h|r" inherits="GameFontNormal" parentKey="FontString" justifyh="LEFT">
+                            <Size x="200" y="20"/>
+                        </FontString>
                     </Layer>
                 </Layers>
             </Frame>
@@ -132,13 +134,15 @@
                 <Anchors>
                     <Anchor point="LEFT">
                         <Offset>
-                            <AbsDimension x="160" y="0"/>
+                            <AbsDimension x="230" y="0"/>
                         </Offset>
                     </Anchor>
                 </Anchors>
                 <Layers>
                     <Layer>
-                        <FontString text="|cffC69B6DPlayer|r" inherits="GameFontNormal" parentKey="FontString"/>
+                        <FontString text="|cffC69B6DWWWWWWWWWWWW|r" inherits="GameFontNormal" parentKey="FontString">
+                            <Size x="160" y="20"/>
+                        </FontString>
                     </Layer>
                 </Layers>
             </Frame>
@@ -147,13 +151,15 @@
                 <Anchors>
                     <Anchor point="LEFT">
                         <Offset>
-                            <AbsDimension x="320" y="0"/>
+                            <AbsDimension x="390" y="0"/>
                         </Offset>
                     </Anchor>
                 </Anchors>
                 <Layers>
                     <Layer>
-                        <FontString text="Main" inherits="GameFontNormal" parentKey="FontString"/>
+                        <FontString text="Main" inherits="GameFontNormal" parentKey="FontString">
+                            <Size x="60" y="20"/>
+                        </FontString>
                     </Layer>
                 </Layers>
             </Frame>
@@ -162,13 +168,15 @@
                 <Anchors>
                     <Anchor point="LEFT">
                         <Offset>
-                            <AbsDimension x="380" y="0"/>
+                            <AbsDimension x="450" y="0"/>
                         </Offset>
                     </Anchor>
                 </Anchors>
                 <Layers>
                     <Layer>
-                        <FontString text="99" inherits="GameFontNormal" parentKey="FontString"/>
+                        <FontString text="99" inherits="GameFontNormal" parentKey="FontString">
+                            <Size x="40" y="20"/>
+                        </FontString>
                     </Layer>
                 </Layers>
             </Frame>
