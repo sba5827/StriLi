@@ -410,6 +410,9 @@ function StriLi.MainFrame:resetData()
     for player, _ in pairs(self.rows) do
         self:removePlayer(player);
     end
+
+    StriLi.ItemHistory:reset();
+
     StriLi.EventHandler:addNewPlayers();
 end
 

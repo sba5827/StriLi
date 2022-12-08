@@ -37,6 +37,16 @@ function StriLi.ItemHistory:init()
     self.frame.ScrollFrame.ScrollBar:SetMinMaxValues(0, 1000);
     self.frame.ScrollFrame.ScrollBar:Hide();
 
+    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "1","SHAMAN", "Main", 65);
+    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "2","SHAMAN", "Main", 65);
+    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "3","SHAMAN", "Main", 65);
+    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "4","SHAMAN", "Main", 65);
+    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "5","SHAMAN", "Main", 65);
+    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "6","SHAMAN", "Main", 65);
+    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "7","SHAMAN", "Main", 65);
+    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "8","SHAMAN", "Main", 65);
+    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "9","SHAMAN", "Main", 65);
+
 end
 
 function StriLi.ItemHistory:add(itemLink, player, playerClass, rollType, roll)
@@ -117,5 +127,19 @@ function StriLi.ItemHistory:OnMouseWheel(value)
         end
         self.frame.ScrollFrame.ScrollBar:SetValue(math.min(math.max(self.frame.ScrollFrame.ScrollBar:GetValue() + delta*(1000/(diff/(viewHeight/100))),0), 1000))
     end
+
+end
+
+function StriLi.ItemHistory:reset()
+
+    for i = 1, self.count do
+        HideUIPanel(self.contentFrame.children[i]);
+        self.contentFrame.children[i] = nil; --- quick and dirty. TODO: memory efficient implementation
+        --self.contentFrame.children[i]:SetParent(nil);
+        --self.contentFrame:
+    end
+
+    self.contentFrame:SetHeight(180);
+    self.count = 0;
 
 end
