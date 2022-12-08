@@ -28,7 +28,7 @@ end
 
 function StriLi.ItemHistory:init()
 
-    self.frame = CreateFrame("Frame","StriLi_ItemHistory_Frame", StriLi.MainFrame.frame,"StriLi_ItemHistory_Template");
+    self.frame = CreateFrame("FRAME","StriLi_ItemHistory_Frame", StriLi.MainFrame.frame,"StriLi_ItemHistory_Template");
     self.contentFrame = self.frame.ScrollFrame.Content;
     self.frame.ScrollFrame.ScrollBar = StriLi_ItemHistory_Frame_ScrollFrameScrollBar;
     self.frame.ScrollFrame.ScrollBar:SetPoint("TOPLEFT",StriLi_ItemHistory_Frame_ScrollFrame,420,-16);
@@ -36,18 +36,6 @@ function StriLi.ItemHistory:init()
     self.frame.ScrollFrame.ScrollBar:SetValueStep(1);
     self.frame.ScrollFrame.ScrollBar:SetMinMaxValues(0, 1000);
     self.frame.ScrollFrame.ScrollBar:Hide();
-
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "1","SHAMAN", "Main", 65);
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "2","SHAMAN", "Main", 65);
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "3","SHAMAN", "Main", 65);
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "4","SHAMAN", "Main", 65);
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "5","SHAMAN", "Main", 65);
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "6","SHAMAN", "Main", 65);
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "7","SHAMAN", "Main", 65);
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "8","SHAMAN", "Main", 65);
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengram]|h|r", "9","SHAMAN", "Main", 65);
-
-
 
 end
 

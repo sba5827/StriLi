@@ -71,7 +71,7 @@ function StriLi.MainFrame:init()
         self.unusedRowFrameStack = InfiniteStack:new(nil, RowFrame);    -- InfiniteStack creates a new object based on the class passed to it as the second parameter, if no elements are left in the stack.
     end
 
-    self.children.resetButton, self.children.syncButton, self.children.lockButton, self.children.sortButton = self.frame:GetChildren();
+    self.children.resetButton, self.children.syncButton, self.children.lockButton, self.children.sortButton, self.children.itemHistoryButton = self.frame:GetChildren();
 
     self.children.resetButton:SetScript("OnClick", function()
         self:OnClickResetButton();
@@ -85,6 +85,9 @@ function StriLi.MainFrame:init()
     self.children.sortButton:SetScript("OnClick", function()
         self:OnClickSortButton();
     end);
+    self.children.itemHistoryButton:SetScript("OnClick", function()
+        self:OnClickItemHistoryButton();
+    end)
 
 
     self.frame:SetScript("OnMouseDown", function(frame)
@@ -336,6 +339,16 @@ function StriLi.MainFrame:OnClickSortButton()
     end, "MENU");
 
     ToggleDropDownMenu(1, nil, self.SortDropDownFrame, "cursor", 3, -3, nil, nil, 0.2);
+
+end
+
+function StriLi.MainFrame:OnClickItemHistoryButton()
+
+    if (StriLi.ItemHistory.frame:IsVisible()) then
+        HideUIPanel(StriLi.ItemHistory.frame);
+    else
+        ShowUIPanel(StriLi.ItemHistory.frame);
+    end
 
 end
 
