@@ -154,6 +154,9 @@ function StriLi_initAddon()
     if StriLi_RaidMembersDB_members == nil then
         StriLi_RaidMembersDB_members ={};
     end
+    if StriLi_ItemHistory == nil then
+        StriLi_ItemHistory = {};
+    end
     RaidMembersDB:initFromRawData(StriLi_RaidMembersDB_members);
 
     StriLi.CommunicationHandler:ShoutVersion();
@@ -163,6 +166,7 @@ end
 function StriLi_finalizeAddon()
     StriLi_RaidMembersDB_members = RaidMembersDB:getRawData();
     StriLi_Master = StriLi.master;
+    StriLi_ItemHistory = StriLi.ItemHistory:getRawData();
 end
 
 -- removes the first occurring 'value'

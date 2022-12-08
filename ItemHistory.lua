@@ -8,7 +8,7 @@ methods:
 
 --]]
 
-StriLi.ItemHistory = { items = {}, players = {}, rollType = {}, frame = nil, contentFrame = nil, count = 0};
+StriLi.ItemHistory = { items = {}, players = {}, rollTypes = {}, rolls = {}, playerClasses = {}, frame = nil, contentFrame = nil, count = 0};
 
 local function getItemID_fromLink(itemLink)
 
@@ -36,16 +36,6 @@ function StriLi.ItemHistory:init()
     self.frame.ScrollFrame.ScrollBar:SetValueStep(1);
     self.frame.ScrollFrame.ScrollBar:SetMinMaxValues(0, 1000);
 
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengrammmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm]|h|r", "WWWWWWWWWWWWWW","SHAMAN", "Main", 65);
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengrammmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm]|h|r", "2","SHAMAN", "Main", 65);
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengrammmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm]|h|r", "3","SHAMAN", "Main", 65);
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengrammmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm]|h|r", "4","SHAMAN", "Main", 65);
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengrammmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm]|h|r", "5","SHAMAN", "Main", 65);
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengrammmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm]|h|r", "6","SHAMAN", "Main", 65);
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengrammmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm]|h|r", "7","SHAMAN", "Main", 65);
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengrammmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm]|h|r", "8","SHAMAN", "Main", 65);
-    self:add("|cffff8000|Hitem:49623:3789:3524:3524:3524:0:0:0:80|h[Schattengrammmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm]|h|r", "9","SHAMAN", "Main", 65);
-
 end
 
 function StriLi.ItemHistory:add(itemLink, player, playerClass, rollType, roll)
@@ -59,7 +49,9 @@ function StriLi.ItemHistory:add(itemLink, player, playerClass, rollType, roll)
 
     table.insert(self.items, itemLink);
     table.insert(self.players, player);
-    table.insert(self.rollType, rollType);
+    table.insert(self.playerClasses, playerClass);
+    table.insert(self.rollTypes, rollType);
+    table.insert(self.rolls, roll);
 
     self.contentFrame:SetHeight(self.contentFrame:GetHeight() + 30);
 
@@ -136,11 +128,41 @@ function StriLi.ItemHistory:reset()
     for i = 1, self.count do
         HideUIPanel(self.contentFrame.children[i]);
         self.contentFrame.children[i] = nil; --- quick and dirty. TODO: memory efficient implementation
-        --self.contentFrame.children[i]:SetParent(nil);
-        --self.contentFrame:
+        self.items = {};
+        self.players = {};
+        self.playerClasses = {};
+        self.rollTypes = {};
+        self.rolls = {};
     end
 
     self.contentFrame:SetHeight(0);
     self.count = 0;
+
+end
+
+function StriLi.ItemHistory:getRawData()
+
+    local t = {};
+
+    t["count"] = self.count;
+    t["items"] = self.items;
+    t["players"] = self.players;
+    t["playerClasses"] = self.playerClasses;
+    t["rollTypes"] = self.rollTypes;
+    t["rolls"] = self.rolls;
+
+    return t;
+
+end
+
+function StriLi.ItemHistory:initFromRawData(rawData)
+
+    self:init();
+
+    if rawData["count"] == nil then return end
+
+    for i = 1, rawData["count"] do
+        self:add(rawData["items"][i], rawData["players"][i], rawData["playerClasses"][i], rawData["rollTypes"][i], rawData["rolls"][i]);
+    end
 
 end

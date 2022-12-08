@@ -114,7 +114,7 @@ function StriLi.MainFrame:init()
 
     self:OnMasterChanged();
 
-    StriLi.ItemHistory:init();
+    StriLi.ItemHistory:initFromRawData(StriLi_ItemHistory);
 
 end
 
