@@ -228,22 +228,37 @@ end
 
 function StriLi.MainFrame:removePlayer(raidMemberName)
 
+    local raidMemberIndex = StriLi_GetRaidIndexOfPlayer(raidMemberName);
+
+    if raidMemberIndex > 40 then
+        error("WTF?!");
+    end
+
+    if raidMemberIndex ~= 0 then
+        local _, _, _, _, _, _, _, online = GetRaidRosterInfo(raidMemberIndex);
+
+        if online then
+            print ("|cffFFFF00StriLi: You can't remove online raidmembers from StriLi.|r");
+            return;
+        end
+    end
+
     if self.rows[raidMemberName] ~= nil then
 
-        RaidMembersDB:remove(raidMemberName);
-        table.removeByValue(self.nameTable, raidMemberName);
+    RaidMembersDB:remove(raidMemberName);
+    table.removeByValue(self.nameTable, raidMemberName);
 
-        self.unusedRowFrameStack:push(self.rows[raidMemberName])
-        self.rows[raidMemberName]:hide();
-        self.rows[raidMemberName]:unlinkCounters();
-        self.rows[raidMemberName] = nil;
-        self.rowCount = self.rowCount - 1;
+    self.unusedRowFrameStack:push(self.rows[raidMemberName])
+    self.rows[raidMemberName]:hide();
+    self.rows[raidMemberName]:unlinkCounters();
+    self.rows[raidMemberName] = nil;
+    self.rowCount = self.rowCount - 1;
 
-        self:reIndexFrames();
+    self:reIndexFrames();
 
-        self:resize();
+    self:resize();
 
-        return true;
+    return true;
 
     end
 
