@@ -54,14 +54,27 @@ function StriLi_tryToSetNewMaster(newMasterName)
 
 end
 
-function StriLi_GetPlayerRank(palyerName)
+function StriLi_GetPlayerRank(playerName)
 
     for i = 1, GetNumRaidMembers(), 1 do
         local name, rank = GetRaidRosterInfo(i);
-        if (name == palyerName) then
+        if (name == playerName) then
             return rank;
         end
     end
+
+end
+
+function StriLi_GetRaidIndexOfPlayer(playerName)
+
+    for i = 1, GetNumRaidMembers(), 1 do
+        local name = GetRaidRosterInfo(i);
+        if (name == playerName) then
+            return i
+        end
+    end
+
+    return 0;
 
 end
 
