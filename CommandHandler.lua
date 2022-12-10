@@ -10,12 +10,20 @@ SlashCmdList["STRILI"] = function(msg, _)
     -- pattern matching that skips leading whitespace and whitespace between cmd and args
     -- any whitespace at end of args is retained
 
-    local _, _, t, args = string.find(msg, "%s?(%w+)%s?(.*)")
+    local _, _, t, args = string.find(msg, "%s?(%w+)%s?(.*)");
+	
+	local inRaid = (GetNumRaidMembers() > 0);
 
     if ( tonumber(t) == nil) then
         if ( t == "c" ) then
             if not StriLi.AutoRollAnalyser:getRollInProgress() then
                 print("|cffFFFF00StriLi: No roll to cancel in progress.|r");
+                return;
+            elseif not inRaid then
+                print("|cffFFFF00StriLi: Invalide command. You're not in a Raid.|r");
+                return;
+            elseif StriLi_GetPlayerRank(UnitName("player")) < 1 then
+                print("|cffFFFF00StriLi: No permission. Your Rank is to low.|r");
                 return;
             end
 
@@ -47,6 +55,14 @@ SlashCmdList["STRILI"] = function(msg, _)
         end
     end
 
+	if not inRaid then
+		print("|cffFFFF00StriLi: Invalide command. You're not in a Raid.|r");
+		return;
+    elseif StriLi_GetPlayerRank(UnitName("player")) < 1 then
+        print("|cffFFFF00StriLi: No permission. Your Rank is to low.|r");
+        return;
+    end
+
     if StriLi.AutoRollAnalyser:getRollInProgress() then
         print ("|cffFFFF00StriLi: You have already a roll in progress. To cancel a current roll type '/sl c'.|r");
         return;
@@ -62,11 +78,11 @@ SlashCmdList["STRILI"] = function(msg, _)
         if itemLink == nil then return end
 
         StriLi.AutoRollAnalyser:setItemID(tonumber(Id));
-        StriLi.AutoRollAnalyser:setItem(itemLink)
+        StriLi.AutoRollAnalyser:setItem(itemLink);
 
     elseif args ~= "" then
 
-        local firstChar = string.sub(args, 1, 1)
+        local firstChar = string.sub(args, 1, 1);
 
         if firstChar == "|" then
             local _, _, _, _, Id, _, _, _, _, _,

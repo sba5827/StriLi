@@ -54,6 +54,17 @@ function StriLi_tryToSetNewMaster(newMasterName)
 
 end
 
+function StriLi_GetPlayerRank(palyerName)
+
+    for i = 1, GetNumRaidMembers(), 1 do
+        local name, rank = GetRaidRosterInfo(i);
+        if (name == palyerName) then
+            return rank;
+        end
+    end
+
+end
+
 function StriLi_SetTextColorByClass(FontString, Class)
 
     if    ( Class == nil ) 				then return end
