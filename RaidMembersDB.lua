@@ -133,6 +133,28 @@ function RaidMembersDB:initFromRawData(rawData)
 
 end
 
+function RaidMembersDB:postAllDataToRaid()
+    for name, v in pairs(self.raidMembers) do
+        SendChatMessage(name.." || Main: "..v["Main"]:get().." Sec: "..v["Sec"]:get().." Token: "..v["Token"]:get().." Fail: "..v["Main"]:get(), "RAID");
+    end
+end
+
+function RaidMembersDB:postNamesOfUnluckyPlayers()
+
+    local playerNamesString = "|cffFFFF00StriLi: Players that got no Loot: "
+
+    for name, v in pairs(self.raidMembers) do
+        if v["Main"]:get() == 0 and v["Sec"]:get() == 0 and v["Token"]:get() == 0 then
+            playerNamesString = playerNamesString..name..", ";
+        end
+    end
+
+    playerNamesString = playerNamesString:sub(1, -3);
+
+    print(playerNamesString.."|r");
+
+end
+
 function RaidMembersDB:combineMembers(memName1, memName2)
 
     if memName1 == memName2 or not self:checkForMember(memName1) or not self:checkForMember(memName2) then

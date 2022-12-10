@@ -33,7 +33,7 @@ SlashCmdList["STRILI"] = function(msg, _)
 
         elseif (t == "h") or (t == "help")then
 
-            print("|cffFFFF00StriLi: Available commands: \n/sl h\n/sl help\n/sl <time in s> <Item>\n/sl <time in s> [@mouseover]\n/sl c\n/sl macro|r");
+            print("|cffFFFF00StriLi: Available commands: \n/sl h\n/sl help\n/sl <time in s> <Item>\n/sl <time in s> [@mouseover]\n/sl c\n/sl macro\n/sl post all\n/sl post itemless|r");
             return;
 
         elseif t == "makro" or t == "macro" or t == "m" then
@@ -44,6 +44,16 @@ SlashCmdList["STRILI"] = function(msg, _)
             editBox:SetText("/sl <time in s> [@mouseover]");
             editBox:HighlightText();
             copyMacroBox:Show();
+
+            return;
+
+        elseif t == "post" then
+
+            if args == "all" then
+                RaidMembersDB:postAllDataToRaid();
+            elseif args == "itemless"then
+                RaidMembersDB:postNamesOfUnluckyPlayers();
+            end
 
             return;
 
