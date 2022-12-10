@@ -63,13 +63,31 @@ function RaidMembersDB:get(name)
 
 end
 
-function RaidMembersDB:remove(name)
+function RaidMembersDB:remove(name, forced)
+
+    if not forced then
+        local raidMemberIndex = StriLi_GetRaidIndexOfPlayer(raidMemberName);
+
+        if raidMemberIndex > 40 then
+            error("WTF?!");
+        end
+
+        if raidMemberIndex ~= 0 then
+            local _, _, _, _, _, _, _, online = GetRaidRosterInfo(raidMemberIndex);
+
+            if online then
+                print ("|cffFFFF00StriLi: You can't remove online raidmembers from StriLi.|r");
+                return false;
+            end
+        end
+    end
 
     if self.raidMembers[name] ~= nil then
         self.raidMembers[name] = nil;
         self.size = self.size - 1;
     end
 
+    return true;
 
 end
 
@@ -123,14 +141,18 @@ function RaidMembersDB:combineMembers(memName1, memName2)
 
     local mem1, mem2 = self:get(memName1), self:get(memName2);
 
-    mem1["Main"]:add(mem2["Main"]:get());
-    mem1["Sec"]:add(mem2["Sec"]:get());
-    mem1["Token"]:add(mem2["Token"]:get());
-    mem1["Fail"]:add(mem2["Fail"]:get());
+    if self:remove(memName2, false) then
 
-    self:remove(memName2);
+        mem1["Main"]:add(mem2["Main"]:get());
+        mem1["Sec"]:add(mem2["Sec"]:get());
+        mem1["Token"]:add(mem2["Token"]:get());
+        mem1["Fail"]:add(mem2["Fail"]:get());
 
-    return true;
+        return true;
+
+    end
+
+    return false;
 
 end
 

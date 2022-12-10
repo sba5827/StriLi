@@ -198,7 +198,7 @@ function StriLi.MainFrame:addPlayer(raidMember)
     self.rows[raidMember[1]] = self.unusedRowFrameStack:pop(nil, "StriLi_RowFrame" .. tostring(self.rowCount), self.frame, self.rowCount + 1, raidMember);
     self.rowCount = self.rowCount + 1;
     self.rows[raidMember[1]]:setCombineFunction(function(memName1, memName2) self:combineMembers(memName1, memName2) end);
-    self.rows[raidMember[1]]:setRemoveFunction(function(n) self:removePlayer(n) end);
+    self.rows[raidMember[1]]:setRemoveFunction(function(n) self:removePlayer(n, false) end);
 
     table.insert(self.nameTable,raidMember[1]);
     self:sortRowFrames();
@@ -226,26 +226,28 @@ function StriLi.MainFrame:addPlayer(raidMember)
 
 end
 
-function StriLi.MainFrame:removePlayer(raidMemberName)
+function StriLi.MainFrame:removePlayer(raidMemberName, forced)
 
-    local raidMemberIndex = StriLi_GetRaidIndexOfPlayer(raidMemberName);
+    if not forced then
+        local raidMemberIndex = StriLi_GetRaidIndexOfPlayer(raidMemberName);
 
-    if raidMemberIndex > 40 then
-        error("WTF?!");
-    end
+        if raidMemberIndex > 40 then
+            error("WTF?!");
+        end
 
-    if raidMemberIndex ~= 0 then
-        local _, _, _, _, _, _, _, online = GetRaidRosterInfo(raidMemberIndex);
+        if raidMemberIndex ~= 0 then
+            local _, _, _, _, _, _, _, online = GetRaidRosterInfo(raidMemberIndex);
 
-        if online then
-            print ("|cffFFFF00StriLi: You can't remove online raidmembers from StriLi.|r");
-            return;
+            if online then
+                print ("|cffFFFF00StriLi: You can't remove online raidmembers from StriLi.|r");
+                return;
+            end
         end
     end
 
     if self.rows[raidMemberName] ~= nil then
 
-    RaidMembersDB:remove(raidMemberName);
+    RaidMembersDB:remove(raidMemberName, forced);
     table.removeByValue(self.nameTable, raidMemberName);
 
     self.unusedRowFrameStack:push(self.rows[raidMemberName])
@@ -298,7 +300,7 @@ function StriLi.MainFrame:combineMembers(memName1, memName2)
     end
 
     if RaidMembersDB:combineMembers(memName1, memName2) then
-        self:removePlayer(memName2);
+        self:removePlayer(memName2, false);
     end
 
     return true;
@@ -423,7 +425,7 @@ end
 
 function StriLi.MainFrame:resetData()
     for player, _ in pairs(self.rows) do
-        self:removePlayer(player);
+        self:removePlayer(player, true);
     end
 
     StriLi.ItemHistory:reset();

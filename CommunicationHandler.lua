@@ -201,7 +201,7 @@ function StriLi.CommunicationHandler:On_DataChanged(msgString)
             error("Combine of members " .. name .. " and " .. data .. " failed, while receiving Data Changed Msg.")
         end
     elseif (data == "Remove") then
-        StriLi.MainFrame:removePlayer(name);
+        StriLi.MainFrame:removePlayer(name, false);
     else
         RaidMembersDB:get(name)[data]:set(tonumber(arg));
     end

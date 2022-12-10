@@ -89,7 +89,7 @@ function StriLi.EventHandler:OnRaidLeft()
     StriLi.confirmFrame = ConfirmDialogFrame:new(nil, "Du hast den Raid verlassen. Möchtest du alle Daten zurücksetzen?",
             function()
                 for player, _ in pairs(StriLi.MainFrame.rows) do
-                    StriLi.MainFrame:removePlayer(player);
+                    StriLi.MainFrame:removePlayer(player, true);
                 end
             end,
             nil);
@@ -134,7 +134,7 @@ function StriLi.EventHandler:OnJoiningNewRaidgoup()
                 function()
 
                     for player, _ in pairs(StriLi.MainFrame.rows) do
-                        StriLi.MainFrame:removePlayer(player);
+                        StriLi.MainFrame:removePlayer(player, true);
                     end
 
                     self:addNewPlayers();
