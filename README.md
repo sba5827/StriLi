@@ -4,7 +4,7 @@
 This Addon was developed for WoW version 3.3.5a WotLK. No guarantee that it will work with other versions.
 
 ## How to Install
-Download the latest [releases](https://github.com/sba5827/StriLi/releases/tag/3.00). Unzip the folder to your WoW Addons folder. Eg.:
+Download the latest [releases](https://github.com/sba5827/StriLi/releases/tag/3.01). Unzip the folder to your WoW Addons folder. Eg.:
 
     C:\Users\USERNAME\..\WoW\Interface\AddOns\
     
@@ -14,7 +14,7 @@ Make sure that the folder name of the unzipped folder is StriLi, otherwise the a
 
 And **NOT** like:
 
-    C:\Users\USERNAME\..\WoW\Interface\AddOns\StriLi-3.00
+    C:\Users\USERNAME\..\WoW\Interface\AddOns\StriLi-3.01
     
 Example Screenshot:
     ![Sceenshot_README](https://user-images.githubusercontent.com/38493688/200170842-d6c7f710-3bb1-491a-9796-1b8fb252d9c7.PNG)
@@ -36,6 +36,17 @@ Cancels recent roll.
     /sl macro
 Opens textFrame with copyable mouseover macro.
 
+    /sl rules
+Opens an editBox to write loot rules that can be posted in the raid. No macros needed anymore.
+
+    /sl post all
+Sends a list of tally-marks to the raid.
+
+    /sl post itemless
+Sends players who have not received an item as a system message.
+
+    /sl post rules
+Sends the rules entered with '/sl rules' to the raid.
 
 \<Item\> - Version: you need to shift-click on the Item to add it.
 
@@ -51,7 +62,7 @@ Examples:
 Dieses Addon wurde für WoW Version 3.3.5a WotLK entwickelt. Es gibt keine Garantie, dass es mit anderen Versionen funktioniert.
 
 ## Wie man es installiert
-Laden Sie die neueste [Version](https://github.com/sba5827/StriLi/releases/tag/3.00) herunter. Entpacken Sie den Ordner in Ihren WoW Addons Ordner. z.B.:
+Laden Sie die neueste [Version](https://github.com/sba5827/StriLi/releases/tag/3.01) herunter. Entpacken Sie den Ordner in Ihren WoW Addons Ordner. z.B.:
 
     C:\Users\USERNAME\..\WoW\Interface\AddOns\
     
@@ -61,7 +72,7 @@ Achten Sie darauf, dass der Ordnername des entpackten Ordners StriLi lautet, son
 
 Und **NICHT** wie:
 
-    C:\Benutzer\USERNAME\..\WoW\Interface\AddOns\StriLi-3.00
+    C:\Benutzer\USERNAME\..\WoW\Interface\AddOns\StriLi-3.01
     
 Beispiel Screenshot:
     ![Sceenshot_README](https://user-images.githubusercontent.com/38493688/200170842-d6c7f710-3bb1-491a-9796-1b8fb252d9c7.PNG)
@@ -82,6 +93,18 @@ Bricht aktuelles Verrollen ab.
     /sl makro
     /sl macro
 Öffnet ein Textfenster aus dem das mouseover Makro kopiert werden kann.
+
+    /sl rules
+Öffnet eine editBox, um Loot-Regeln zu schreiben, die im Raid gepostet werden können. Keine Makros mehr nötig.
+
+    /sl post all
+Sendet eine auflistung der Striche an den Schlachtzug.
+
+    /sl post itemless
+Sendet Spieler, die keinen Gegenstand erhalten haben, als Systemmeldung.
+
+    /sl post rules
+Sendet die Regeln, die mit '/sl rules' eingegeben wurden, in den Schlachtzug.
 
 \<Item\> - Version: Zum Hinzufügen des Items in den Befehl müssen Sie einen Shift-klick auf das Item machen.
 
