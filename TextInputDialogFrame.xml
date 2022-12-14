@@ -68,7 +68,7 @@
 					</EdgeSize>
 				</Backdrop>
 				<Frames>
-					<EditBox name="$parent_EditBox">
+					<EditBox name="$parent_EditBox" letters="255">
 						<Size>
 							<AbsDimension x="190" y="30"/>
 						</Size>

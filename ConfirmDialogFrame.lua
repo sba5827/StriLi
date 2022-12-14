@@ -28,7 +28,7 @@ function ConfirmDialogFrame:new(o, text, confirmFnc, cancelFnc)
     self.__index = self;
 
     if o.frame == nil then
-        o.frame = CreateFrame("FRAME", "ConfirmDialogFrame", StriLi.MainFrame.frame, "StriLi_ConfirmDialogFrame_Template");
+        o.frame = CreateFrame("FRAME", "ConfirmDialogFrame", UIParent, "StriLi_ConfirmDialogFrame_Template");
     end
 
     local regions = {o.frame:GetRegions()};
