@@ -106,7 +106,7 @@ SlashCmdList["STRILI"] = function(msg, _)
         return;
     end
 
-    if args == "[@mouseover]" then
+    if string.lower(args) == "[@mouseover]" then
         local _, itemLink = GameTooltip:GetItem();
 
         local _, _, _, _, Id, _, _, _, _, _,
