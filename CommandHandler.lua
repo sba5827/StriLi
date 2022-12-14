@@ -10,7 +10,7 @@ SlashCmdList["STRILI"] = function(msg, _)
     -- pattern matching that skips leading whitespace and whitespace between cmd and args
     -- any whitespace at end of args is retained
 
-    local _, _, t, args = string.find(msg, "%s?(%w+)%s?(.*)");
+    local _, _, t, args = string.find(msg, "%s*(%w+)%s*(.*)");
 	
 	local inRaid = (GetNumRaidMembers() > 0);
 
