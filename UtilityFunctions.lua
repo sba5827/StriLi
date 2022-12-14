@@ -198,6 +198,7 @@ function StriLi_finalizeAddon()
     StriLi_Master = StriLi.master;
     StriLi_ItemHistory = StriLi.ItemHistory:getRawData();
     StriLi_RulesTxt = StriLi.LootRules:getText();
+    StriLi.MainFrame.frame:SetUserPlaced(false);
 end
 
 -- removes the first occurring 'value'
