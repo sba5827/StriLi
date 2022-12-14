@@ -1,0 +1,102 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd">
+
+    <Frame name="StriLi_LootRulesFrame_Template" toplevel="true" enableMouse="true" movable="true" hidden="true" virtual="true">
+        <Size>
+            <AbsDimension x="600" y="200"/>
+        </Size>
+        <Anchors>
+            <Anchor point="CENTER">
+                <Offset>
+                    <AbsDimension x="0" y="0"/>
+                </Offset>
+            </Anchor>
+        </Anchors>
+        <Backdrop tile="true"
+                  bgFile="Interface\DialogFrame\UI-DialogBox-Background"
+                  edgeFile="Interface/BUTTONS/UI-SliderBar-Border">
+            <BackgroundInsets>
+                <AbsInset left="1" right="1" top="3" bottom="3"/>
+            </BackgroundInsets>
+            <BorderColor a="1" r="0" g="0" b="0" />
+            <TileSize>
+                <AbsValue val="32"/>
+            </TileSize>
+            <EdgeSize>
+                <AbsValue val="8"/>
+            </EdgeSize>
+        </Backdrop>
+        <Layers>
+            <Layer level="ARTWORK">
+                <Texture name="StriLi_LootRulesFrame_Header"
+                         file="">
+                    <Size>
+                        <AbsDimension x="200" y="64"/>
+                    </Size>
+                    <Anchors>
+                        <Anchor point="TOP">
+                            <Offset>
+                                <AbsDimension x="0" y="0"/>
+                            </Offset>
+                        </Anchor>
+                    </Anchors>
+                </Texture>
+                <FontString inherits="GameFontNormal" text="Loot Rules">
+                    <Anchors>
+                        <Anchor point="TOP" relativeTo="StriLi_LootRulesFrame_Header">
+                            <Offset>
+                                <AbsDimension x="0" y="-13"/>
+                            </Offset>
+                        </Anchor>
+                    </Anchors>
+                </FontString>
+            </Layer>
+        </Layers>
+        <Frames>
+            <ScrollFrame name="$parent_ScrollFrame" EnableMouseWheel="true" inherits="UIPanelScrollFrameTemplate" parentKey="ScrollFrame">
+                <Anchors>
+                    <Anchor point="TOPLEFT">
+                        <Offset>
+                            <AbsDimension x="3" y="-25"/>
+                        </Offset>
+                    </Anchor>
+                    <Anchor point="BOTTOMRIGHT">
+                        <Offset>
+                            <AbsDimension x="-25" y="8"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <ScrollChild>
+                    <EditBox name="$parent_EditBox" letters="1530" multiline="true" parentKey="EditBox">
+                        <Size x="525" y="0" />
+                        <Anchors>
+                            <Anchor point="TOPLEFT"/>
+                            <Anchor point="BOTTOMRIGHT"/>
+                        </Anchors>
+                        <FontString inherits="ChatFontNormal" />
+                    </EditBox>
+                </ScrollChild>
+                <Scripts>
+                    <OnMouseWheel>StriLi.ItemHistory:OnMouseWheel(arg1)</OnMouseWheel>
+                </Scripts>
+            </ScrollFrame>
+            <Button name="$parent_SaveButton" inherits="StriLi_Button_Template" text="Save" parentKey="SaveButton">
+                <Size>
+                    <AbsDimension x="40" y="20"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="BOTTOMRIGHT">
+                        <Offset>
+                            <AbsDimension x="-24" y="8"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnClick>StriLi.LootRules:OnClickSaveButton()</OnClick>
+                </Scripts>
+            </Button>
+        </Frames>
+    </Frame>
+
+</Ui>

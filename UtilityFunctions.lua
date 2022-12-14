@@ -181,6 +181,12 @@ function StriLi_initAddon()
     if StriLi_ItemHistory == nil then
         StriLi_ItemHistory = {};
     end
+    if StriLi_RulesTxt == nil then
+        StriLi_RulesTxt = "";
+    end
+
+    StriLi.LootRules:setText(StriLi_RulesTxt);
+
     RaidMembersDB:initFromRawData(StriLi_RaidMembersDB_members);
 
     StriLi.CommunicationHandler:ShoutVersion();
@@ -191,6 +197,7 @@ function StriLi_finalizeAddon()
     StriLi_RaidMembersDB_members = RaidMembersDB:getRawData();
     StriLi_Master = StriLi.master;
     StriLi_ItemHistory = StriLi.ItemHistory:getRawData();
+    StriLi_RulesTxt = StriLi.LootRules:getText();
 end
 
 -- removes the first occurring 'value'

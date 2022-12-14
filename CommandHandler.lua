@@ -22,9 +22,6 @@ SlashCmdList["STRILI"] = function(msg, _)
             elseif not inRaid then
                 print("|cffFFFF00StriLi: Invalide command. You're not in a Raid.|r");
                 return;
-            elseif StriLi_GetPlayerRank(UnitName("player")) < 1 then
-                print("|cffFFFF00StriLi: No permission. Your Rank is to low.|r");
-                return;
             end
 
             print("|cffFFFF00StriLi: Roll canceled.|r");
@@ -33,7 +30,18 @@ SlashCmdList["STRILI"] = function(msg, _)
 
         elseif (t == "h") or (t == "help")then
 
-            print("|cffFFFF00StriLi: Available commands: \n/sl h\n/sl help\n/sl <time in s> <Item>\n/sl <time in s> [@mouseover]\n/sl c\n/sl macro\n/sl post all\n/sl post itemless|r");
+            print("|cffFFFF00StriLi: Available commands:|r");
+            print("|cffFFFF00/sl h|r");
+            print("|cffFFFF00/sl help|r");
+            print("|cffFFFF00/sl <time in s> <Item>|r");
+            print("|cffFFFF00/sl <time in s> [@mouseover]|r");
+            print("|cffFFFF00/sl m|r");
+            print("|cffFFFF00/sl makro|r");
+            print("|cffFFFF00/sl macro|r");
+            print("|cffFFFF00/sl rules|r");
+            print("|cffFFFF00/sl post all|r");
+            print("|cffFFFF00/sl post itemless|r");
+            print("|cffFFFF00/sl post rules|r");
             return;
 
         elseif t == "makro" or t == "macro" or t == "m" then
@@ -50,13 +58,33 @@ SlashCmdList["STRILI"] = function(msg, _)
         elseif t == "post" then
 
             if args == "all" then
-                RaidMembersDB:postAllDataToRaid();
+                if inRaid then
+                    RaidMembersDB:postAllDataToRaid();
+                elseif inRaid then
+                    print("|cffFFFF00StriLi: Invalide command. You're not in a Raid.|r");
+                    return;
+                end
             elseif args == "itemless"then
                 RaidMembersDB:postNamesOfUnluckyPlayers();
+            elseif args == "rules" then
+
+                if not inRaid then
+                    print("|cffFFFF00StriLi: Invalide command. You're not in a Raid.|r");
+                    return;
+                elseif StriLi_GetPlayerRank(UnitName("player")) < 1 then
+                    print("|cffFFFF00StriLi: No permission. Your Rank is to low.|r");
+                    return;
+                end
+                StriLi.LootRules:postToRaid();
+                return;
+
             end
 
             return;
 
+        elseif t == "rules" then
+            StriLi.LootRules:show();
+            return;
         else
 
             print ("|cffFFFF00StriLi: First argument must be a NUMBER|r");
