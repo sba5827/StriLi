@@ -104,7 +104,7 @@ function StriLi.InitLang()
     elseif lang == "enGB" or lang == "enUS" then
         StriLi.Lang = StriLi_Stub_enGB();
     else
-        error("WTF?!");
+        --error("WTF?!");
     end
 
 end

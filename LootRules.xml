@@ -82,12 +82,12 @@
             </ScrollFrame>
             <Button name="$parent_SaveButton" inherits="StriLi_Button_Template" text="Save" parentKey="SaveButton">
                 <Size>
-                    <AbsDimension x="40" y="20"/>
+                    <AbsDimension x="60" y="20"/>
                 </Size>
                 <Anchors>
                     <Anchor point="BOTTOMRIGHT">
                         <Offset>
-                            <AbsDimension x="-24" y="8"/>
+                            <AbsDimension x="-44" y="8"/>
                         </Offset>
                     </Anchor>
                 </Anchors>
