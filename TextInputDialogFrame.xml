@@ -94,6 +94,9 @@
 						</Offset>
 					</Anchor>
 				</Anchors>
+				<Scripts>
+					<OnLoad>self:SetText(StriLi.Lang.XML.ButtonOk)</OnLoad>
+				</Scripts>
 			</Button>
 			<Button name="$parent_CancleButton" inherits="UIPanelButtonTemplate" text="Cancle">
 				<Size>
@@ -106,6 +109,9 @@
 						</Offset>
 					</Anchor>
 				</Anchors>
+				<Scripts>
+					<OnLoad>self:SetText(StriLi.Lang.XML.ButtonCancel)</OnLoad>
+				</Scripts>
 			</Button>
 		</Frames>
 	</Frame>

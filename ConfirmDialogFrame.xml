@@ -42,7 +42,7 @@
 			</Layer>
 		</Layers>
 		<Frames>
-			<Button name="$parent_ConfirmButton" inherits="StriLi_Custom_Button_Template" text="Yes">
+			<Button name="$parent_ConfirmButton" inherits="StriLi_Custom_Button_Template" text="">
 				<Size>
 					<AbsDimension x="60" y="20"/>
 				</Size>
@@ -53,8 +53,11 @@
 						</Offset>
 					</Anchor>
 				</Anchors>
+				<Scripts>
+					<OnLoad>self:SetText(StriLi.Lang.XML.ButtonYes)</OnLoad>
+				</Scripts>
 			</Button>
-			<Button name="$parent_CancleButton" inherits="StriLi_Custom_Button_Template" text="Cancle">
+			<Button name="$parent_CancleButton" inherits="StriLi_Custom_Button_Template" text="">
 				<Size>
 					<AbsDimension x="60" y="20"/>
 				</Size>
@@ -65,6 +68,9 @@
 						</Offset>
 					</Anchor>
 				</Anchors>
+				<Scripts>
+					<OnLoad>self:SetText(StriLi.Lang.XML.ButtonCancel)</OnLoad>
+				</Scripts>
 			</Button>
 		</Frames>
 	</Frame>

@@ -1,7 +1,7 @@
 function StriLi_Stub_deDE() return {
     ErrorMsg = {
-        ExpectNumAsItemID = "Es wurde eine Nummer als ItemID erwartet!",
-        ExpectNumAsTime = "Es Wurde eine Nummer al time erwartet!",
+        ExpectNumAsItemID = "Es wurde eine Zahl als ItemID erwartet!",
+        ExpectNumAsTime = "Es Wurde eine Zahl al time erwartet!",
         CombineMembers1 = "Zusammenlegen von",
         CombineMembers2 = "und",
         CombineMembers3 = "ist fehlgeschlagen während die Nachricht DataChanged empfangen wurde.",
@@ -47,7 +47,7 @@ function StriLi_Stub_deDE() return {
         AvailableCommands = "Verfügbare Befehle",
         TimeInSec = "Zeit in s",
         NoPermRankToLow = "Keine Berechtigung. Dein Rang ist zu niedrig.",
-        FirstArgNum = "Erstes Argument muss eine Nummer sein.",
+        FirstArgNum = "Erstes Argument muss eine Zahl sein.",
         PlayersGotLoot = "Spieler die kein Item bekommen haben",
         CombineMembers = "Zusammenlegen mit",
         Reregister = "Ummelden",
@@ -78,6 +78,18 @@ function StriLi_Stub_deDE() return {
         Ascending = "'",
         Descending = ",",
         Class = "Klasse",
-    }
+    },
+    XML = {
+        ButtonYes = "Ja",
+        ButtonCancel = "Abbrechen",
+        ButtonReset = "Zurücksetzen",
+        ButtonSync = "Sync",
+        ButtonLock = "Sperren",
+        ButtonSort = "Sortieren",
+        ButtonItemHistory = "ItemHistory",
+        NewStriLiVersion = "Eine neue Version von StriLi ist verfügbar unter:",
+        ButtonOk = "Ok",
+        LootRules = "Loot Regeln",
+    },
 };
 end

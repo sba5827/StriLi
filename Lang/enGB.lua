@@ -78,6 +78,18 @@ function StriLi_Stub_enGB() return {
         Ascending = "'",
         Descending = ",",
         Class = "Class",
-    }
+    },
+    XML = {
+        ButtonYes = "Yes",
+        ButtonCancel = "Cancel",
+        ButtonReset = "Reset",
+        ButtonSync = "Sync",
+        ButtonLock = "Lock",
+        ButtonSort = "Sort",
+        ButtonItemHistory = "ItemHistory",
+        NewStriLiVersion = "A new version of StriLi is available at:",
+        ButtonOk = "Ok",
+        LootRules = "Loot Rules",
+    },
 };
 end

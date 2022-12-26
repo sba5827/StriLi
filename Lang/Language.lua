@@ -79,7 +79,19 @@ StriLi.Lang = {
         Ascending = "'",
         Descending = ",",
         Class = "Klasse",
-    }
+    },
+    XML = {
+        ButtonYes = "Yes",
+        ButtonCancel = "Cancel",
+        ButtonReset = "Reset",
+        ButtonSync = "Sync",
+        ButtonLock = "Lock",
+        ButtonSort = "Sort",
+        ButtonItemHistory = "ItemHistory",
+        NewStriLiVersion = "Eine neue Version von StriLi ist verfügbar unter:",
+        ButtonOk = "Ok",
+        LootRules = "Loot Rules",
+    },
 };
 
 function StriLi.InitLang()

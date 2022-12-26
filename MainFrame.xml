@@ -260,6 +260,9 @@
 						</Offset>
 					</Anchor>
 				</Anchors>
+				<Scripts>
+					<OnLoad>self:SetText(StriLi.Lang.XML.ButtonReset)</OnLoad>
+				</Scripts>
 			</Button>
 			<Button name="StriLi_SyncButton" inherits="StriLi_Button_Template" text="Sync">
 				<Size>
@@ -272,6 +275,9 @@
 						</Offset>
 					</Anchor>
 				</Anchors>
+				<Scripts>
+					<OnLoad>self:SetText(StriLi.Lang.XML.ButtonSync)</OnLoad>
+				</Scripts>
 			</Button>
 			<Button name="StriLi_LockRegButton" inherits="StriLi_Button_Template" text="Lock">
 				<Size>
@@ -284,6 +290,9 @@
 						</Offset>
 					</Anchor>
 				</Anchors>
+				<Scripts>
+					<OnLoad>self:SetText(StriLi.Lang.XML.ButtonLock)</OnLoad>
+				</Scripts>
 			</Button>
 			<Button name="StriLi_SortButton" inherits="StriLi_Button_Template" text="Sort">
 				<Size>
@@ -296,6 +305,9 @@
 						</Offset>
 					</Anchor>
 				</Anchors>
+				<Scripts>
+					<OnLoad>self:SetText(StriLi.Lang.XML.ButtonSort)</OnLoad>
+				</Scripts>
 			</Button>
 			<Button name="StriLi_ItemHistoryButton" inherits="StriLi_Button_Template" text="ItemHistory" orientation="VERTICAL">
 				<Size>
@@ -308,6 +320,9 @@
 						</Offset>
 					</Anchor>
 				</Anchors>
+				<Scripts>
+					<OnLoad>self:SetText(StriLi.Lang.XML.ButtonItemHistory)</OnLoad>
+				</Scripts>
 			</Button>
 			<Button name="StriLi_Close" inherits="UIPanelCloseButton" text="X">
 				<Size>

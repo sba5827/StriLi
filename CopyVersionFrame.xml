@@ -30,7 +30,7 @@
 		</Backdrop>
 		<Layers>
 			<Layer>
-				<FontString name="$parent_FontString" inherits="GameFontNormal" text="Eine neue Version von StriLi ist verfügbar unter: ">
+				<FontString name="$parent_FontString" inherits="GameFontNormal" text="">
 					<Anchors>
 						<Anchor point="CENTER">
 							<Offset>
@@ -38,6 +38,9 @@
 							</Offset>
 						</Anchor>
 					</Anchors>
+					<Scripts>
+						<OnLoad>self:SetText(StriLi.Lang.XML.NewStriLiVersion)</OnLoad>
+					</Scripts>
 				</FontString>
 			</Layer>
 		</Layers>
@@ -96,6 +99,7 @@
 				</Anchors>
 				<Scripts>
 					<OnClick> self:GetParent():Hide(); </OnClick>
+					<OnLoad>self:SetText(StriLi.Lang.XML.ButtonOk)</OnLoad>
 				</Scripts>
 			</Button>
 		</Frames>

@@ -50,6 +50,9 @@
                             </Offset>
                         </Anchor>
                     </Anchors>
+                    <Scripts>
+                        <OnLoad>self:SetText(StriLi.Lang.XML.LootRules)</OnLoad>
+                    </Scripts>
                 </FontString>
             </Layer>
         </Layers>
