@@ -147,7 +147,7 @@ end
 
 function StriLi.CommunicationHandler:On_MasterChanged(msgString)
 
-    local sender, newMaster = string.match(msgString, "([^%s]+)%s?(.*)");
+    local sender, newMaster = string.match(msgString, CONSTS.nextWordPatern);
 
     if (sender == StriLi.master) or (StriLi.master == "") then
         StriLi.master = newMaster;
@@ -178,9 +178,9 @@ function StriLi.CommunicationHandler:On_DataChanged(msgString)
 
     local SenderName, _next, name, data, arg;
 
-    SenderName, _next = string.match(msgString, "([^%s]+)%s?(.*)");
-    name, _next = string.match(_next, "([^%s]+)%s?(.*)");
-    data, arg = string.match(_next, "([^%s]+)%s?(.*)");
+    SenderName, _next = string.match(msgString, CONSTS.nextWordPatern);
+    name, _next = string.match(_next, CONSTS.nextWordPatern);
+    data, arg = string.match(_next, CONSTS.nextWordPatern);
 
     if ((SenderName == UnitName("player")) or (SenderName ~= StriLi.master)) and not self.requestedSyncAsMaster then
         return ;
@@ -198,7 +198,7 @@ function StriLi.CommunicationHandler:On_DataChanged(msgString)
         RaidMembersDB:get(name)["Reregister"] = arg;
     elseif (arg == "Combine") then
         if not StriLi.MainFrame:combineMembers(name, data) then
-            error("Combine of members " .. name .. " and " .. data .. " failed, while receiving Data Changed Msg.")
+            error(StriLi.Lang.ErrorMsg.CombineMembers1.." "..name.." "..StriLi.Lang.ErrorMsg.CombineMembers2.." "..data.." "..StriLi.Lang.ErrorMsg.CombineMembers3)
         end
     elseif (data == "Remove") then
         StriLi.MainFrame:removePlayer(name, false);
@@ -370,14 +370,14 @@ end
 
 function StriLi.CommunicationHandler:On_ItemHistoryAdd(arguments)
 
-    local sender, _next = string.match(arguments, "([^%s]+)%s?(.*)");
+    local sender, _next = string.match(arguments, CONSTS.nextWordPatern);
     if sender == UnitName("player") or (sender ~= StriLi.master and StriLi.master ~= "") then return end
     local itemLink, _next = string.match(_next, "([^%]]+)%s?(.*)");
-    local _, _next = string.match(_next, "([^%s]+)%s?(.*)");
-    local player, _next = string.match(_next, "([^%s]+)%s?(.*)");
-    local playerClass, _next = string.match(_next, "([^%s]+)%s?(.*)");
-    local rollType, _next = string.match(_next, "([^%s]+)%s?(.*)");
-    local roll, _next = string.match(_next, "([^%s]+)%s?(.*)");
+    local _, _next = string.match(_next, CONSTS.nextWordPatern);
+    local player, _next = string.match(_next, CONSTS.nextWordPatern);
+    local playerClass, _next = string.match(_next, CONSTS.nextWordPatern);
+    local rollType, _next = string.match(_next, CONSTS.nextWordPatern);
+    local roll, _next = string.match(_next, CONSTS.nextWordPatern);
 
     StriLi.ItemHistory:add(itemLink.."]|h|r", player, playerClass, rollType, roll);
 

@@ -76,12 +76,12 @@ function LabelRowFrame:setColumnContent()
     self.Regions.TokenFS:SetPoint("CENTER", 0, 0);
     self.Regions.FailFS:SetPoint("CENTER", 0, 0);
 
-    self.Regions.NameFS:SetText("Name");
-    self.Regions.ReregisterFS:SetText("U");
-    self.Regions.MainFS:SetText("Main");
-    self.Regions.SecFS:SetText("Sec");
-    self.Regions.TokenFS:SetText("Token");
-    self.Regions.FailFS:SetText("Fail");
+    self.Regions.NameFS:SetText(StriLi.Lang.Labels.Name);
+    self.Regions.ReregisterFS:SetText(StriLi.Lang.Labels.Reregister);
+    self.Regions.MainFS:SetText(StriLi.Lang.Labels.Main);
+    self.Regions.SecFS:SetText(StriLi.Lang.Labels.Sec);
+    self.Regions.TokenFS:SetText(StriLi.Lang.Labels.Token);
+    self.Regions.FailFS:SetText(StriLi.Lang.Labels.Fail);
 
 end
 

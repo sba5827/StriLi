@@ -1,3 +1,21 @@
+function protect(tbl)
+    return setmetatable({}, {
+        __index = tbl,
+        __newindex = function(t, key, value)
+            error("attempting to change constant " ..
+                    tostring(key) .. " to " .. tostring(value), 2)
+        end
+    })
+end
+
+CONSTS = protect({
+    itemLinkPatern = "|?c?f?f?(%x*)|?H?([^:]*):?(%d+):?(%d*):?(%d*):?(%d*):?(%d*):?(%d*):?(%-?%d*):?(%-?%d*):?(%d*):?(%d*):?(%-?%d*)|?h?%[?([^%[%]]*)%]?|?h?|?r?",
+    nextWordPatern = "([^%s]+)%s?(.*)",
+    nextLinePatern = "([^\n]*)\n?(.*)",
+    msgColorStringStart = "|cffFFFF00",
+    msgColorStringEnd = "|r",
+});
+
 function StriLi_SetMaster(arg1)
 
     local newMasterName = arg1;

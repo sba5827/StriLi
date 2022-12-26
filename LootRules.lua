@@ -41,11 +41,11 @@ end
 
 function StriLi.LootRules:postToRaid()
 
-    local _, _, line, next = string.find(self.text, "([^\n]*)\n?(.*)");
+    local _, _, line, next = string.find(self.text, CONSTS.nextLinePatern);
 
     while not ((line == "") and (next == "")) do
         SendChatMessage(line, "RAID");
-        _, _, line, next = string.find(next, "([^\n]*)\n?(.*)");
+        _, _, line, next = string.find(next,  CONSTS.nextLinePatern);
     end
 
 end

@@ -56,7 +56,6 @@ local SortType_t = { NAME_ASCENDING = 1,
                      CLASS_ASCENDING = 11,
                      CLASS_DESCENDING = 12};
 
-StriLi = LibStub("AceAddon-3.0"):NewAddon("StriLi", "AceConsole-3.0");
 StriLi.MainFrame = { frame = nil, labelRow = nil, rows = {}, children = {}, unusedRowFrameStack = nil, rowCount = 0,  sortType = ObservableNumber:new(nil), nameTable = {}};
 
 function StriLi.MainFrame:init()
@@ -239,7 +238,7 @@ function StriLi.MainFrame:removePlayer(raidMemberName, forced)
             local _, _, _, _, _, _, _, online = GetRaidRosterInfo(raidMemberIndex);
 
             if online then
-                print ("|cffFFFF00StriLi: You can't remove online raidmembers from StriLi.|r");
+                print (CONSTS.msgColorStringStart.."StriLi: "..StriLi.Lang.ErrorMsg.RemoveOnlineRaidmember.."|r");
                 return;
             end
         end
@@ -317,7 +316,7 @@ function StriLi.MainFrame:OnClickResetButton()
         StriLi.confirmFrame:hide();
     end
 
-    StriLi.confirmFrame = ConfirmDialogFrame:new(nil, "Bist du sicher, das du alle Daten zurücksetzen willst?",
+    StriLi.confirmFrame = ConfirmDialogFrame:new(nil, StriLi.Lang.Confirm.ResetDataConfirm,
             function()
                 StriLi.CommunicationHandler:sendResetData();
                 self:resetData();
@@ -339,9 +338,9 @@ function StriLi.MainFrame:OnClickLockButton()
     end
 
     if enabled == 1 then
-        self.children.lockButton:SetText("Lock");
+        self.children.lockButton:SetText(StriLi.Lang.Labels.Lock);
     else
-        self.children.lockButton:SetText("Unlock");
+        self.children.lockButton:SetText(StriLi.Lang.Labels.Unlock);
     end
 
 end
@@ -373,51 +372,51 @@ function StriLi.MainFrame:initDropdownMenu(frame, level, menuList)
 
     local info = UIDropDownMenu_CreateInfo();
 
-    info.text, info.hasArrow, info.func = "Name '", false, function()
+    info.text, info.hasArrow, info.func = StriLi.Lang.Labels.Name.." "..StriLi.Lang.Labels.Ascending, false, function()
         self.sortType:set(SortType_t.NAME_DESCENDING);
     end;
     UIDropDownMenu_AddButton(info);
-    info.text, info.hasArrow, info.func = "Name ,", false, function()
+    info.text, info.hasArrow, info.func = StriLi.Lang.Labels.Name.." "..StriLi.Lang.Labels.Descending, false, function()
         self.sortType:set(SortType_t.NAME_ASCENDING);
     end;
     UIDropDownMenu_AddButton(info);
-    info.text, info.hasArrow, info.func = "Main '", false, function()
+    info.text, info.hasArrow, info.func = StriLi.Lang.Labels.Main.." "..StriLi.Lang.Labels.Ascending, false, function()
         self.sortType:set(SortType_t.MAIN_ASCENDING);
     end;
     UIDropDownMenu_AddButton(info);
-    info.text, info.hasArrow, info.func = "Main ,", false, function()
+    info.text, info.hasArrow, info.func = StriLi.Lang.Labels.Main.." "..StriLi.Lang.Labels.Descending, false, function()
         self.sortType:set(SortType_t.MAIN_DESCENDING);
     end;
     UIDropDownMenu_AddButton(info);
-    info.text, info.hasArrow, info.func = "Sec '", false, function()
+    info.text, info.hasArrow, info.func = StriLi.Lang.Labels.Sec.." "..StriLi.Lang.Labels.Ascending, false, function()
         self.sortType:set(SortType_t.SEC_ASCENDING);
     end;
     UIDropDownMenu_AddButton(info);
-    info.text, info.hasArrow, info.func = "Sec ,", false, function()
+    info.text, info.hasArrow, info.func = StriLi.Lang.Labels.Sec.." "..StriLi.Lang.Labels.Descending, false, function()
         self.sortType:set(SortType_t.SEC_DESCENDING);
     end;
     UIDropDownMenu_AddButton(info);
-    info.text, info.hasArrow, info.func = "Token '", false, function()
+    info.text, info.hasArrow, info.func = StriLi.Lang.Labels.Token.." "..StriLi.Lang.Labels.Ascending, false, function()
         self.sortType:set(SortType_t.TOKEN_ASCENDING);
     end;
     UIDropDownMenu_AddButton(info);
-    info.text, info.hasArrow, info.func = "Token ,", false, function()
+    info.text, info.hasArrow, info.func = StriLi.Lang.Labels.Token.." "..StriLi.Lang.Labels.Descending, false, function()
         self.sortType:set(SortType_t.TOKEN_DESCENDING);
     end;
     UIDropDownMenu_AddButton(info);
-    info.text, info.hasArrow, info.func = "Fail '", false, function()
+    info.text, info.hasArrow, info.func = StriLi.Lang.Labels.Fail.." "..StriLi.Lang.Labels.Ascending, false, function()
         self.sortType:set(SortType_t.FAIL_ASCENDING);
     end;
     UIDropDownMenu_AddButton(info);
-    info.text, info.hasArrow, info.func = "Fail ,", false, function()
+    info.text, info.hasArrow, info.func = StriLi.Lang.Labels.Fail.." "..StriLi.Lang.Labels.Descending, false, function()
         self.sortType:set(SortType_t.FAIL_DESCENDING);
     end;
     UIDropDownMenu_AddButton(info);
-    info.text, info.hasArrow, info.func = "Klasse '", false, function()
+    info.text, info.hasArrow, info.func = StriLi.Lang.Labels.Class.." "..StriLi.Lang.Labels.Ascending, false, function()
         self.sortType:set(SortType_t.CLASS_ASCENDING);
     end;
     UIDropDownMenu_AddButton(info);
-    info.text, info.hasArrow, info.func = "Klasse ,", false, function()
+    info.text, info.hasArrow, info.func = StriLi.Lang.Labels.Class.." "..StriLi.Lang.Labels.Descending, false, function()
         self.sortType:set(SortType_t.CLASS_DESCENDING);
     end;
     UIDropDownMenu_AddButton(info);

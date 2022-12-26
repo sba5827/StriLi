@@ -17,31 +17,31 @@ SlashCmdList["STRILI"] = function(msg, _)
     if ( tonumber(t) == nil) then
         if ( t == "c" ) then
             if not StriLi.AutoRollAnalyser:getRollInProgress() then
-                print("|cffFFFF00StriLi: No roll to cancel in progress.|r");
+                print(CONSTS.msgColorStringStart.."StriLi: "..StriLi.Lang.Rolls.NoRollToCancel.."|r");
                 return;
             elseif not inRaid then
-                print("|cffFFFF00StriLi: Invalide command. You're not in a Raid.|r");
+                print(CONSTS.msgColorStringStart.."StriLi: "..StriLi.Lang.Commands.InvalideNotInRaid.."|r");
                 return;
             end
 
-            print("|cffFFFF00StriLi: Roll canceled.|r");
+            print(CONSTS.msgColorStringStart.."StriLi: "..StriLi.Lang.Rolls.RollCanceled.."|r");
             StriLi.AutoRollAnalyser:cancelRoll();
             return;
 
         elseif (t == "h") or (t == "help")then
 
-            print("|cffFFFF00StriLi: Available commands:|r");
-            print("|cffFFFF00/sl h|r");
-            print("|cffFFFF00/sl help|r");
-            print("|cffFFFF00/sl <time in s> <Item>|r");
-            print("|cffFFFF00/sl <time in s> [@mouseover]|r");
-            print("|cffFFFF00/sl m|r");
-            print("|cffFFFF00/sl makro|r");
-            print("|cffFFFF00/sl macro|r");
-            print("|cffFFFF00/sl rules|r");
-            print("|cffFFFF00/sl post all|r");
-            print("|cffFFFF00/sl post itemless|r");
-            print("|cffFFFF00/sl post rules|r");
+            print(CONSTS.msgColorStringStart.."StriLi: "..StriLi.Lang.Commands.AvailableCommands..":|r");
+            print(CONSTS.msgColorStringStart.."/sl h|r");
+            print(CONSTS.msgColorStringStart.."/sl help|r");
+            print(CONSTS.msgColorStringStart.."/sl <"..StriLi.Lang.Commands.TimeInSec.."> <Item>|r");
+            print(CONSTS.msgColorStringStart.."/sl <"..StriLi.Lang.Commands.TimeInSec.."> [@mouseover]|r");
+            print(CONSTS.msgColorStringStart.."/sl m|r");
+            print(CONSTS.msgColorStringStart.."/sl makro|r");
+            print(CONSTS.msgColorStringStart.."/sl macro|r");
+            print(CONSTS.msgColorStringStart.."/sl rules|r");
+            print(CONSTS.msgColorStringStart.."/sl post all|r");
+            print(CONSTS.msgColorStringStart.."/sl post itemless|r");
+            print(CONSTS.msgColorStringStart.."/sl post rules|r");
             return;
 
         elseif t == "makro" or t == "macro" or t == "m" then
@@ -49,7 +49,7 @@ SlashCmdList["STRILI"] = function(msg, _)
             local copyMacroBox = CreateFrame("FRAME", "StriLi_MakroFrame", UIParent, "StriLi_CopyVersionFrame_Template");
             local editBox = copyMacroBox:GetChildren():GetChildren();
             StriLi_MakroFrame_FontString:SetText("");
-            editBox:SetText("/sl <time in s> [@mouseover]");
+            editBox:SetText("/sl <"..StriLi.Lang.Commands.TimeInSec.."> [@mouseover]");
             editBox:HighlightText();
             copyMacroBox:Show();
 
@@ -61,7 +61,7 @@ SlashCmdList["STRILI"] = function(msg, _)
                 if inRaid then
                     RaidMembersDB:postAllDataToRaid();
                 elseif inRaid then
-                    print("|cffFFFF00StriLi: Invalide command. You're not in a Raid.|r");
+                    print(CONSTS.msgColorStringStart.."StriLi: "..StriLi.Lang.Commands.InvalideNotInRaid.."|r");
                     return;
                 end
             elseif args == "itemless"then
@@ -69,10 +69,10 @@ SlashCmdList["STRILI"] = function(msg, _)
             elseif args == "rules" then
 
                 if not inRaid then
-                    print("|cffFFFF00StriLi: Invalide command. You're not in a Raid.|r");
+                    print(CONSTS.msgColorStringStart.."StriLi: "..StriLi.Lang.Commands.InvalideNotInRaid.."|r");
                     return;
                 elseif StriLi_GetPlayerRank(UnitName("player")) < 1 then
-                    print("|cffFFFF00StriLi: No permission. Your Rank is to low.|r");
+                    print(CONSTS.msgColorStringStart.."StriLi: "..StriLi.Lang.Commands.NoPermRankToLow.."|r");
                     return;
                 end
                 StriLi.LootRules:postToRaid();
@@ -87,22 +87,22 @@ SlashCmdList["STRILI"] = function(msg, _)
             return;
         else
 
-            print ("|cffFFFF00StriLi: First argument must be a NUMBER|r");
+            print (CONSTS.msgColorStringStart.."StriLi: "..StriLi.Lang.Commands.FirstArgNum.."|r");
             return;
 
         end
     end
 
 	if not inRaid then
-		print("|cffFFFF00StriLi: Invalide command. You're not in a Raid.|r");
+		print(CONSTS.msgColorStringStart.."StriLi: "..StriLi.Lang.Commands.InvalideNotInRaid.."|r");
 		return;
     elseif StriLi_GetPlayerRank(UnitName("player")) < 1 then
-        print("|cffFFFF00StriLi: No permission. Your Rank is to low.|r");
+        print(CONSTS.msgColorStringStart.."StriLi: "..StriLi.Lang.Commands.NoPermRankToLow.."|r");
         return;
     end
 
     if StriLi.AutoRollAnalyser:getRollInProgress() then
-        print ("|cffFFFF00StriLi: You have already a roll in progress. To cancel a current roll type '/sl c'.|r");
+        print (CONSTS.msgColorStringStart.."StriLi: "..StriLi.Lang.Rolls.RollAlreadyInProgress.." '/sl c'.|r");
         return;
     end
 
@@ -111,7 +111,7 @@ SlashCmdList["STRILI"] = function(msg, _)
 
         local _, _, _, _, Id, _, _, _, _, _,
         _, _, _, _ = string.find(itemLink,
-                "|?c?f?f?(%x*)|?H?([^:]*):?(%d+):?(%d*):?(%d*):?(%d*):?(%d*):?(%d*):?(%-?%d*):?(%-?%d*):?(%d*):?(%d*):?(%-?%d*)|?h?%[?([^%[%]]*)%]?|?h?|?r?")
+                CONSTS.itemLinkPatern)
 
         if itemLink == nil then return end
 
@@ -125,7 +125,7 @@ SlashCmdList["STRILI"] = function(msg, _)
         if firstChar == "|" then
             local _, _, _, _, Id, _, _, _, _, _,
             _, _, _, _ = string.find(args,
-                    "|?c?f?f?(%x*)|?H?([^:]*):?(%d+):?(%d*):?(%d*):?(%d*):?(%d*):?(%d*):?(%-?%d*):?(%-?%d*):?(%d*):?(%d*):?(%-?%d*)|?h?%[?([^%[%]]*)%]?|?h?|?r?")
+                    CONSTS.itemLinkPatern)
 
             StriLi.AutoRollAnalyser:setItemID(tonumber(Id));
 

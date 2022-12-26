@@ -12,13 +12,13 @@ StriLi.ItemHistory = { items = {}, players = {}, rollTypes = {}, rolls = {}, pla
 
 local function getItemID_fromLink(itemLink)
 
-    assert(type(itemLink) == "string", "Argument itemLink was not a string type.");
+    assert(type(itemLink) == "string", StriLi.Lang.ErrorMsg.Argument.." itemLink "..StriLi.Lang.ErrorMsg.IsNotString);
     local firstChar = string.sub(itemLink, 1, 1);
-    assert(firstChar == "|", "Argument itemLink is not an item link.");
+    assert(firstChar == "|", StriLi.Lang.ErrorMsg.Argument.." itemLink "..StriLi.Lang.ErrorMsg.IsNotItemLink);
 
     local _, _, Color, Ltype, Id, Enchant, Gem1, Gem2, Gem3, Gem4,
     Suffix, Unique, LinkLvl, Name = string.find(itemLink,
-            "|?c?f?f?(%x*)|?H?([^:]*):?(%d+):?(%d*):?(%d*):?(%d*):?(%d*):?(%d*):?(%-?%d*):?(%-?%d*):?(%d*):?(%d*):?(%-?%d*)|?h?%[?([^%[%]]*)%]?|?h?|?r?")
+            CONSTS.itemLinkPatern)
 
     return Id;
 
@@ -40,10 +40,10 @@ end
 
 function StriLi.ItemHistory:add(itemLink, player, playerClass, rollType, roll)
 
-    assert(type(player) == "string", "Argument player was not a string type.");
-    assert(type(playerClass) == "string", "Argument playerClass was not a string type.");
-    assert(type(rollType) == "string", "Argument rollType was not a string type.");
-    assert(type(roll), "number", "Argument roll was not a number type.");
+    assert(type(player) == "string", StriLi.Lang.ErrorMsg.Argument.." player "..StriLi.Lang.ErrorMsg.IsNotString);
+    assert(type(playerClass) == "string", StriLi.Lang.ErrorMsg.Argument.." playerClass "..StriLi.Lang.ErrorMsg.IsNotString);
+    assert(type(rollType) == "string", StriLi.Lang.ErrorMsg.Argument.." rollType "..StriLi.Lang.ErrorMsg.IsNotString);
+    assert(type(roll), "number", StriLi.Lang.ErrorMsg.Argument.." roll "..StriLi.Lang.ErrorMsg.IsNotNumber);
 
     local itemId = getItemID_fromLink(itemLink);
 
@@ -80,7 +80,7 @@ end
 
 function StriLi.ItemHistory:editItem(itemLink, index)
 
-    assert(type(index), "number", "Argument index was not a number type.");
+    assert(type(index) == "number", StriLi.Lang.ErrorMsg.Argument.." index "..StriLi.Lang.ErrorMsg.IsNotNumber);
 
     local itemId = getItemID_fromLink(itemLink);
 
@@ -92,9 +92,9 @@ end
 
 function StriLi.ItemHistory:editPlayer(player, playerClass, index)
 
-    assert(type(player) == "string", "Argument player was not a string type.");
-    assert(type(playerClass) == "string", "Argument playerClass was not a string type.");
-    assert(type(index), "number", "Argument index was not a number type.");
+    assert(type(player) == "string", StriLi.Lang.ErrorMsg.Argument.." player "..StriLi.Lang.ErrorMsg.IsNotString);
+    assert(type(playerClass) == "string", StriLi.Lang.ErrorMsg.Argument.." playerClass "..StriLi.Lang.ErrorMsg.IsNotString);
+    assert(type(index) == "number", StriLi.Lang.ErrorMsg.Argument.." index "..StriLi.Lang.ErrorMsg.IsNotNumber);
 
     self.players[index] = player;
 

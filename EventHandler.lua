@@ -36,7 +36,7 @@ end
 function StriLi.EventHandler:OnEvent(event, ...)
 
     if event == "ADDON_LOADED" and arg1 == "StriLi" then
-        print("|cff00ffffStriLi Version " .. GetAddOnMetadata("StriLi", "Version") .. " loaded|r");
+        print("|cff00ffffStriLi "..StriLi.Lang.version.." " .. GetAddOnMetadata("StriLi", "Version") .. " "..StriLi.Lang.loaded.."|r");
         StriLi_initAddon();
         StriLi.MainFrame:init();
         StriLi.LootRules:init();
@@ -87,7 +87,7 @@ function StriLi.EventHandler:OnRaidLeft()
         StriLi.confirmFrame:hide();
     end
 
-    StriLi.confirmFrame = ConfirmDialogFrame:new(nil, "Du hast den Raid verlassen. Möchtest du alle Daten zurücksetzen?",
+    StriLi.confirmFrame = ConfirmDialogFrame:new(nil, StriLi.Lang.Confirm.RaidLeftResetData,
             function()
                 for player, _ in pairs(StriLi.MainFrame.rows) do
                     StriLi.MainFrame:removePlayer(player, true);
@@ -114,7 +114,7 @@ function StriLi.EventHandler:OnJoiningNewRaidgoup()
             if StriLi.CommunicationHandler:sendMasterChanged(newMaster) then
                 StriLi.master = newMaster;
             else
-                error("Master can not be initialized");
+                error(StriLi.Lang.ErrorMsg.MasterInitFail);
             end
 
         else
@@ -131,7 +131,7 @@ function StriLi.EventHandler:OnJoiningNewRaidgoup()
             StriLi.confirmFrame:hide();
         end
 
-        StriLi.confirmFrame = ConfirmDialogFrame:new(nil, "Du hast eine neue Raidgruppe betreten. Möchtest du alle Daten zurücksetzen?",
+        StriLi.confirmFrame = ConfirmDialogFrame:new(nil, StriLi.Lang.Confirm.NewRaidResetData,
                 function()
 
                     for player, _ in pairs(StriLi.MainFrame.rows) do
@@ -239,7 +239,7 @@ function StriLi.EventHandler:addNewPlayers()
                         if StriLi.CommunicationHandler:sendMasterChanged(newMaster) then
                             StriLi.master = newMaster;
                         else
-                            error("Master can not be initialized");
+                            error(StriLi.Lang.ErrorMsg.MasterInitFail);
                         end
 
                     else

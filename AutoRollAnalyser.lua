@@ -24,18 +24,24 @@ methods:
     increaseWinnerCount
 
 --]]
+local NH_MarkOfSanctification_t = {
+    Vanquisher = 52025,
+    Protector = 52026,
+    Conqueror = 52027
+
+};
 
 StriLi.AutoRollAnalyser = { itemID = nil, timerFrame = CreateFrame("Frame"), time = 0.0, rolls = {}, rollInProgress = false, item = "" };
 
 function StriLi.AutoRollAnalyser:setItemID(ID)
     if self.rollInProgress then return end;
-    assert(type(ID) == "number", "Expected number as ItemID!")
+    assert(type(ID) == "number", StriLi.Lang.ErrorMsg.ExpectNumAsItemID)
     self.itemID = ID;
 end
 
 function StriLi.AutoRollAnalyser:setTimeForRolls(time)
     if self.rollInProgress then return end;
-    assert(type(time) == "number", "Expected number as time!")
+    assert(type(time) == "number", StriLi.Lang.ErrorMsg.ExpectNumAsTime)
     self.time = time;
 end
 
@@ -52,7 +58,7 @@ function StriLi.AutoRollAnalyser:start()
 
     if self.rollInProgress then return end;
 
-    SendChatMessage("Es wird um das Item "..self.item.." gewürfelt. Du hast "..self.time.." Sekunden zeit.", "RAID_WARNING");
+    SendChatMessage(StriLi.Lang.Rolls.StartRoll1..self.item..StriLi.Lang.Rolls.StartRoll2..self.time..StriLi.Lang.Rolls.StartRoll3, "RAID_WARNING");
 
     self.rollInProgress = true;
 
@@ -63,7 +69,7 @@ function StriLi.AutoRollAnalyser:start()
     self.warn1Done = false;
 
     StriLi.EventHandler:enable_CHAT_MSG_SYSTEM_event(function(text)
-        self:On_CHAT_MSG_SYSTEM(text)
+        self:On_CHAT_MSG_SYSTEM(text);
     end);
 
     self.timerFrame:SetScript("OnUpdate", function(_, elapsedTime)
@@ -110,7 +116,7 @@ end
 
 function StriLi.AutoRollAnalyser:On_CHAT_MSG_SYSTEM(text)
 
-    local playername, _next = string.match(text, "([^%s]+)%s?(.*)");
+    local playername, _next = string.match(text, CONSTS.nextWordPatern);
     local number, range = string.match(_next, "(%d+)%s?(.*)");
     number = tonumber(number);
 
@@ -140,7 +146,7 @@ end
 
 function StriLi.AutoRollAnalyser:isNHToken()
 
-    if (self.itemID == 52027) or (self.itemID == 52026) or (self.itemID == 52025) then
+    if (self.itemID == NH_MarkOfSanctification_t.Conqueror) or (self.itemID == NH_MarkOfSanctification_t.Protector) or (self.itemID == NH_MarkOfSanctification_t.Vanquisher) then
         return true;
     end
 
@@ -168,9 +174,14 @@ end
 function StriLi.AutoRollAnalyser:shoutRolls()
 
     for k,v in pairs(self.rolls) do
-        SendChatMessage("---"..k.."---", "RAID");
+        if k == "Main" then
+            SendChatMessage("---"..StriLi.Lang.TallyMarkTypes.Main.."---", "RAID");
+        else
+            SendChatMessage("---"..StriLi.Lang.TallyMarkTypes.Sec.."---", "RAID");
+        end
+
         for _,v2 in ipairs(v) do
-            s = v2["Name"].." || Striche: "..v2["Count"].." || Fails: "..v2["Fail"].." || Roll: "..v2["Roll"];
+            s = v2[StriLi.Lang.Name].." || "..StriLi.Lang.Rolls.TallyMarks..": "..v2["Count"].." || "..StriLi.Lang.Rolls.Fails..": "..v2["Fail"].." || "..StriLi.Lang.Rolls.Roll..": "..v2["Roll"];
             SendChatMessage(s, "RAID");
         end
     end
