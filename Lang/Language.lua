@@ -54,6 +54,7 @@ StriLi.Lang = {
         Reregister = "Ummelden",
         SetMaster = "Zu Master ernennen",
         Remove = "Entfernen",
+        YourNotMaster = "You are not the StriLi master."
     },
     Confirm = {
         RaidLeftResetData = "Du hast den Raid verlassen. Möchtest du alle Daten zurücksetzen?",

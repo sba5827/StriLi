@@ -53,6 +53,7 @@ function StriLi_Stub_deDE() return {
         Reregister = "Ummelden",
         SetMaster = "Zu Master ernennen",
         Remove = "Entfernen",
+        YourNotMaster = "Du bist nicht der StriLi master."
     },
     Confirm = {
         RaidLeftResetData = "Du hast den Raid verlassen. Möchtest du alle Daten zurücksetzen?",

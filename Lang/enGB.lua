@@ -53,6 +53,7 @@ function StriLi_Stub_enGB() return {
         Reregister = "Reregister",
         SetMaster = "Set as master",
         Remove = "Remove",
+        YourNotMaster = "You are not the StriLi master."
     },
     Confirm = {
         RaidLeftResetData = "You have left the raid. Do you want to reset all data?",
