@@ -43,6 +43,7 @@ function StriLi.EventHandler:OnEvent(event, ...)
         if tonumber(StriLi_LatestVersion) > tonumber(GetAddOnMetadata("StriLi", "Version")) then
             local versionFrame = CreateFrame("FRAME", "StriLi_VersionFrame", UIParent, "StriLi_CopyVersionFrame_Template");
             local editBox = versionFrame:GetChildren():GetChildren();
+            StriLi_VersionFrame_FontString:SetText(StriLi.Lang.XML.NewStriLiVersion);
             editBox:SetText("https://github.com/sba5827/StriLi");
             editBox:HighlightText();
             versionFrame:Show();
