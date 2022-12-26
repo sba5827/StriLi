@@ -1,6 +1,7 @@
-StriLi.LootRules = {frame=CreateFrame("FRAME","StriLi_LootRulesFrame", UIParent, "StriLi_LootRulesFrame_Template"), text = "tescht"};
+StriLi.LootRules = {frame=nil, text = "tescht"};
 
 function StriLi.LootRules:init()
+    self.frame = CreateFrame("FRAME","StriLi_LootRulesFrame", UIParent, "StriLi_LootRulesFrame_Template");
     self.frame.ScrollFrame.EditBox:SetText(self.text);
 
     self.frame:SetScript("OnMouseDown", function(frame)

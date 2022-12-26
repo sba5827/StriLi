@@ -86,6 +86,7 @@ function StriLi_Stub_deDE() return {
         ButtonSync = "Sync",
         ButtonLock = "Sperren",
         ButtonSort = "Sortieren",
+        ButtonSave = "Speichern",
         ButtonItemHistory = "ItemHistory",
         NewStriLiVersion = "Eine neue Version von StriLi ist verfügbar unter:",
         ButtonOk = "Ok",

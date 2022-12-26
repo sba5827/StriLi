@@ -29,8 +29,7 @@
         </Backdrop>
         <Layers>
             <Layer level="ARTWORK">
-                <Texture name="StriLi_LootRulesFrame_Header"
-                         file="">
+                <Texture name="StriLi_LootRulesFrame_Header" >
                     <Size>
                         <AbsDimension x="200" y="64"/>
                     </Size>
@@ -42,7 +41,7 @@
                         </Anchor>
                     </Anchors>
                 </Texture>
-                <FontString inherits="GameFontNormal" text="Loot Rules">
+                <FontString inherits="GameFontNormal" text="Loot Rules" parentKey="headerString">
                     <Anchors>
                         <Anchor point="TOP" relativeTo="StriLi_LootRulesFrame_Header">
                             <Offset>
@@ -50,9 +49,6 @@
                             </Offset>
                         </Anchor>
                     </Anchors>
-                    <Scripts>
-                        <OnLoad>self:SetText(StriLi.Lang.XML.LootRules)</OnLoad>
-                    </Scripts>
                 </FontString>
             </Layer>
         </Layers>
@@ -96,6 +92,7 @@
                     </Anchor>
                 </Anchors>
                 <Scripts>
+                    <OnLoad>self:SetText(StriLi.Lang.XML.ButtonSave);self:GetParent().headerString:SetText(StriLi.Lang.XML.LootRules)</OnLoad>
                     <OnClick>StriLi.LootRules:OnClickSaveButton()</OnClick>
                 </Scripts>
             </Button>

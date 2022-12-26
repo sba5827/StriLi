@@ -87,6 +87,7 @@ StriLi.Lang = {
         ButtonSync = "Sync",
         ButtonLock = "Lock",
         ButtonSort = "Sort",
+        ButtonSave = "Save",
         ButtonItemHistory = "ItemHistory",
         NewStriLiVersion = "Eine neue Version von StriLi ist verfügbar unter:",
         ButtonOk = "Ok",

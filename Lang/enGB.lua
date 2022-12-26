@@ -86,6 +86,7 @@ function StriLi_Stub_enGB() return {
         ButtonSync = "Sync",
         ButtonLock = "Lock",
         ButtonSort = "Sort",
+        ButtonSave = "Save",
         ButtonItemHistory = "ItemHistory",
         NewStriLiVersion = "A new version of StriLi is available at:",
         ButtonOk = "Ok",
