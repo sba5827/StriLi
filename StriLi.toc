@@ -20,6 +20,8 @@ Libs\LibDBIcon-1.0\LibDBIcon-1.0.lua
 #@end-no-lib-strip@
 
 Lang\Language.lua
+Lang\deDE.lua
+Lang\enGB.lua
 Button.xml
 MainFrame.xml
 ConfirmDialogFrame.xml

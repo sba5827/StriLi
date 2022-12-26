@@ -5,7 +5,7 @@ StriLi.Lang = {
         ExpectNumAsTime = "Expected number as time!",
         CombineMembers1 = "Combine of members",
         CombineMembers2 = "and",
-        CombineMembers3 = "failed, while receiving Data Changed Msg.",
+        CombineMembers3 = "failed, while receiving DataChanged Msg.",
         MasterInitFail = "Master can not be initialized",
         Argument = "Argument",
         IsNotString = "is not a string type.",
@@ -26,7 +26,7 @@ StriLi.Lang = {
     Rolls = {
         StartRoll1 = "Es wird um das Item ",
         StartRoll2 = " gewürfelt. Du hast ",
-        StartRoll3 = " Sekunden zeit.",
+        StartRoll3 = " Sekunden Zeit.",
         TallyMarks = "Striche",
         Fails = "Fails",
         Roll = "Roll",
@@ -81,3 +81,17 @@ StriLi.Lang = {
         Class = "Klasse",
     }
 };
+
+function StriLi.InitLang()
+
+    local lang = GetLocale();
+
+    if lang == "deDE" then
+        StriLi.Lang = StriLi_Stub_deDE();
+    elseif lang == "enGB" or lang == "enUS" then
+        StriLi.Lang = StriLi_Stub_enGB();
+    else
+        error("WTF?!");
+    end
+
+end

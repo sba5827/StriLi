@@ -182,6 +182,8 @@ end
 
 function StriLi_initAddon()
 
+    StriLi.InitLang()
+
     if StriLi_LatestVersion == nil then
         StriLi_LatestVersion = GetAddOnMetadata("StriLi", "Version");
     end
