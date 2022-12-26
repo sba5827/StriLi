@@ -5,7 +5,7 @@
 ## Notes: StriLi
 ## SavedVariablesPerCharacter:  
 ## SavedVariables: StriLi_Master, StriLi_LatestVersion, StriLi_RaidMembersDB_members, StriLi_newRaidGroup, StriLi_ItemHistory, StriLi_RulesTxt
-## Version: 3.01
+## Version: 3.02
 
 #@no-lib-strip@
 Libs\LibStub\LibStub.lua
