@@ -247,7 +247,7 @@ end
 function StriLi.CommunicationHandler:On_Request_SyncData(sender)
 
     if ((sender ~= StriLi.master) and (StriLi.master ~= UnitName("player")) or (sender == UnitName("player"))) then
-        return ;
+        return;
     end
 
     for name, data in pairs(RaidMembersDB.raidMembers) do
@@ -271,7 +271,7 @@ function StriLi.CommunicationHandler:sendSycRequest()
 
     if StriLi.master == UnitName("player") then
         self.requestedSyncAsMaster = true;
-        self.time = 3.0;
+        self.time = 10.0;
         self.waitingForRespond = "SL_RQ_SD"
         self.timerFrame:SetScript("OnUpdate", function(_, elapsed)
             self.time = self.time - elapsed;
@@ -398,7 +398,7 @@ function StriLi.CommunicationHandler:respondReceived()
     local next = table.remove(self.requestQueue);
 
     if next == nil then
-        return
+        return;
     end
 
     if next[1] == StriLi.CommunicationHandler.checkForMaster then
