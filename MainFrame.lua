@@ -460,51 +460,51 @@ end
 
 function StriLi.MainFrame:sortRowFrames()
 
-    self.labelRow.Regions.NameFS:SetText("Name".."");
-    self.labelRow.Regions.MainFS:SetText("Main".."");
-    self.labelRow.Regions.SecFS:SetText("Sec".."");
-    self.labelRow.Regions.TokenFS:SetText("Token".."");
-    self.labelRow.Regions.FailFS:SetText("Fail".."");
+    self.labelRow.Regions.NameFS:SetText(StriLi.Lang.Labels.Name);
+    self.labelRow.Regions.MainFS:SetText(StriLi.Lang.Labels.Main);
+    self.labelRow.Regions.SecFS:SetText(StriLi.Lang.Labels.Sec);
+    self.labelRow.Regions.TokenFS:SetText(StriLi.Lang.Labels.Token);
+    self.labelRow.Regions.FailFS:SetText(StriLi.Lang.Labels.Fail);
 
     if      self.sortType:get() == SortType_t.NAME_ASCENDING      then
         self:sortByName(false);
-        self.labelRow.Regions.NameFS:SetText("Name".." ,");
+        self.labelRow.Regions.NameFS:SetText(StriLi.Lang.Labels.Name..StriLi.Lang.Labels.Descending);
 
     elseif  self.sortType:get() == SortType_t.NAME_DESCENDING     then
         self:sortByName(true);
-        self.labelRow.Regions.NameFS:SetText("Name".." '");
+        self.labelRow.Regions.NameFS:SetText(StriLi.Lang.Labels.Name..StriLi.Lang.Labels.Ascending);
 
     elseif  self.sortType:get() == SortType_t.MAIN_ASCENDING      then
         self:sortByCounter(true,"Main");
-        self.labelRow.Regions.MainFS:SetText("Main".." '");
+        self.labelRow.Regions.MainFS:SetText(StriLi.Lang.Labels.Main..StriLi.Lang.Labels.Ascending);
 
     elseif  self.sortType:get() == SortType_t.MAIN_DESCENDING     then
         self:sortByCounter(false, "Main");
-        self.labelRow.Regions.MainFS:SetText("Main".." ,");
+        self.labelRow.Regions.MainFS:SetText(StriLi.Lang.Labels.Main..StriLi.Lang.Labels.Descending);
 
     elseif  self.sortType:get() == SortType_t.SEC_ASCENDING       then
         self:sortByCounter(true,"Sec");
-        self.labelRow.Regions.SecFS:SetText("Sec".." '");
+        self.labelRow.Regions.SecFS:SetText(StriLi.Lang.Labels.Sec..StriLi.Lang.Labels.Ascending);
 
     elseif  self.sortType:get() == SortType_t.SEC_DESCENDING      then
         self:sortByCounter(false, "Sec");
-        self.labelRow.Regions.SecFS:SetText("Sec".." ,");
+        self.labelRow.Regions.SecFS:SetText(StriLi.Lang.Labels.Sec..StriLi.Lang.Labels.Descending);
 
     elseif  self.sortType:get() == SortType_t.TOKEN_ASCENDING     then
         self:sortByCounter(true,"Token");
-        self.labelRow.Regions.TokenFS:SetText("Token".." '");
+        self.labelRow.Regions.TokenFS:SetText(StriLi.Lang.Labels.Token..StriLi.Lang.Labels.Ascending);
 
     elseif  self.sortType:get() == SortType_t.TOKEN_DESCENDING    then
         self:sortByCounter(false, "Token");
-        self.labelRow.Regions.TokenFS:SetText("Token".." ,");
+        self.labelRow.Regions.TokenFS:SetText(StriLi.Lang.Labels.Token..StriLi.Lang.Labels.Descending);
 
     elseif  self.sortType:get() == SortType_t.FAIL_ASCENDING      then
         self:sortByCounter(true,"Fail");
-        self.labelRow.Regions.FailFS:SetText("Fail".." '");
+        self.labelRow.Regions.FailFS:SetText(StriLi.Lang.Labels.Fail..StriLi.Lang.Labels.Ascending);
 
     elseif  self.sortType:get() == SortType_t.FAIL_DESCENDING     then
         self:sortByCounter(false, "Fail");
-        self.labelRow.Regions.FailFS:SetText("Fail".." ,");
+        self.labelRow.Regions.FailFS:SetText(StriLi.Lang.Labels.Fail..StriLi.Lang.Labels.Descending);
 
     elseif  self.sortType:get() == SortType_t.CLASS_ASCENDING     then
         self:sortByClass(true);

@@ -76,7 +76,7 @@ function RaidMembersDB:remove(name, forced)
             local _, _, _, _, _, _, _, online = GetRaidRosterInfo(raidMemberIndex);
 
             if online then
-                print ("|cffFFFF00StriLi: You can't remove online raidmembers from StriLi.|r");
+                print (CONSTS.StriLi.msgColorStringStart.."StriLi: "..StriLi.Lang.ErrorMsg.RemoveOnlineRaidmember.."|r");
                 return false;
             end
         end
@@ -135,13 +135,13 @@ end
 
 function RaidMembersDB:postAllDataToRaid()
     for name, v in pairs(self.raidMembers) do
-        SendChatMessage(name.." || Main: "..v["Main"]:get().." Sec: "..v["Sec"]:get().." Token: "..v["Token"]:get().." Fail: "..v["Main"]:get(), "RAID");
+        SendChatMessage(name.." || "..StriLi.Lang.TallyMarkTypes.Main..": "..v["Main"]:get().." "..StriLi.Lang.TallyMarkTypes.Sec..": "..v["Sec"]:get().." "..StriLi.Lang.TallyMarkTypes.Token..": "..v["Token"]:get().." "..StriLi.Lang.TallyMarkTypes.Fail..": "..v["Main"]:get(), "RAID");
     end
 end
 
 function RaidMembersDB:postNamesOfUnluckyPlayers()
 
-    local playerNamesString = "|cffFFFF00StriLi: Players that got no Loot: "
+    local playerNamesString = CONSTS.msgColorStringStart.."StriLi: "..StriLi.Lang.Commands.PlayersGotLoot..": "
 
     for name, v in pairs(self.raidMembers) do
         if v["Main"]:get() == 0 and v["Sec"]:get() == 0 and v["Token"]:get() == 0 then

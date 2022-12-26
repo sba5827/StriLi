@@ -44,7 +44,7 @@ function ObservableNumber:registerObserver(observer)
     --Var sender helps the observer to identify which observed value changed, if multiple values are observed.
 
     if observer.OnValueChanged == nil then
-        error("observer must implement OnValueChanged");
+        error(StriLi.Lang.ErrorMsg.ObserverImplement);
         return ;
     end
 

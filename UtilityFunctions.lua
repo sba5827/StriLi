@@ -31,14 +31,14 @@ function StriLi_SetMaster(arg1)
             if (rank > 0) then
                 StriLi_tryToSetNewMaster(newMasterName);
             else
-                print("|cffFFFF00"..newMasterName.." kann nicht zum Master ernannt werden. Rang zu niedrig|r");
+                print(CONSTS.msgColorStringStart..newMasterName.." "..StriLi.Lang.ErrorMsg.SetMasterNotPossible.." "..StriLi.Lang.ErrorMsg.RankToLow.."|r");
             end
             break;
         end
     end
 
     if not found then
-        print("|cffFFFF00"..newMasterName.." kann nicht zum Master ernannt werden. "..newMasterName.." befindet sich nicht in der Raidgruppe.|r");
+        print(CONSTS.msgColorStringStart..newMasterName.." "..StriLi.Lang.ErrorMsg.SetMasterNotPossible.." "..newMasterName.." "..StriLi.Lang.ErrorMsg.PlayerNotInRaid.."|r");
     end
 
 end
@@ -58,12 +58,12 @@ function StriLi_tryToSetNewMaster(newMasterName)
                     end
                 end
             else
-                print("|cffFFFF00"..newMasterName.." kann nicht zum Master ernannt werden. Mögliche Ursachen:\n - "
-                        ..newMasterName.." ist Ausgeloggt.\n - "
-                        ..newMasterName.." hat einen Disconect.\n - "
-                        .."Du".." hast einen Disconect.\n - "
-                        ..newMasterName.." hat StriLi nicht.\n - "
-                        ..newMasterName.." hat eine stark veraltete Version von StriLi.|r");
+                print(CONSTS.msgColorStringStart..newMasterName.." "..StriLi.Lang.ErrorMsg.SetMasterNotPossible.." "..StriLi.Lang.ErrorMsg.PossibleCauses..":\n - "
+                        ..newMasterName.." "..StriLi.Lang.ErrorMsg.Cause1.."\n - "
+                        ..newMasterName.." "..StriLi.Lang.ErrorMsg.Cause2.."\n - "
+                        ..StriLi.Lang.ErrorMsg.Cause3.."\n - "
+                        ..newMasterName.." "..StriLi.Lang.ErrorMsg.Cause4.."\n - "
+                        ..newMasterName.." "..StriLi.Lang.ErrorMsg.Cause5.."|r");
             end
 
         end);

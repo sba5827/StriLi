@@ -308,7 +308,7 @@ function RowFrame.ReregisterRequest(self, overwrite)
 
     if self.Regions.ReregisterCB:GetChecked() or overwrite then
 
-        local reregisterInputFrame = TextInputFrame:new(nil, "Gib den Spec an auf den Umgemeldet wird: ", function(input)
+        local reregisterInputFrame = TextInputFrame:new(nil, StriLi.Lang.Confirm.ReregisterRequest..": ", function(input)
             self.raidMember[2]["Reregister"] = input;
             self:UpdateReregister(input);
         end, function(_)
@@ -382,13 +382,13 @@ function RowFrame:initDropdownMenu(frame, level, menuList)
     if level == 1 then
 
         -- Outermost menu level
-        info.text, info.hasArrow, info.menuList = "Zusammenlegen mit", true, "Players";
+        info.text, info.hasArrow, info.menuList = StriLi.Lang.Commands.CombineMembers, true, "Players";
         UIDropDownMenu_AddButton(info);
-        info.text, info.hasArrow, info.func, info.self = "Ummeldung", false, function()
+        info.text, info.hasArrow, info.func, info.self = StriLi.Lang.Commands.Reregister, false, function()
             self:ReregisterRequest(true)
         end;
         UIDropDownMenu_AddButton(info);
-        info.text, info.hasArrow, info.func = "Zu Master ernennen", false, function()
+        info.text, info.hasArrow, info.func = StriLi.Lang.Commands.SetMaster, false, function()
 
             StriLi.dropdownFrame:Hide();
 
@@ -396,7 +396,7 @@ function RowFrame:initDropdownMenu(frame, level, menuList)
                 StriLi.confirmFrame:hide();
             end
 
-            StriLi.confirmFrame = ConfirmDialogFrame:new(nil, "Bist du sicher, dass du "..playerName.." zum Master ernennen möchtest?",
+            StriLi.confirmFrame = ConfirmDialogFrame:new(nil, StriLi.Lang.Confirm.AreYouSureTo.." "..playerName.." "..StriLi.Lang.Confirm.SetMaster,
             function()
                 StriLi_SetMaster(playerName);
             end,
@@ -406,11 +406,11 @@ function RowFrame:initDropdownMenu(frame, level, menuList)
 
         end;
         UIDropDownMenu_AddButton(info);
-        info.text, info.hasArrow, info.func = "Entfernen", false, function()
+        info.text, info.hasArrow, info.func = StriLi.Lang.Commands.Remove, false, function()
 
             StriLi.dropdownFrame:Hide();
 
-            local confirmFrame = ConfirmDialogFrame:new(nil, "Bist du sicher, dass du "..playerName.." entfernen möchtest?",
+            local confirmFrame = ConfirmDialogFrame:new(nil, StriLi.Lang.Confirm.AreYouSureTo.." "..playerName.." "..StriLi.Lang.Confirm.Remove,
                     function()
                         self.removeFnc(playerName);
                         StriLi.CommunicationHandler:sendMemberRemoved(playerName);
@@ -433,7 +433,7 @@ function RowFrame:initDropdownMenu(frame, level, menuList)
 
                     StriLi.dropdownFrame:Hide()
 
-                    local confirmFrame = ConfirmDialogFrame:new(nil, "Bist du sicher, das du "..arg1.." mit "..arg2.." zusammenlegen möchtest? ("..arg1.." wird behalten)",
+                    local confirmFrame = ConfirmDialogFrame:new(nil, StriLi.Lang.Confirm.AreYouSureTo.." "..arg1.." "..StriLi.Lang.Confirm.Combine1.." "..arg2.." "..StriLi.Lang.Confirm.Combine2.." ("..arg1.." "..StriLi.Lang.Confirm.Combine3,
                             function()
                                 self.combineFnc(arg1, arg2);
                                 StriLi.CommunicationHandler:sendMembersCombined(arg1, arg2);
