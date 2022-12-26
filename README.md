@@ -82,8 +82,8 @@ Beispiel Screenshot:
     /sl help
 Liste aller Befehle.
 
-    /sl <time in s> <Item>
-    /sl <time in s> [@mouseover]
+    /sl <Zeit in s> <Item>
+    /sl <Zeit in s> [@mouseover]
 Startet das Verrollen eines Items. Automatische Erkennung von Würfen in der angegebenen Zeit. Ermittelt automatisch den Gewinner anhand der Striche und des Wurfs.
 
     /sl c

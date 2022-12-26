@@ -52,6 +52,7 @@ SlashCmdList["STRILI"] = function(msg, _)
             editBox:SetText("/sl <"..StriLi.Lang.Commands.TimeInSec.."> [@mouseover]");
             editBox:HighlightText();
             copyMacroBox:Show();
+            editBox:SetScript("OnEscapePressed", function(self) copyMacroBox:Hide() end);
 
             return;
 
