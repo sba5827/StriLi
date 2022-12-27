@@ -60,6 +60,7 @@ StriLi.Lang = {
         RaidLeftResetData = "Du hast den Raid verlassen. Möchtest du alle Daten zurücksetzen?",
         NewRaidResetData = "Du hast eine neue Raid-Gruppe betreten. Möchtest du alle Daten zurücksetzen?",
         ResetDataConfirm = "Bist du sicher, das du alle Daten zurücksetzen willst?",
+        SyncDataConfirm = "Du bist StriLi-Master. Bist du sicher das du die Daten Synchronisieren möchtest? Deine Daten werden überschrieben.",
         ReregisterRequest = "Gib den Spec an auf den Umgemeldet wird",
         AreYouSureTo = "Bist du sicher, dass du",
         SetMaster = "zum Master ernennen möchtest?",
@@ -104,6 +105,8 @@ function StriLi.InitLang()
         StriLi.Lang = StriLi_Stub_deDE();
     elseif lang == "enGB" or lang == "enUS" then
         StriLi.Lang = StriLi_Stub_enGB();
+    elseif lang == "esES" then
+        StriLi.Lang = StriLi_Stub_esES();
     else
         --error("WTF?!");
     end
