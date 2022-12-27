@@ -60,6 +60,7 @@ function StriLi_Stub_enGB() return {
         NewRaidResetData = "You have entered a new raid group. Do you want to reset all data?",
         ResetDataConfirm = "Are you sure you want to reset all data?",
         ReregisterRequest = "Specify the spec to which you want to change the registration to",
+        SyncDataConfirm = "You are StriLi Master. Are you sure you want to synchronize the data? Your data will be overwritten.",
         AreYouSureTo = "Are you sure ",
         SetMaster = " should be set as master?",
         Remove = "should be removed?",

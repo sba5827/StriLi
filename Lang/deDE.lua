@@ -60,6 +60,7 @@ function StriLi_Stub_deDE() return {
         NewRaidResetData = "Du hast eine neue Raid-Gruppe betreten. Möchtest du alle Daten zurücksetzen?",
         ResetDataConfirm = "Bist du sicher, das du alle Daten zurücksetzen willst?",
         ReregisterRequest = "Gib den Spec an auf den Umgemeldet wird",
+        SyncDataConfirm = "Du bist StriLi-Master. Bist du sicher das du die Daten Synchronisieren möchtest? Deine Daten werden überschrieben.",
         AreYouSureTo = "Bist du sicher, dass du",
         SetMaster = "zum Master ernennen möchtest?",
         Remove = "entfernen möchtest?",

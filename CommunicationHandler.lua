@@ -271,7 +271,7 @@ function StriLi.CommunicationHandler:sendSycRequest()
 
     if StriLi.master == UnitName("player") then
         self.requestedSyncAsMaster = true;
-        self.time = 10.0;
+        self.time = 2.0;
         self.waitingForRespond = "SL_RQ_SD"
         self.timerFrame:SetScript("OnUpdate", function(_, elapsed)
             self.time = self.time - elapsed;
@@ -310,6 +310,9 @@ function StriLi.CommunicationHandler:On_Respond_UserHasStriLi(nameOfRespondingPl
 end
 
 function StriLi.CommunicationHandler:checkIfUserHasStriLi(name, cbf)
+
+    assert(name)
+    assert(cbf);
 
     if self.waitingForRespond ~= "" then
         self:addToQueue(StriLi.CommunicationHandler.checkIfUserHasStriLi,{[1]=name, [2]=cbf});

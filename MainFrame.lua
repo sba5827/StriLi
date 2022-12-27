@@ -307,7 +307,23 @@ function StriLi.MainFrame:combineMembers(memName1, memName2)
 end
 
 function StriLi.MainFrame:OnClickSyncButton()
-    StriLi.CommunicationHandler:sendSycRequest();
+
+    if StriLi.master == UnitName("player") then
+        if StriLi.confirmFrame ~= nil then
+            StriLi.confirmFrame:hide();
+        end
+
+        StriLi.confirmFrame = ConfirmDialogFrame:new(nil, StriLi.Lang.Confirm.SyncDataConfirm,
+                function()
+                    StriLi.CommunicationHandler:sendSycRequest();
+                end,
+                nil);
+
+        StriLi.confirmFrame:show();
+    else
+        StriLi.CommunicationHandler:sendSycRequest();
+    end
+
 end
 
 function StriLi.MainFrame:OnClickResetButton()
