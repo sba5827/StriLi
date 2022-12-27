@@ -311,6 +311,9 @@ end
 
 function StriLi.CommunicationHandler:checkIfUserHasStriLi(name, cbf)
 
+    assert(name)
+    assert(cbf);
+
     if self.waitingForRespond ~= "" then
         self:addToQueue(StriLi.CommunicationHandler.checkIfUserHasStriLi,{[1]=name, [2]=cbf});
         return;
