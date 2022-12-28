@@ -82,6 +82,8 @@ function StriLi.CommunicationHandler:On_CHAT_MSG_ADDON(...)
         self:On_VersionCheck(arg2);
     elseif arg1 == "SL_IHA" then
         self:On_ItemHistoryAdd(arg2);
+    elseif arg1 == "SL_IHC" then
+        self:On_ItemHistoryChanged(arg2);
     end
 
 end
@@ -260,6 +262,10 @@ function StriLi.CommunicationHandler:On_Request_SyncData(sender)
 
     end
 
+    for index, itemLink in pairs(StriLi.ItemHistory.items) do
+        self:Send_ItemHistoryAdd(itemLink, StriLi.ItemHistory.players[index], StriLi.ItemHistory.playerClasses[index], StriLi.ItemHistory.rollTypes[index], StriLi.ItemHistory.rolls[index], index, true);
+    end
+
 end
 
 function StriLi.CommunicationHandler:sendSycRequest()
@@ -374,6 +380,31 @@ end
 function StriLi.CommunicationHandler:On_ItemHistoryAdd(arguments)
 
     local sender, _next = string.match(arguments, CONSTS.nextWordPatern);
+    if (sender == UnitName("player") or (sender ~= StriLi.master and StriLi.master ~= "")) and not self.requestedSyncAsMaster then return end
+    local itemLink, _next = string.match(_next, "([^%]]+)%s?(.*)");
+    local _, _next = string.match(_next, CONSTS.nextWordPatern);
+    local player, _next = string.match(_next, CONSTS.nextWordPatern);
+    local playerClass, _next = string.match(_next, CONSTS.nextWordPatern);
+    local rollType, _next = string.match(_next, CONSTS.nextWordPatern);
+    local roll, _next = string.match(_next, CONSTS.nextWordPatern);
+    local rollNum = tonumber(roll);
+    local index, _next = string.match(_next, CONSTS.nextWordPatern);
+    local indexNum = tonumber(index);
+
+    if rollNum ~= nil then
+        roll = rollNum;
+    end
+    if indexNum ~= nil then
+        index = indexNum;
+    end
+
+    StriLi.ItemHistory:add(itemLink.."]|h|r", player, playerClass, rollType, roll, index);
+
+end
+
+function StriLi.CommunicationHandler:On_ItemHistoryChanged(arguments)
+
+    local sender, _next = string.match(arguments, CONSTS.nextWordPatern);
     if sender == UnitName("player") or (sender ~= StriLi.master and StriLi.master ~= "") then return end
     local itemLink, _next = string.match(_next, "([^%]]+)%s?(.*)");
     local _, _next = string.match(_next, CONSTS.nextWordPatern);
@@ -381,13 +412,25 @@ function StriLi.CommunicationHandler:On_ItemHistoryAdd(arguments)
     local playerClass, _next = string.match(_next, CONSTS.nextWordPatern);
     local rollType, _next = string.match(_next, CONSTS.nextWordPatern);
     local roll, _next = string.match(_next, CONSTS.nextWordPatern);
+    local rollNum = tonumber(roll)
+    local index, _next = string.match(_next, CONSTS.nextWordPatern);
 
-    StriLi.ItemHistory:add(itemLink.."]|h|r", player, playerClass, rollType, roll);
+    if rollNum ~= nil then
+        roll = rollNum;
+    end
+
+    StriLi.ItemHistory:On_ItemHistoryChanged(itemLink.."]|h|r", player, playerClass, rollType, roll, tonumber(index));
 
 end
 
-function StriLi.CommunicationHandler:Send_ItemHistoryAdd(itemLink, player, playerClass, rollType, roll)
-    SendAddonMessage("SL_IHA", UnitName("player").." "..tostring(itemLink).." "..tostring(player).." "..tostring(playerClass).." "..tostring(rollType).." "..tostring(roll), "RAID");
+function StriLi.CommunicationHandler:Send_ItemHistoryAdd(itemLink, player, playerClass, rollType, roll, index, forced)
+    if StriLi.master ~= UnitName("player") and not forced then return end;
+    SendAddonMessage("SL_IHA", UnitName("player").." "..tostring(itemLink).." "..tostring(player).." "..tostring(playerClass).." "..tostring(rollType).." "..tostring(roll).." "..tostring(index), "RAID");
+end
+
+function StriLi.CommunicationHandler:Send_ItemHistoryChanged(itemLink, player, playerClass, rollType, roll, index)
+    if StriLi.master ~= UnitName("player") then return end;
+    SendAddonMessage("SL_IHC", UnitName("player").." "..tostring(itemLink).." "..tostring(player).." "..tostring(playerClass).." "..tostring(rollType).." "..tostring(roll).." "..tostring(index), "RAID");
 end
 
 function StriLi.CommunicationHandler:addToQueue(queuedRequest, arguments)

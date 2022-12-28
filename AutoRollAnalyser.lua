@@ -211,7 +211,7 @@ function StriLi.AutoRollAnalyser:increaseWinnerCount()
     raidMember = RaidMembersDB:get(winnerName);
     raidMember[counterToIncrease]:add(1);
 
-    StriLi.ItemHistory:add(self.item, winnerName, raidMember[1], rollType, self.rolls[rollType][1]["Roll"]);
-    StriLi.CommunicationHandler:Send_ItemHistoryAdd(self.item, winnerName, raidMember[1], rollType, self.rolls[rollType][1]["Roll"]);
+    StriLi.ItemHistory:add(self.item, winnerName, raidMember[1], counterToIncrease, self.rolls[rollType][1]["Roll"], nil);
+    StriLi.CommunicationHandler:Send_ItemHistoryAdd(self.item, winnerName, raidMember[1], counterToIncrease, self.rolls[rollType][1]["Roll"], nil, false);
 
 end

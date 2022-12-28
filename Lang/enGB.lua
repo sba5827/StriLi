@@ -21,6 +21,8 @@ function StriLi_Stub_enGB() return {
         Cause3 = "You've got a disconnect.",
         Cause4 = "doesn't have StriLi.",
         Cause5 = "has an outdated StriLi version.",
+        ItemReassignFailed = "The assignment of the item %s to %s failed. The tally marks of %s were 0.",
+        ItemRemoveFailed = "Removing the item failed because %s has 0 tally marks.",
     },
     Rolls = {
         StartRoll1 = "Roll for Item ",
@@ -32,6 +34,7 @@ function StriLi_Stub_enGB() return {
         NoRollToCancel = "No roll to cancel in progress.",
         RollCanceled = "Roll canceled.",
         RollAlreadyInProgress = "You have already a roll in progress. To cancel a current roll type",
+        RollReassigned = "Edited",
     },
     TallyMarkTypes = {
         Main = "Main",
@@ -53,7 +56,8 @@ function StriLi_Stub_enGB() return {
         Reregister = "Reregister",
         SetMaster = "Set as master",
         Remove = "Remove",
-        YourNotMaster = "You are not the StriLi master."
+        YourNotMaster = "You are not the StriLi master.",
+        PlayerChange = "Assign to another player",
     },
     Confirm = {
         RaidLeftResetData = "You have left the raid. Do you want to reset all data?",
@@ -67,6 +71,8 @@ function StriLi_Stub_enGB() return {
         Combine1 = "and",
         Combine2 = "should be combined?",
         Combine3 = "will be retained)",
+        ItemAssign = "should be assigned as the new owner of this Item?",
+        ItemRemove = "Are you sure you want to remove the item?",
     },
     Labels = {
         Name = "Name",

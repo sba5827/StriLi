@@ -21,6 +21,8 @@ function StriLi_Stub_esES() return {
         Cause3 = "Tienes una disconección.",
         Cause4 = "no tiene StriLi.",
         Cause5 = "tiene una versión muy anticuada de StriLi.",
+        ItemReassignFailed = "La asignación del elemento a %s ha fallado. Los guiones de %s eran 0.",
+        ItemRemoveFailed = "La eliminación del elemento ha fallado porque %s tiene 0 guiones.",
     },
     Rolls = {
         StartRoll1 = "Se tiran los dados por el objeto ",
@@ -32,6 +34,7 @@ function StriLi_Stub_esES() return {
         NoRollToCancel = "No se tiran dados por ningún objeto.",
         RollCanceled = "Dados cancelados.",
         RollAlreadyInProgress = "Ya se están tirando los dados para un artículo. Para interrumpir el proceso, escriba",
+        RollReassigned = "Editado",
     },
     TallyMarkTypes = {
         Main = "Principal",
@@ -53,7 +56,8 @@ function StriLi_Stub_esES() return {
         Reregister = "Vuelva a registrar",
         SetMaster = "Nombrar Maestro",
         Remove = "Eliminar",
-        YourNotMaster = "No eres el maestro de StriLi."
+        YourNotMaster = "No eres el maestro de StriLi.",
+        PlayerChange = "Asignar a otro jugador",
     },
     Confirm = {
         RaidLeftResetData = "Has abandonado la redada. ¿Quieres restablecer todos los datos?",
@@ -67,6 +71,8 @@ function StriLi_Stub_esES() return {
         Combine1 = "quiere fusionarse con",
         Combine2 = "?",
         Combine3 = "se mantiene)",
+        ItemAssign = "como nuevo propietario de este artículo?",
+        ItemRemove = "¿Estás seguro de que quieres eliminar el artículo?",
     },
     Labels = {
         Name = "Nombre",

@@ -4,12 +4,12 @@
 
     <Frame name="StriLi_ItemHistory_Template" virtual="true" toplevel="true" movable="true" enableMouse="true" hidden="false" frameStrata = "MEDIUM">
         <Size>
-            <AbsDimension x="530" y="200"/>
+            <AbsDimension x="570" y="200"/>
         </Size>
         <Anchors>
             <Anchor point="RIGHT">
                 <Offset>
-                    <AbsDimension x="530" y="0"/>
+                    <AbsDimension x="570" y="0"/>
                 </Offset>
             </Anchor>
         </Anchors>
@@ -30,7 +30,7 @@
         <Frames>
             <ScrollFrame name="$parent_ScrollFrame" EnableMouseWheel="true" inherits="UIPanelScrollFrameTemplate" parentKey="ScrollFrame">
                 <Size>
-                    <AbsDimension x="490" y="180"/>
+                    <AbsDimension x="530" y="180"/>
                 </Size>
                 <Anchors>
                     <Anchor point="CENTER">
@@ -56,7 +56,7 @@
                 <ScrollChild>
                     <Frame name="$parent_Content" parentKey="Content">
                         <Size>
-                            <AbsDimension x="490" y="0"/>
+                            <AbsDimension x="530" y="0"/>
                         </Size>
                         <Anchors point="CENTER"/>
                     </Frame>
@@ -71,7 +71,7 @@
 
     <Frame name="StriLi_ItemHistoryPlate_Template" virtual="true" toplevel="true" movable="true" enableMouse="true" hidden="false" frameStrata = "MEDIUM" parentKey="ItemPlate">
         <Size>
-            <AbsDimension x="490" y="30"/>
+            <AbsDimension x="530" y="30"/>
         </Size>
         <Anchors>
             <Anchor point="BOTTOMLEFT">
@@ -164,7 +164,7 @@
                 </Layers>
             </Frame>
             <Frame parentKey="ItemRoll">
-                <Size x="40" y="20"/>
+                <Size x="80" y="20"/>
                 <Anchors>
                     <Anchor point="LEFT">
                         <Offset>
@@ -175,7 +175,7 @@
                 <Layers>
                     <Layer>
                         <FontString text="99" inherits="GameFontNormal" parentKey="FontString">
-                            <Size x="40" y="20"/>
+                            <Size x="80" y="20"/>
                         </FontString>
                     </Layer>
                 </Layers>

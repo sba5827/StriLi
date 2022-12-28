@@ -21,6 +21,8 @@ function StriLi_Stub_deDE() return {
         Cause3 = "Du hast einen Disconect.",
         Cause4 = "hat StriLi nicht.",
         Cause5 = "hat eine stark veraltete Version von StriLi.",
+        ItemReassignFailed = "Das Zuweisen des Items an %s ist fehlgeschlagen. Die Striche von %s waren 0.",
+        ItemRemoveFailed = "Das entfernen des Items ist fehlgeschlagen, da %s 0 Striche hat.",
     },
     Rolls = {
         StartRoll1 = "Es wird um das Item ",
@@ -32,6 +34,7 @@ function StriLi_Stub_deDE() return {
         NoRollToCancel = "Es wird um kein Item gewürfelt.",
         RollCanceled = "Würfeln abgebrochen.",
         RollAlreadyInProgress = "Es wird schon um ein Item gewürfelt. Um den Vorgang zu unterbrechen tippe",
+        RollReassigned = "Bearbeitet",
     },
     TallyMarkTypes = {
         Main = "Main",
@@ -53,7 +56,8 @@ function StriLi_Stub_deDE() return {
         Reregister = "Ummelden",
         SetMaster = "Zu Master ernennen",
         Remove = "Entfernen",
-        YourNotMaster = "Du bist nicht der StriLi master."
+        YourNotMaster = "Du bist nicht der StriLi master.",
+        PlayerChange = "Anderem Spieler zuweisen",
     },
     Confirm = {
         RaidLeftResetData = "Du hast den Raid verlassen. Möchtest du alle Daten zurücksetzen?",
@@ -67,6 +71,8 @@ function StriLi_Stub_deDE() return {
         Combine1 = "mit",
         Combine2 = "zusammenlegen möchtest?",
         Combine3 = "wird behalten)",
+        ItemAssign = "das Item neu zuweisen möchtest?",
+        ItemRemove = "Bist du Sicher das du das Item entfernen möchtest?",
     },
     Labels = {
         Name = "Name",

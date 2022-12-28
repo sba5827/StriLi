@@ -315,12 +315,14 @@ function StriLi.MainFrame:OnClickSyncButton()
 
         StriLi.confirmFrame = ConfirmDialogFrame:new(nil, StriLi.Lang.Confirm.SyncDataConfirm,
                 function()
+                    StriLi.ItemHistory:reset();
                     StriLi.CommunicationHandler:sendSycRequest();
                 end,
                 nil);
 
         StriLi.confirmFrame:show();
     else
+        StriLi.ItemHistory:reset();
         StriLi.CommunicationHandler:sendSycRequest();
     end
 

@@ -22,6 +22,8 @@ StriLi.Lang = {
         Cause3 = "Du hast einen Disconect.",
         Cause4 = "hat StriLi nicht.",
         Cause5 = "hat eine stark veraltete Version von StriLi.",
+        ItemReassignFailed = "Das Zuweisen des Items %s an %s ist fehlgeschlagen. Die Striche von %s waren 0.",
+        ItemRemoveFailed = "Das entfernen des Items ist fehlgeschlagen, da %s 0 Striche hat.",
     },
     Rolls = {
         StartRoll1 = "Es wird um das Item ",
@@ -33,6 +35,7 @@ StriLi.Lang = {
         NoRollToCancel = "No roll to cancel in progress.",
         RollCanceled = "Roll canceled.",
         RollAlreadyInProgress = "You have already a roll in progress. To cancel a current roll type",
+        RollReassigned = "Edited",
     },
     TallyMarkTypes = {
         Main = "Main",
@@ -54,7 +57,8 @@ StriLi.Lang = {
         Reregister = "Ummelden",
         SetMaster = "Zu Master ernennen",
         Remove = "Entfernen",
-        YourNotMaster = "You are not the StriLi master."
+        YourNotMaster = "You are not the StriLi master.",
+        PlayerChange = "Anderem Spieler zuweisen",
     },
     Confirm = {
         RaidLeftResetData = "Du hast den Raid verlassen. Möchtest du alle Daten zurücksetzen?",
@@ -68,6 +72,8 @@ StriLi.Lang = {
         Combine1 = "mit",
         Combine2 = "zusammenlegen möchtest?",
         Combine3 = "wird behalten)",
+        ItemAssign = "das Item neu zuweisen möchtest?",
+        ItemRemove = "Bist du Sicher das du das Item entfernen möchtest?",
     },
     Labels = {
         Name = "Name",
