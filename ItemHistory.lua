@@ -131,13 +131,15 @@ function StriLi.ItemHistory:remove(index)
     assert(type(index) == "number", StriLi.Lang.ErrorMsg.Argument.." index "..StriLi.Lang.ErrorMsg.IsNotNumber);
 
     if StriLi.master == UnitName("player") then -- if not master this function was called by communication handler -> only edit UI.
-        local raidMember = RaidMembersDB:get(self.players[index]);
+        local exists, raidMember = pcall(RaidMembersDB.get, RaidMembersDB ,self.players[index]);
 
-        if raidMember[self.rollTypes[index]]:get() > 0 then
-            raidMember[self.rollTypes[index]]:sub(1);
-        else
-            print(string.format(CONSTS.msgColorStringStart.."StriLi: "..StriLi.Lang.ErrorMsg.ItemRemoveFailed..CONSTS.msgColorStringEnd, self.players[index]));
-            return;
+        if exists then
+            if raidMember[self.rollTypes[index]]:get() > 0 then
+                raidMember[self.rollTypes[index]]:sub(1);
+            else
+                print(string.format(CONSTS.msgColorStringStart.."StriLi: "..StriLi.Lang.ErrorMsg.ItemRemoveFailed..CONSTS.msgColorStringEnd, self.players[index]));
+                return;
+            end
         end
     end
 
@@ -182,12 +184,17 @@ function StriLi.ItemHistory:editPlayer(player, playerClass, index)
 
     local oldOwner = self.players[index];
 
-    if RaidMembersDB:get(oldOwner)[self.rollTypes[index]]:get() > 0 then
-        RaidMembersDB:get(oldOwner)[self.rollTypes[index]]:sub(1);
-        RaidMembersDB:get(player)[self.rollTypes[index]]:add(1);
+    local exists, raidMember = pcall(RaidMembersDB.get, RaidMembersDB, oldOwner);
+    if exists then
+        if RaidMembersDB:get(oldOwner)[self.rollTypes[index]]:get() > 0 then
+            RaidMembersDB:get(oldOwner)[self.rollTypes[index]]:sub(1);
+            RaidMembersDB:get(player)[self.rollTypes[index]]:add(1);
+        else
+            print(string.format(CONSTS.msgColorStringStart.."StriLi: "..StriLi.Lang.ErrorMsg.ItemReassignFailed..CONSTS.msgColorStringEnd, player, oldOwner));
+            return;
+        end
     else
-        print(string.format(CONSTS.msgColorStringStart.."StriLi: "..StriLi.Lang.ErrorMsg.ItemReassignFailed..CONSTS.msgColorStringEnd, player, oldOwner));
-        return;
+        RaidMembersDB:get(player)[self.rollTypes[index]]:add(1);
     end
 
     self.players[index] = player;
