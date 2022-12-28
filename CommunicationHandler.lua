@@ -394,11 +394,8 @@ function StriLi.CommunicationHandler:On_ItemHistoryAdd(arguments)
     if rollNum ~= nil then
         roll = rollNum;
     end
-    if indexNum ~= nil then
-        index = indexNum;
-    end
 
-    StriLi.ItemHistory:add(itemLink.."]|h|r", player, playerClass, rollType, roll, index);
+    StriLi.ItemHistory:add(itemLink.."]|h|r", player, playerClass, rollType, roll, indexNum);
 
 end
 
