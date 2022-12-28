@@ -114,7 +114,7 @@ function StriLi_SetTextColorByClass(FontString, Class)
 
 end
 
-function Strili_GetHexClassCollerCode(Class) -- Returns RRGGBB
+function Strili_GetHexClassColorCode(Class) -- Returns RRGGBB
 
     if( Class == "WARRIOR" ) 		then return "C69B6D" end
     if( Class == "PALADIN" ) 		then return "F48CBA" end

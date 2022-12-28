@@ -23,6 +23,8 @@ function StriLi_Stub_esES() return {
         Cause5 = "tiene una versión muy anticuada de StriLi.",
         ItemReassignFailed = "La asignación del elemento a %s ha fallado. Los guiones de %s eran 0.",
         ItemRemoveFailed = "La eliminación del elemento ha fallado porque %s tiene 0 guiones.",
+        ItemRolltypeChangeFailed = "El cambio de trazo de %s a %s falló porque %s tiene 0 trazos en %s.",
+        ItemRolltypeChangeFailed2 = "El cambio del trazo de %s a %s ha fallado porque %s ya no existe en la base de datos.",
     },
     Rolls = {
         StartRoll1 = "Se tiran los dados por el objeto ",
@@ -58,6 +60,7 @@ function StriLi_Stub_esES() return {
         Remove = "Eliminar",
         YourNotMaster = "No eres el maestro de StriLi.",
         PlayerChange = "Asignar a otro jugador",
+        RolltypeChange = "Cambiar el ictus",
     },
     Confirm = {
         RaidLeftResetData = "Has abandonado la redada. ¿Quieres restablecer todos los datos?",
@@ -73,6 +76,7 @@ function StriLi_Stub_esES() return {
         Combine3 = "se mantiene)",
         ItemAssign = "como nuevo propietario de este artículo?",
         ItemRemove = "¿Estás seguro de que quieres eliminar el artículo?",
+        ItemRolltypeChange = "cambiar la carrera?",
     },
     Labels = {
         Name = "Nombre",

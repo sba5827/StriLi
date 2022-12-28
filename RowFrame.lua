@@ -428,7 +428,7 @@ function RowFrame:initDropdownMenu(frame, level, menuList)
             if (k ~= playerName) then
 
                 info.text = k;
-                info.colorCode = "|cff" .. Strili_GetHexClassCollerCode(v[1]);
+                info.colorCode = "|cff" .. Strili_GetHexClassColorCode(v[1]);
                 info.func = function(_, arg1, arg2)
 
                     StriLi.dropdownFrame:Hide()

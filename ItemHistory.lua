@@ -176,6 +176,37 @@ function StriLi.ItemHistory:editItem(itemLink, index)
 
 end
 
+function StriLi.ItemHistory:editRollType(rollType, index)
+
+    assert(type(rollType) == "string", StriLi.Lang.ErrorMsg.Argument.." rollType "..StriLi.Lang.ErrorMsg.IsNotString);
+    assert(type(index) == "number", StriLi.Lang.ErrorMsg.Argument.." index "..StriLi.Lang.ErrorMsg.IsNotNumber);
+
+    local exists = RaidMembersDB:checkForMember(self.players[index]);
+
+    if exists then
+        local raidMember = RaidMembersDB:get(self.players[index]);
+
+        if raidMember[self.rollTypes[index]]:get() > 0 then
+            raidMember[self.rollTypes[index]]:sub(1);
+            raidMember[rollType]:add(1);
+        else
+            print(string.format(CONSTS.msgColorStringStart.."StriLi: "..StriLi.Lang.ErrorMsg.ItemRolltypeChangeFailed..CONSTS.msgColorStringEnd, self.rollTypes[index], rollType, self.players[index], self.rollTypes[index]));
+            return;
+        end
+    else
+        print(string.format(CONSTS.msgColorStringStart.."StriLi: "..StriLi.Lang.ErrorMsg.ItemRolltypeChangeFailed2..CONSTS.msgColorStringEnd, self.rollTypes[index], rollType, self.players[index]));
+        return;
+    end
+
+    self.rollTypes[index] = rollType;
+    self.rolls[index] = StriLi.Lang.Rolls.RollReassigned;
+    self.contentFrame.children[index].ItemRollType.FontString:SetText(rollType);
+    self.contentFrame.children[index].ItemRoll.FontString:SetText(StriLi.Lang.Rolls.RollReassigned);
+
+    StriLi.ItemHistory:Send_ItemHistoryChanged(index);
+
+end
+
 function StriLi.ItemHistory:editPlayer(player, playerClass, index)
 
     assert(type(player) == "string", StriLi.Lang.ErrorMsg.Argument.." player "..StriLi.Lang.ErrorMsg.IsNotString);
@@ -184,7 +215,8 @@ function StriLi.ItemHistory:editPlayer(player, playerClass, index)
 
     local oldOwner = self.players[index];
 
-    local exists, raidMember = pcall(RaidMembersDB.get, RaidMembersDB, oldOwner);
+    local exists = RaidMembersDB:checkForMember(oldOwner);
+
     if exists then
         if RaidMembersDB:get(oldOwner)[self.rollTypes[index]]:get() > 0 then
             RaidMembersDB:get(oldOwner)[self.rollTypes[index]]:sub(1);
@@ -303,6 +335,9 @@ function StriLi.ItemHistory:initDropdownMenu(frame, level, menuList, itemFrame)
         info.text, info.hasArrow, info.menuList = StriLi.Lang.Commands.PlayerChange, true, "Players";
         UIDropDownMenu_AddButton(info);
 
+        info.text, info.hasArrow, info.menuList = StriLi.Lang.Commands.RolltypeChange, true, "Lists";
+        UIDropDownMenu_AddButton(info);
+
         info.text, info.hasArrow, info.func = StriLi.Lang.Commands.Remove, false, function(_, arg1)
 
             StriLi.dropdownFrame:Hide()
@@ -332,8 +367,10 @@ function StriLi.ItemHistory:initDropdownMenu(frame, level, menuList, itemFrame)
     elseif menuList == "Players" then
         for k, v in pairs(RaidMembersDB.raidMembers) do
 
+            if k ~= itemFrame.ItemPlayer.FontString:GetText() then
+
                 info.text = k;
-                info.colorCode = "|cff" .. Strili_GetHexClassCollerCode(v[1]);
+                info.colorCode = "|cff" .. Strili_GetHexClassColorCode(v[1]);
                 info.func = function(_, arg1)
 
                     StriLi.dropdownFrame:Hide()
@@ -362,6 +399,46 @@ function StriLi.ItemHistory:initDropdownMenu(frame, level, menuList, itemFrame)
 
                 info.arg1 = k;
                 UIDropDownMenu_AddButton(info, level);
+
+            end
+        end
+    elseif menuList == "Lists" then
+        for k, list in pairs({
+            ["Main"] = StriLi.Lang.TallyMarkTypes.Main,
+            ["Sec"] = StriLi.Lang.TallyMarkTypes.Sec,
+            ["Token"] = StriLi.Lang.TallyMarkTypes.Token}) do
+
+            if list ~= itemFrame.ItemRollType.FontString:GetText() then
+
+                info.text = list;
+                info.func = function(_, arg1)
+
+                    StriLi.dropdownFrame:Hide()
+
+                    local confirmFrame = ConfirmDialogFrame:new(nil, StriLi.Lang.Confirm.AreYouSureTo.." "..StriLi.Lang.Confirm.ItemRolltypeChange,
+                            function()
+
+                                local index = nil;
+
+                                for k,v in pairs(self.contentFrame.children) do
+                                    if v == itemFrame then
+                                        index = k;
+                                    end
+                                end
+
+                                self:editRollType(arg1, index);
+
+                            end,
+                            nil);
+
+                    confirmFrame:show();
+
+                end;
+
+                info.arg1 = k;
+                UIDropDownMenu_AddButton(info, level);
+
+            end
 
         end
     end

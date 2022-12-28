@@ -24,6 +24,8 @@ StriLi.Lang = {
         Cause5 = "hat eine stark veraltete Version von StriLi.",
         ItemReassignFailed = "Das Zuweisen des Items %s an %s ist fehlgeschlagen. Die Striche von %s waren 0.",
         ItemRemoveFailed = "Das entfernen des Items ist fehlgeschlagen, da %s 0 Striche hat.",
+        ItemRolltypeChangeFailed = "Das ändern des Strichs von %s zu %s ist fehlgeschlagen, da %s 0 Striche auf %s hat.",
+        ItemRolltypeChangeFailed2 = "Das ändern des Strichs von %s zu %s ist fehlgeschlagen, da %s nicht mehr in der Datenbank existiert.",
     },
     Rolls = {
         StartRoll1 = "Es wird um das Item ",
@@ -59,6 +61,7 @@ StriLi.Lang = {
         Remove = "Entfernen",
         YourNotMaster = "You are not the StriLi master.",
         PlayerChange = "Anderem Spieler zuweisen",
+        RolltypeChange = "Strich ändern",
     },
     Confirm = {
         RaidLeftResetData = "Du hast den Raid verlassen. Möchtest du alle Daten zurücksetzen?",
@@ -74,6 +77,7 @@ StriLi.Lang = {
         Combine3 = "wird behalten)",
         ItemAssign = "das Item neu zuweisen möchtest?",
         ItemRemove = "Bist du Sicher das du das Item entfernen möchtest?",
+        ItemRolltypeChange = "den Strich ändern möchtest?",
     },
     Labels = {
         Name = "Name",

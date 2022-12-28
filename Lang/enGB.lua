@@ -23,6 +23,8 @@ function StriLi_Stub_enGB() return {
         Cause5 = "has an outdated StriLi version.",
         ItemReassignFailed = "The assignment of the item %s to %s failed. The tally marks of %s were 0.",
         ItemRemoveFailed = "Removing the item failed because %s has 0 tally marks.",
+        ItemRolltypeChangeFailed = "Changing the tally mark from %s to %s failed because %s has 0 tally marks on %s.",
+        ItemRolltypeChangeFailed2 = "Changing the stroke from %s to %s failed because %s no longer exists in the database.",
     },
     Rolls = {
         StartRoll1 = "Roll for Item ",
@@ -58,6 +60,7 @@ function StriLi_Stub_enGB() return {
         Remove = "Remove",
         YourNotMaster = "You are not the StriLi master.",
         PlayerChange = "Assign to another player",
+        RolltypeChange = "Change tally-mark",
     },
     Confirm = {
         RaidLeftResetData = "You have left the raid. Do you want to reset all data?",
@@ -73,6 +76,7 @@ function StriLi_Stub_enGB() return {
         Combine3 = "will be retained)",
         ItemAssign = "should be assigned as the new owner of this Item?",
         ItemRemove = "Are you sure you want to remove the item?",
+        ItemRolltypeChange = "you want to change the tally-mark?",
     },
     Labels = {
         Name = "Name",
