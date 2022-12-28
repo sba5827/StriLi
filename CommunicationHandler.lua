@@ -84,6 +84,8 @@ function StriLi.CommunicationHandler:On_CHAT_MSG_ADDON(...)
         self:On_ItemHistoryAdd(arg2);
     elseif arg1 == "SL_IHC" then
         self:On_ItemHistoryChanged(arg2);
+    elseif arg1 == "SL_IHR" then
+        self:On_ItemHistoryRemove(arg2);
     end
 
 end
@@ -420,6 +422,20 @@ function StriLi.CommunicationHandler:On_ItemHistoryChanged(arguments)
 
 end
 
+function StriLi.CommunicationHandler:On_ItemHistoryRemove(arguments)
+
+    local sender, _next = string.match(arguments, CONSTS.nextWordPatern);
+    if sender == UnitName("player") or (sender ~= StriLi.master and StriLi.master ~= "") then return end
+    local index, _next = string.match(_next, CONSTS.nextWordPatern);
+
+    index = tonumber(index);
+
+    assert(index);
+
+    StriLi.ItemHistory:remove(index);
+
+end
+
 function StriLi.CommunicationHandler:Send_ItemHistoryAdd(itemLink, player, playerClass, rollType, roll, index, forced)
     if StriLi.master ~= UnitName("player") and not forced then return end;
     SendAddonMessage("SL_IHA", UnitName("player").." "..tostring(itemLink).." "..tostring(player).." "..tostring(playerClass).." "..tostring(rollType).." "..tostring(roll).." "..tostring(index), "RAID");
@@ -428,6 +444,11 @@ end
 function StriLi.CommunicationHandler:Send_ItemHistoryChanged(itemLink, player, playerClass, rollType, roll, index)
     if StriLi.master ~= UnitName("player") then return end;
     SendAddonMessage("SL_IHC", UnitName("player").." "..tostring(itemLink).." "..tostring(player).." "..tostring(playerClass).." "..tostring(rollType).." "..tostring(roll).." "..tostring(index), "RAID");
+end
+
+function StriLi.CommunicationHandler:Send_ItemHistoryRemove(index)
+    if StriLi.master ~= UnitName("player") then return end;
+    SendAddonMessage("SL_IHR", UnitName("player").." "..tostring(index), "RAID");
 end
 
 function StriLi.CommunicationHandler:addToQueue(queuedRequest, arguments)
