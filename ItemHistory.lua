@@ -10,6 +10,12 @@ methods:
 
 StriLi.ItemHistory = { items = {}, players = {}, rollTypes = {}, rolls = {}, playerClasses = {}, frame = nil, contentFrame = nil, count = 0};
 
+local function repositionFrames()
+    for index, frame in pairs(StriLi.ItemHistory.contentFrame.children) do
+        frame:SetPoint("BOTTOMLEFT", 0, 30*(index-1)-2);
+    end
+end
+
 local function getItemID_fromLink(itemLink)
 
     assert(type(itemLink) == "string", StriLi.Lang.ErrorMsg.Argument.." itemLink "..StriLi.Lang.ErrorMsg.IsNotString);
@@ -124,13 +130,15 @@ function StriLi.ItemHistory:remove(index)
 
     assert(type(index) == "number", StriLi.Lang.ErrorMsg.Argument.." index "..StriLi.Lang.ErrorMsg.IsNotNumber);
 
-    local raidMember = RaidMembersDB:get(self.players[index]);
+    if StriLi.master == UnitName("player") then -- if not master this function was called by communication handler -> only edit UI.
+        local raidMember = RaidMembersDB:get(self.players[index]);
 
-    if raidMember[self.rollTypes[index]]:get() > 0 then
-        raidMember[self.rollTypes[index]]:sub(1);
-    else
-        print(string.format(CONSTS.msgColorStringStart.."StriLi: "..StriLi.Lang.ErrorMsg.ItemRemoveFailed..CONSTS.msgColorStringEnd, self.players[index]));
-        return;
+        if raidMember[self.rollTypes[index]]:get() > 0 then
+            raidMember[self.rollTypes[index]]:sub(1);
+        else
+            print(string.format(CONSTS.msgColorStringStart.."StriLi: "..StriLi.Lang.ErrorMsg.ItemRemoveFailed..CONSTS.msgColorStringEnd, self.players[index]));
+            return;
+        end
     end
 
     self.contentFrame:SetHeight(self.contentFrame:GetHeight() - 30);
@@ -146,6 +154,9 @@ function StriLi.ItemHistory:remove(index)
     frame:Hide();
 
     self.count = self.count - 1;
+
+    repositionFrames();
+    StriLi.CommunicationHandler:Send_ItemHistoryRemove(index);
 
 end
 
@@ -302,6 +313,7 @@ function StriLi.ItemHistory:initDropdownMenu(frame, level, menuList, itemFrame)
 
                         self:remove(index);
 
+
                     end,
                     nil);
 
@@ -340,6 +352,7 @@ function StriLi.ItemHistory:initDropdownMenu(frame, level, menuList, itemFrame)
                     confirmFrame:show();
 
                 end;
+
                 info.arg1 = k;
                 UIDropDownMenu_AddButton(info, level);
 
