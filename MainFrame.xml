@@ -225,7 +225,7 @@
 		<Layers>
 			<Layer level="ARTWORK">
 				<Texture name="StriLi_MainFrame_Header"
-            file="">
+            file="" parentkey="Header">
 					<Size>
 						<AbsDimension x="400" y="64"/>
 					</Size>
@@ -237,7 +237,7 @@
 						</Anchor>
 					</Anchors>
 				</Texture>
-				<FontString inherits="GameFontNormal" text="StriLi">
+				<FontString inherits="GameFontNormal" text="StriLi" parentkey="FontString">
 					<Anchors>
 						<Anchor point="TOP" relativeTo="StriLi_MainFrame_Header">
 							<Offset>

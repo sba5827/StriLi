@@ -63,6 +63,10 @@ function StriLi.MainFrame:init()
     if self.frame == nil then
         self.frame = CreateFrame("FRAME", "StriLi_MainFrame", UIParent, "StriLi_MainFrame_Template");
     end
+
+    self.frame.FontString:SetText("StriLi "..GetAddOnMetadata("StriLi", "Version"));
+    self.frame.FontString:SetTextColor(0,0.9,1.0);
+
     if self.labelRow == nil then
         self:setupLabelRow();
     end
