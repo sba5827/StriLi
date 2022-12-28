@@ -64,6 +64,8 @@ function StriLi.MainFrame:init()
         self.frame = CreateFrame("FRAME", "StriLi_MainFrame", UIParent, "StriLi_MainFrame_Template");
     end
 
+    tinsert(UISpecialFrames, "StriLi_MainFrame");
+
     self.frame.FontString:SetText("StriLi "..GetAddOnMetadata("StriLi", "Version"));
     self.frame.FontString:SetTextColor(0,0.9,1.0);
 
