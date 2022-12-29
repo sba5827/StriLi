@@ -40,6 +40,7 @@ function StriLi.EventHandler:OnEvent(event, ...)
         StriLi_initAddon();
         StriLi.MainFrame:init();
         StriLi.LootRules:init();
+        StriLi_OptionFrame_init();
         if tonumber(StriLi_LatestVersion) > tonumber(GetAddOnMetadata("StriLi", "Version")) then
             local versionFrame = CreateFrame("FRAME", "StriLi_VersionFrame", UIParent, "StriLi_CopyVersionFrame_Template");
             local editBox = versionFrame:GetChildren():GetChildren();

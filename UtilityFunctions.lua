@@ -28,7 +28,8 @@ function StriLi_SetMaster(arg1)
         local name, rank = GetRaidRosterInfo(i);
         if (name == newMasterName) then
             found = true;
-            if (rank > 0) then
+
+            if (rank > 0) or StriLiOptions["AutoPromote"] then
                 StriLi_tryToSetNewMaster(newMasterName);
             else
                 print(CONSTS.msgColorStringStart..newMasterName.." "..StriLi.Lang.ErrorMsg.SetMasterNotPossible.." "..StriLi.Lang.ErrorMsg.RankToLow.."|r");
@@ -50,6 +51,7 @@ function StriLi_tryToSetNewMaster(newMasterName)
         StriLi.CommunicationHandler:checkIfUserHasStriLi(newMasterName, function(userHasStriLi)
             if userHasStriLi then
                 if StriLi.CommunicationHandler:sendMasterChanged(newMasterName) then
+                    PromoteToAssistant(newMasterName)
                     StriLi.master = newMasterName;
                     if newMasterName ~= "" then
                         StriLi.MainFrame:OnMasterChanged();
@@ -185,7 +187,9 @@ function StriLi_initAddon()
     StriLi.InitLang()
 
     if StriLi_LatestVersion == nil then
-        StriLi_LatestVersion = GetAddOnMetadata("StriLi", "Version");
+        StriLi_LatestVersion = tonumber(GetAddOnMetadata("StriLi", "Version"));
+    elseif StriLi_LatestVersion < tonumber(GetAddOnMetadata("StriLi", "Version")) then
+        StriLi_LatestVersion = tonumber(GetAddOnMetadata("StriLi", "Version"));
     end
     if StriLi_Master == nil then
         StriLi.master = "";
@@ -203,6 +207,9 @@ function StriLi_initAddon()
     end
     if StriLi_RulesTxt == nil then
         StriLi_RulesTxt = "";
+    end
+    if StriLiOptions == nil then
+        StriLiOptions = {};
     end
 
     StriLi.LootRules:setText(StriLi_RulesTxt);
