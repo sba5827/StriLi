@@ -51,7 +51,7 @@ function StriLi_tryToSetNewMaster(newMasterName)
         StriLi.CommunicationHandler:checkIfUserHasStriLi(newMasterName, function(userHasStriLi)
             if userHasStriLi then
                 if StriLi.CommunicationHandler:sendMasterChanged(newMasterName) then
-                    PromoteToAssistant(newMasterName)
+                    if StriLiOptions["AutoPromote"] then PromoteToAssistant(newMasterName) end
                     StriLi.master = newMasterName;
                     if newMasterName ~= "" then
                         StriLi.MainFrame:OnMasterChanged();
@@ -186,10 +186,12 @@ function StriLi_initAddon()
 
     StriLi.InitLang()
 
+    local localAddonVersion = tonumber(GetAddOnMetadata("StriLi", "Version"));
+
     if StriLi_LatestVersion == nil then
-        StriLi_LatestVersion = tonumber(GetAddOnMetadata("StriLi", "Version"));
-    elseif StriLi_LatestVersion < tonumber(GetAddOnMetadata("StriLi", "Version")) then
-        StriLi_LatestVersion = tonumber(GetAddOnMetadata("StriLi", "Version"));
+        StriLi_LatestVersion = localAddonVersion;
+    elseif StriLi_LatestVersion < localAddonVersion then
+        StriLi_LatestVersion = localAddonVersion;
     end
     if StriLi_Master == nil then
         StriLi.master = "";

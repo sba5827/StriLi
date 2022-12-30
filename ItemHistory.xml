@@ -69,7 +69,7 @@
 
     </Frame>
 
-    <Frame name="StriLi_ItemHistoryPlate_Template" virtual="true" toplevel="true" movable="true" enableMouse="true" hidden="false" frameStrata = "MEDIUM" parentKey="ItemPlate">
+    <Frame name="StriLi_ItemHistoryPlate_Template" virtual="true" toplevel="true" movable="true" enableMouse="true" hidden="true" frameStrata = "MEDIUM" parentKey="ItemPlate">
         <Size>
             <AbsDimension x="530" y="30"/>
         </Size>
