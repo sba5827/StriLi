@@ -31,7 +31,7 @@ TextInputDialogFrame.xml
 CopyVersionFrame.xml
 ItemHistory.xml
 LootRules.xml
-observableNumber.lua
+observables.lua
 RaidMembersDB.lua
 UtilityFunctions.lua
 TextInputFrame.lua
