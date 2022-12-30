@@ -72,6 +72,7 @@ function StriLi.EventHandler:OnPartyMembersChanged()
         -- just entered or left a Group no Raid
         if not (StriLi.master == "") then
             StriLi.master = "";
+            StriLi.MainFrame:OnMasterChanged();
         end
     elseif numOfMembers > 1 and StriLi_newRaidGroup then
         self:OnJoiningNewRaidgoup();
@@ -102,6 +103,7 @@ function StriLi.EventHandler:OnRaidLeft()
 
     StriLi_newRaidGroup = true;
     StriLi.master = "";
+    StriLi.MainFrame:OnMasterChanged();
 
 end
 
