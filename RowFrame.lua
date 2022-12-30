@@ -486,7 +486,7 @@ function RowFrame:enableButtons()
 
     end
 
-    if StriLi.MainFrame.children.lockButton:GetText() == "Lock" then
+    if StriLi.MainFrame.children.lockButton:GetText() == StriLi.Lang.Labels.Lock then
         self.Regions.ReregisterCB:Enable();
     end
 
