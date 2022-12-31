@@ -54,7 +54,6 @@ function StriLi_tryToSetNewMaster(newMasterName)
                     if StriLiOptions["AutoPromote"] then PromoteToAssistant(newMasterName) end
                     StriLi.master:set(newMasterName);
                     if newMasterName ~= "" then
-                        StriLi.MainFrame:OnMasterChanged();
                         StriLi.MainFrame.rows[UnitName("player")]:UpdateName("•"..UnitName("player"));
                         StriLi.MainFrame.rows[newMasterName]:UpdateName("®"..newMasterName);
                     end

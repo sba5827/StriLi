@@ -110,6 +110,7 @@ function StriLi.MainFrame:init()
 
 
     self.sortType:registerObserver(self);
+    StriLi.master:registerObserver(self);
 
     for charName, charData in pairs(RaidMembersDB.raidMembers) do
         self:addPlayer({ charName, charData });
@@ -292,6 +293,8 @@ function StriLi.MainFrame:OnValueChanged(sender)
 
     if sender == self.sortType then
         self:sortRowFrames();
+    elseif sender == StriLi.master then
+        self:OnMasterChanged();
     else
         error("WTF?!");
     end

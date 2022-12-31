@@ -52,7 +52,7 @@ SlashCmdList["STRILI"] = function(msg, _)
             editBox:SetText("/sl <"..StriLi.Lang.Commands.TimeInSec.."> [@mouseover]");
             editBox:HighlightText();
             copyMacroBox:Show();
-            editBox:SetScript("OnEscapePressed", function(self) copyMacroBox:Hide() end);
+            editBox:SetScript("OnEscapePressed", function() copyMacroBox:Hide() end);
 
             return;
 
@@ -113,9 +113,7 @@ SlashCmdList["STRILI"] = function(msg, _)
     if string.lower(args) == "[@mouseover]" then
         local _, itemLink = GameTooltip:GetItem();
 
-        local _, _, _, _, Id, _, _, _, _, _,
-        _, _, _, _ = string.find(itemLink,
-                CONSTS.itemLinkPatern)
+        local _, _, _, _, Id = string.find(itemLink, CONSTS.itemLinkPatern)
 
         if itemLink == nil then return end
 
@@ -127,9 +125,7 @@ SlashCmdList["STRILI"] = function(msg, _)
         local firstChar = string.sub(args, 1, 1);
 
         if firstChar == "|" then
-            local _, _, _, _, Id, _, _, _, _, _,
-            _, _, _, _ = string.find(args,
-                    CONSTS.itemLinkPatern)
+            local _, _, _, _, Id = string.find(args, CONSTS.itemLinkPatern)
 
             StriLi.AutoRollAnalyser:setItemID(tonumber(Id));
 

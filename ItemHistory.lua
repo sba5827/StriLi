@@ -22,9 +22,7 @@ local function getItemID_fromLink(itemLink)
     local firstChar = string.sub(itemLink, 1, 1);
     assert(firstChar == "|", StriLi.Lang.ErrorMsg.Argument.." itemLink "..StriLi.Lang.ErrorMsg.IsNotItemLink);
 
-    local _, _, Color, Ltype, Id, Enchant, Gem1, Gem2, Gem3, Gem4,
-    Suffix, Unique, LinkLvl, Name = string.find(itemLink,
-            CONSTS.itemLinkPatern)
+    local _, _, _, _, Id = string.find(itemLink, CONSTS.itemLinkPatern)
 
     return Id;
 

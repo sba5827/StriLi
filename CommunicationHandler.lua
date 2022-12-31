@@ -156,7 +156,6 @@ function StriLi.CommunicationHandler:On_MasterChanged(msgString)
     if (StriLi.master:get() == sender) or (StriLi.master:get() == "") then
         StriLi.master:set(newMaster);
         if newMaster ~= "" then
-            StriLi.MainFrame:OnMasterChanged();
             StriLi.MainFrame.rows[sender]:UpdateName("•"..sender);
             StriLi.MainFrame.rows[newMaster]:UpdateName("®"..newMaster);
         end
