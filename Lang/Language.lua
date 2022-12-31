@@ -102,6 +102,7 @@ StriLi.Lang = {
         ButtonSave = "Save",
         ButtonItemHistory = "ItemHistory",
         NewStriLiVersion = "Eine neue Version von StriLi ist verfügbar unter:",
+        CopyMacro = "Copy and create a macro from it.\n Replace the <> and the text in it with your desired time.",
         ButtonOk = "Ok",
         LootRules = "Loot Rules",
     },

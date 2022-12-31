@@ -1,24 +1,3 @@
---[[
-Class: ConfirmDialogFrame
-
-variables:
-	frame
-	fontString
-	confirmButton
-	cancelButton
-
-methods:
-    new
-    show
-
---]]
-
---[[
-	Dependencies:
-	MainFrame
-
---]]
-
 ConfirmDialogFrame = { frame = nil, fontString = nil, confirmButton = nil, cancelButton = nil };
 
 function ConfirmDialogFrame:new(o, text, confirmFnc, cancelFnc)

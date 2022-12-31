@@ -1,26 +1,3 @@
---[[
-Class: RaidMembersDB
-
-variables:
-    raidMembers -- gets initialized in StriLi_initAddon for error prevention
-    size
-
-methods:
-    checkForMember
-    add
-    get
-    remove
-    getRawData
-    initFromRawData
-    combineMembers
-    getSize
-
---]]
---[[
-	Dependencies:
-		- observableNumber
---]]
-
 RaidMembersDB = { raidMembers = {}, size = 0 };
 
 function RaidMembersDB:checkForMember(name)

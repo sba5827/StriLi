@@ -1,29 +1,3 @@
---[[
-Class: StriLi.AutoRollAnalyser
-
-variables:
-    itemID
-    timerFrame
-    time
-    rolls
-    rollInProgress
-    item
-
-methods:
-    setItemID
-    setTimeForRolls
-    setItem
-    getRollInProgress
-    start
-    finalize
-    On_CHAT_MSG_SYSTEM
-    registerRoll
-    isNHToken
-    sortRolls
-    shoutRolls
-    increaseWinnerCount
-
---]]
 local NH_MarkOfSanctification_t = {
     Vanquisher = 52025,
     Protector = 52026,

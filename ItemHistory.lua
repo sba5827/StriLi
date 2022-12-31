@@ -1,13 +1,3 @@
---[[
-Class: ItemHistory
-
-variables:
-    frame
-
-methods:
-
---]]
-
 StriLi.ItemHistory = { items = {}, players = {}, rollTypes = {}, rolls = {}, playerClasses = {}, frame = nil, contentFrame = nil, count = 0};
 
 local function repositionFrames()

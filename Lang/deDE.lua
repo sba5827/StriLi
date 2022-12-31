@@ -101,6 +101,7 @@ function StriLi_Stub_deDE() return {
         ButtonSave = "Speichern",
         ButtonItemHistory = "Item Verlauf",
         NewStriLiVersion = "Eine neue Version von StriLi ist verfügbar unter:",
+        CopyMacro = "Kopiere und erstelle daraus ein Makro.\n Ersetze dabei das <> und den darin enthaltenen Text durch die gewünschte Zeit.",
         ButtonOk = "Ok",
         LootRules = "Loot Regeln",
     },

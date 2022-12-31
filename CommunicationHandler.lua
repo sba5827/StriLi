@@ -1,34 +1,5 @@
 --[[
-Class: StriLi.CommunicationHandler
-
-variables:
-    waitingForRespond
-    time
-    timerFrame
-    checkForMaster_cbf
-    checkUserHasStriLi_cbf
-    requestedSyncAsMaster
-
-methods:
-    requestedSyncAsMaster
-    On_Request_CheckForMaster
-    On_Respond_CheckForMaster
-    On_MasterChanged
-    sendMasterChanged
-    On_DataChanged
-    sendDataChanged
-    checkForMaster
-    On_ResetData
-    sendResetData
-    On_Request_SyncData
-    sendSycRequest
-    On_Request_UserHasStriLi
-    On_Respond_UserHasStriLi
-    checkIfUserHasStriLi
-    On_VersionCheck
-    ShoutVersion
-
-CommunicationStrings:
+    CommunicationStrings:
     Setup of Strings:
     SL = StriLi -> Prefix
     RQ = Request -> Command-type Prefix

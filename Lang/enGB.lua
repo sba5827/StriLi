@@ -101,6 +101,7 @@ function StriLi_Stub_enGB() return {
         ButtonSave = "Save",
         ButtonItemHistory = "ItemHistory",
         NewStriLiVersion = "A new version of StriLi is available at:",
+        CopyMacro = "Copy and create a macro from it.\n Replace the <> and the text in it with your desired time.",
         ButtonOk = "Ok",
         LootRules = "Loot Rules",
     },

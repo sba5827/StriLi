@@ -1,8 +1,3 @@
---[[
-Class: ---
-
---]]
-
 SLASH_STRILI1 = '/sl'
 
 SlashCmdList["STRILI"] = function(msg, _)
@@ -48,7 +43,7 @@ SlashCmdList["STRILI"] = function(msg, _)
 
             local copyMacroBox = CreateFrame("FRAME", "StriLi_MakroFrame", UIParent, "StriLi_CopyVersionFrame_Template");
             local editBox = copyMacroBox:GetChildren():GetChildren();
-            StriLi_MakroFrame_FontString:SetText("");
+            StriLi_MakroFrame_FontString:SetText(StriLi.Lang.XML.CopyMacro);
             editBox:SetText("/sl <"..StriLi.Lang.Commands.TimeInSec.."> [@mouseover]");
             editBox:HighlightText();
             copyMacroBox:Show();

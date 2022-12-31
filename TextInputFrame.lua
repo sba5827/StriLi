@@ -1,17 +1,3 @@
---[[
-Class: TextInputFrame
-
-variables:
-    frame
-    confirm_function
-    cancel_fnc
-
-methods:
-    new
-    show
-
---]]
-
 TextInputFrame = { frame = nil, confirm_function = nil, cancel_fnc = nil };
 
 function TextInputFrame:new(o, text, confirm_fnc, cancel_fnc)
@@ -49,7 +35,5 @@ end
 
 function TextInputFrame:show()
     self.frame:Show();
-    self.frame:Raise();
-    self.frame:Raise();
     self.frame:Raise();
 end

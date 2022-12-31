@@ -101,6 +101,7 @@ function StriLi_Stub_esES() return {
         ButtonSave = "Guarde",
         ButtonItemHistory = "Historia Item",
         NewStriLiVersion = "Una nueva versión de StriLi está disponible en:",
+        CopyMacro = "Copia y crea una macro a partir de ella.\n Sustituye el <> y el texto que contiene por la hora que desees.",
         ButtonOk = "Ok",
         LootRules = "Normas de botín",
     },
