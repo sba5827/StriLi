@@ -2,7 +2,6 @@ local NH_MarkOfSanctification_t = {
     Vanquisher = 52025,
     Protector = 52026,
     Conqueror = 52027
-
 };
 
 StriLi.AutoRollAnalyser = { itemID = nil, timerFrame = CreateFrame("Frame"), time = 0.0, rolls = {}, rollInProgress = false, item = "" };
@@ -74,7 +73,7 @@ function StriLi.AutoRollAnalyser:finalize()
 
     self:sortRolls();
     self:shoutRolls();
-    self:increaseWinnerCount();
+    self:increaseWinnerCountAndExpandItemHistory();
 
     self.rollInProgress = false;
 
@@ -155,14 +154,14 @@ function StriLi.AutoRollAnalyser:shoutRolls()
         end
 
         for _,v2 in ipairs(v) do
-            s = v2[StriLi.Lang.Name].." || "..StriLi.Lang.Rolls.TallyMarks..": "..v2["Count"].." || "..StriLi.Lang.Rolls.Fails..": "..v2["Fail"].." || "..StriLi.Lang.Rolls.Roll..": "..v2["Roll"];
+            local s = v2["Name"].." || "..StriLi.Lang.Rolls.TallyMarks..": "..v2["Count"].." || "..StriLi.Lang.Rolls.Fails..": "..v2["Fail"].." || "..StriLi.Lang.Rolls.Roll..": "..v2["Roll"];
             SendChatMessage(s, "RAID");
         end
     end
 
 end
 
-function StriLi.AutoRollAnalyser:increaseWinnerCount()
+function StriLi.AutoRollAnalyser:increaseWinnerCountAndExpandItemHistory()
 
     local rollType, winnerName, counterToIncrease, raidMember;
 
