@@ -10,6 +10,10 @@ SlashCmdList["STRILI"] = function(msg, _)
 	local inRaid = (GetNumRaidMembers() > 0);
 
     if ( tonumber(t) == nil) then
+
+        t = string.lower(t);
+        args = string.lower(args);
+
         if ( t == "c" ) then
             if not StriLi.AutoRollAnalyser:getRollInProgress() then
                 print(CONSTS.msgColorStringStart.."StriLi: "..StriLi.Lang.Rolls.NoRollToCancel.."|r");
@@ -19,8 +23,8 @@ SlashCmdList["STRILI"] = function(msg, _)
                 return;
             end
 
-            print(CONSTS.msgColorStringStart.."StriLi: "..StriLi.Lang.Rolls.RollCanceled.."|r");
             StriLi.AutoRollAnalyser:cancelRoll();
+            print(CONSTS.msgColorStringStart.."StriLi: "..StriLi.Lang.Rolls.RollCanceled.."|r");
             return;
 
         elseif (t == "h") or (t == "help")then
@@ -60,7 +64,7 @@ SlashCmdList["STRILI"] = function(msg, _)
                     print(CONSTS.msgColorStringStart.."StriLi: "..StriLi.Lang.Commands.InvalideNotInRaid.."|r");
                     return;
                 end
-            elseif args == "itemless"then
+            elseif args == "itemless" then
                 RaidMembersDB:postNamesOfUnluckyPlayers();
             elseif args == "rules" then
 
