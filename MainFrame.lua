@@ -211,7 +211,7 @@ function StriLi.MainFrame:addPlayer(raidMember)
     self:resize();
     self.rows[raidMember[1]]:show();
 
-    if raidMember[1] == StriLi.master then
+    if raidMember[1] == StriLi.master:get() then
 
         self.rows[raidMember[1]]:UpdateName("®"..raidMember[1]);
 
@@ -314,7 +314,7 @@ end
 
 function StriLi.MainFrame:OnClickSyncButton()
 
-    if StriLi.master == UnitName("player") then
+    if StriLi.master:get() == UnitName("player") then
         if StriLi.confirmFrame ~= nil then
             StriLi.confirmFrame:hide();
         end
@@ -458,7 +458,7 @@ end
 
 function StriLi.MainFrame:OnMasterChanged()
 
-    if StriLi.master ~= UnitName("player") and StriLi.master ~= "" then
+    if StriLi.master:get() ~= UnitName("player") and StriLi.master:get() ~= "" then
 
         for _, rowFrame in pairs(self.rows) do
             rowFrame:disableButtons();

@@ -97,7 +97,7 @@ SlashCmdList["STRILI"] = function(msg, _)
 	if not inRaid then
 		print(CONSTS.msgColorStringStart.."StriLi: "..StriLi.Lang.Commands.InvalideNotInRaid.."|r");
 		return;
-    elseif UnitName("player") ~= StriLi.master then
+    elseif StriLi.master:get() ~= UnitName("player") then
         print(CONSTS.msgColorStringStart.."StiLi: "..StriLi.Lang.Commands.YourNotMaster.."|r");
         return;
     elseif StriLi_GetPlayerRank(UnitName("player")) < 1 then

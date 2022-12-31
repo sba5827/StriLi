@@ -93,7 +93,7 @@ function RowFrame:new(o, frameName, parentFrame, posIndex, raidMember)
 
     o:setColumnContent(o.raidMember[1], o.raidMember[2]);
 
-    if StriLi.master ~= UnitName("player") and StriLi.master ~= "" then
+    if StriLi.master:get() ~= UnitName("player") and StriLi.master:get() ~= "" then
         o:disableButtons();
     end
 
@@ -118,7 +118,7 @@ function RowFrame:reInit(_, _, _, posIndex, raidMember)
 
     self:linkCounter(self.raidMember[2]);
 
-    if StriLi.master ~= UnitName("player") and StriLi.master ~= "" then
+    if StriLi.master:get() ~= UnitName("player") and StriLi.master:get() ~= "" then
         self:disableButtons();
     end
 
@@ -356,7 +356,7 @@ end
 
 function RowFrame:OnMouseUp(frame, button)
 
-    if (button ~= "RightButton") or (not MouseIsOver(frame) or ((StriLi.master ~= "") and (StriLi.master ~= UnitName("player")))) then
+    if (button ~= "RightButton") or (not MouseIsOver(frame) or ((StriLi.master:get() ~= "") and (StriLi.master:get() ~= UnitName("player")))) then
         return
     end ;
 

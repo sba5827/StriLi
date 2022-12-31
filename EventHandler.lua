@@ -70,8 +70,8 @@ function StriLi.EventHandler:OnPartyMembersChanged()
         self:OnRaidLeft();
     elseif numOfMembers < 1 and StriLi_newRaidGroup then
         -- just entered or left a Group no Raid
-        if not (StriLi.master == "") then
-            StriLi.master = "";
+        if not (StriLi.master:get() == "") then
+            StriLi.master:set("");
             StriLi.MainFrame:OnMasterChanged();
         end
     elseif numOfMembers > 1 and StriLi_newRaidGroup then
@@ -81,7 +81,7 @@ function StriLi.EventHandler:OnPartyMembersChanged()
     end
 
     StriLi.CommunicationHandler:ShoutVersion();
-    StriLi.CommunicationHandler:sendMasterChanged(StriLi.master);
+    StriLi.CommunicationHandler:sendMasterChanged(StriLi.master:get());
 
 end
 
@@ -102,7 +102,7 @@ function StriLi.EventHandler:OnRaidLeft()
     StriLi.confirmFrame:show();
 
     StriLi_newRaidGroup = true;
-    StriLi.master = "";
+    StriLi.master:set("");
     StriLi.MainFrame:OnMasterChanged();
 
 end
@@ -117,13 +117,13 @@ function StriLi.EventHandler:OnJoiningNewRaidgoup()
 
             local newMaster = UnitName("player");
             if StriLi.CommunicationHandler:sendMasterChanged(newMaster) then
-                StriLi.master = newMaster;
+                StriLi.master:set(newMaster);
             else
                 error(StriLi.Lang.ErrorMsg.MasterInitFail);
             end
 
         else
-            StriLi.master = master;
+            StriLi.master:set(master);
         end
 
     end);
@@ -182,7 +182,7 @@ function StriLi.EventHandler:addNewPlayers()
             return ;
         end
 
-        if name == StriLi.master then
+        if StriLi.master:get() == name then
             masterIsInRaid = true;
         end
 
@@ -195,7 +195,7 @@ function StriLi.EventHandler:addNewPlayers()
         end
 
         StriLi.CommunicationHandler:checkIfUserHasStriLi(name, function(userHasStriLi)
-            if userHasStriLi and not (StriLi.master == name) then
+            if userHasStriLi and not (StriLi.master:get() == name) then
                 StriLi.MainFrame.rows[name]:UpdateName("•"..name);
             end
         end);
@@ -204,11 +204,11 @@ function StriLi.EventHandler:addNewPlayers()
 
     if not masterIsInRaid then
 
-        if StriLi.MainFrame.rows[StriLi.master] ~= nil then
-            StriLi.MainFrame.rows[StriLi.master]:UpdateName(StriLi.master);
+        if StriLi.MainFrame.rows[StriLi.master:get()] ~= nil then
+            StriLi.MainFrame.rows[StriLi.master:get()]:UpdateName(StriLi.master:get());
         end
 
-        StriLi.master = "";
+        StriLi.master:set("");
 
         local _t = math.random()*10;
         
@@ -242,13 +242,13 @@ function StriLi.EventHandler:addNewPlayers()
 
                         local newMaster = UnitName("player");
                         if StriLi.CommunicationHandler:sendMasterChanged(newMaster) then
-                            StriLi.master = newMaster;
+                            StriLi.master:set(newMaster);
                         else
                             error(StriLi.Lang.ErrorMsg.MasterInitFail);
                         end
 
                     else
-                        StriLi.master = master;
+                        StriLi.master:set(master);
                     end
 
                 end);

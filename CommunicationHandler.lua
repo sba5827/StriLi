@@ -92,8 +92,8 @@ end
 
 function StriLi.CommunicationHandler:On_Request_CheckForMaster()
 
-    if (StriLi.master ~= "") and (StriLi.master == UnitName("player")) then
-        SendAddonMessage("SL_RS_CFM", StriLi.master, "RAID");
+    if (StriLi.master:get() ~= "") and (StriLi.master:get() == UnitName("player")) then
+        SendAddonMessage("SL_RS_CFM", StriLi.master:get(), "RAID");
     end
 
 end
@@ -102,9 +102,9 @@ function StriLi.CommunicationHandler:On_Respond_CheckForMaster(transmittedMaster
 
     if self.waitingForRespond == "SL_RS_CFM" then
 
-        StriLi.master = transmittedMaster;
+        StriLi.master:set(transmittedMaster);
         self.timerFrame:SetScript("OnUpdate", nil);
-        self.checkForMaster_cbf(StriLi.master); -- master check done callback
+        self.checkForMaster_cbf(StriLi.master:get()); -- master check done callback
         self:respondReceived();
 
     end
@@ -131,15 +131,15 @@ function StriLi.CommunicationHandler:checkForMaster(cbf, time)
 
         if waitingForRespond ~= "SL_RS_CFM" then
             self.timerFrame:SetScript("OnUpdate", nil);
-            self.checkForMaster_cbf(StriLi.master);
+            self.checkForMaster_cbf(StriLi.master:get());
         end
 
         self.time = self.time - elapsed;
         if self.time < 0.0 then
             -- Respond time exceeded
-            StriLi.master = "";
+            StriLi.master:set("");
             self.timerFrame:SetScript("OnUpdate", nil);
-            self.checkForMaster_cbf(StriLi.master); -- master check done callback
+            self.checkForMaster_cbf(StriLi.master:get()); -- master check done callback
             self:respondReceived();
         end
 
@@ -153,8 +153,8 @@ function StriLi.CommunicationHandler:On_MasterChanged(msgString)
 
     local sender, newMaster = string.match(msgString, CONSTS.nextWordPatern);
 
-    if (sender == StriLi.master) or (StriLi.master == "") then
-        StriLi.master = newMaster;
+    if (StriLi.master:get() == sender) or (StriLi.master:get() == "") then
+        StriLi.master:set(newMaster);
         if newMaster ~= "" then
             StriLi.MainFrame:OnMasterChanged();
             StriLi.MainFrame.rows[sender]:UpdateName("•"..sender);
@@ -169,7 +169,7 @@ end
 
 function StriLi.CommunicationHandler:sendMasterChanged(newMaster)
 
-    if (StriLi.master == UnitName("player")) or (StriLi.master == "") then
+    if (StriLi.master:get() == UnitName("player")) or (StriLi.master:get() == "") then
         SendAddonMessage("SL_MC", UnitName("player") .. " " .. newMaster, "RAID");
         return true;
     end
@@ -186,7 +186,7 @@ function StriLi.CommunicationHandler:On_DataChanged(msgString)
     name, _next = string.match(_next, CONSTS.nextWordPatern);
     data, arg = string.match(_next, CONSTS.nextWordPatern);
 
-    if ((SenderName == UnitName("player")) or (SenderName ~= StriLi.master)) and not self.requestedSyncAsMaster then
+    if ((SenderName == UnitName("player")) or (StriLi.master:get() ~= SenderName)) and not self.requestedSyncAsMaster then
         return ;
     end
 
@@ -214,7 +214,7 @@ end
 
 function StriLi.CommunicationHandler:sendDataChanged(name, counterName, counterData, masterIsRequesting)
 
-    if (StriLi.master == UnitName("player")) or masterIsRequesting then
+    if (StriLi.master:get() == UnitName("player")) or masterIsRequesting then
         SendAddonMessage("SL_DC", UnitName("player") .. " " .. name .. " " .. counterName .. " " .. counterData, "RAID");
     end
 
@@ -222,7 +222,7 @@ end
 
 function StriLi.CommunicationHandler:sendMembersCombined(mem1Name, mem2Name)
 
-    if StriLi.master == UnitName("player") then
+    if StriLi.master:get() == UnitName("player") then
         SendAddonMessage("SL_DC", UnitName("player") .. " " .. mem1Name .. " " .. mem2Name .. " " .. "Combine", "RAID");
     end
 
@@ -230,27 +230,27 @@ end
 
 function StriLi.CommunicationHandler:sendMemberRemoved(name)
 
-    if StriLi.master == UnitName("player") then
+    if StriLi.master:get() == UnitName("player") then
         SendAddonMessage("SL_DC", UnitName("player") .. " " .. name .. " " .. "Remove" .. " non", "RAID");
     end
 
 end
 
 function StriLi.CommunicationHandler:On_ResetData(sender)
-    if sender == StriLi.master and not (sender == UnitName("player")) then
+    if StriLi.master:get() == sender and not (sender == UnitName("player")) then
         StriLi.MainFrame:resetData();
     end
 end
 
 function StriLi.CommunicationHandler:sendResetData()
-    if (UnitName("player") == StriLi.master) then
+    if (StriLi.master:get() == UnitName("player")) then
         SendAddonMessage("SL_RD", UnitName("player"), "RAID");
     end
 end
 
 function StriLi.CommunicationHandler:On_Request_SyncData(sender)
 
-    if ((sender ~= StriLi.master) and (StriLi.master ~= UnitName("player")) or (sender == UnitName("player"))) then
+    if ((StriLi.master:get() ~= sender) and (StriLi.master:get() ~= UnitName("player")) or (sender == UnitName("player"))) then
         return;
     end
 
@@ -277,7 +277,7 @@ function StriLi.CommunicationHandler:sendSycRequest()
         return;
     end
 
-    if StriLi.master == UnitName("player") then
+    if StriLi.master:get() == UnitName("player") then
         self.requestedSyncAsMaster = true;
         self.time = 2.0;
         self.waitingForRespond = "SL_RQ_SD"
@@ -382,7 +382,7 @@ end
 function StriLi.CommunicationHandler:On_ItemHistoryAdd(arguments)
 
     local sender, _next = string.match(arguments, CONSTS.nextWordPatern);
-    if (sender == UnitName("player") or (sender ~= StriLi.master and StriLi.master ~= "")) and not self.requestedSyncAsMaster then return end
+    if (sender == UnitName("player") or (StriLi.master:get() ~= sender and StriLi.master:get() ~= "")) and not self.requestedSyncAsMaster then return end
     local itemLink, _next = string.match(_next, "([^%]]+)%s?(.*)");
     local _, _next = string.match(_next, CONSTS.nextWordPatern);
     local player, _next = string.match(_next, CONSTS.nextWordPatern);
@@ -404,7 +404,7 @@ end
 function StriLi.CommunicationHandler:On_ItemHistoryChanged(arguments)
 
     local sender, _next = string.match(arguments, CONSTS.nextWordPatern);
-    if sender == UnitName("player") or (sender ~= StriLi.master and StriLi.master ~= "") then return end
+    if sender == UnitName("player") or (StriLi.master:get() ~= sender  and StriLi.master:get() ~= "") then return end
     local itemLink, _next = string.match(_next, "([^%]]+)%s?(.*)");
     local _, _next = string.match(_next, CONSTS.nextWordPatern);
     local player, _next = string.match(_next, CONSTS.nextWordPatern);
@@ -425,7 +425,7 @@ end
 function StriLi.CommunicationHandler:On_ItemHistoryRemove(arguments)
 
     local sender, _next = string.match(arguments, CONSTS.nextWordPatern);
-    if sender == UnitName("player") or (sender ~= StriLi.master and StriLi.master ~= "") then return end
+    if sender == UnitName("player") or (StriLi.master:get() ~= sender and StriLi.master:get() ~= "") then return end
     local index, _next = string.match(_next, CONSTS.nextWordPatern);
 
     index = tonumber(index);
@@ -437,17 +437,17 @@ function StriLi.CommunicationHandler:On_ItemHistoryRemove(arguments)
 end
 
 function StriLi.CommunicationHandler:Send_ItemHistoryAdd(itemLink, player, playerClass, rollType, roll, index, forced)
-    if StriLi.master ~= UnitName("player") and not forced then return end;
+    if StriLi.master:get() ~= UnitName("player") and not forced then return end;
     SendAddonMessage("SL_IHA", UnitName("player").." "..tostring(itemLink).." "..tostring(player).." "..tostring(playerClass).." "..tostring(rollType).." "..tostring(roll).." "..tostring(index), "RAID");
 end
 
 function StriLi.CommunicationHandler:Send_ItemHistoryChanged(itemLink, player, playerClass, rollType, roll, index)
-    if StriLi.master ~= UnitName("player") then return end;
+    if StriLi.master:get() ~= UnitName("player") then return end;
     SendAddonMessage("SL_IHC", UnitName("player").." "..tostring(itemLink).." "..tostring(player).." "..tostring(playerClass).." "..tostring(rollType).." "..tostring(roll).." "..tostring(index), "RAID");
 end
 
 function StriLi.CommunicationHandler:Send_ItemHistoryRemove(index)
-    if StriLi.master ~= UnitName("player") then return end;
+    if StriLi.master:get() ~= UnitName("player") then return end;
     SendAddonMessage("SL_IHR", UnitName("player").." "..tostring(index), "RAID");
 end
 

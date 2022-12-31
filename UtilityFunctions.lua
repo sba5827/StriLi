@@ -46,13 +46,13 @@ end
 
 function StriLi_tryToSetNewMaster(newMasterName)
 
-    if StriLi.master == UnitName("player") then
+    if StriLi.master:get() == UnitName("player") then
 
         StriLi.CommunicationHandler:checkIfUserHasStriLi(newMasterName, function(userHasStriLi)
             if userHasStriLi then
                 if StriLi.CommunicationHandler:sendMasterChanged(newMasterName) then
                     if StriLiOptions["AutoPromote"] then PromoteToAssistant(newMasterName) end
-                    StriLi.master = newMasterName;
+                    StriLi.master:set(newMasterName);
                     if newMasterName ~= "" then
                         StriLi.MainFrame:OnMasterChanged();
                         StriLi.MainFrame.rows[UnitName("player")]:UpdateName("•"..UnitName("player"));
@@ -194,9 +194,11 @@ function StriLi_initAddon()
         StriLi_LatestVersion = localAddonVersion;
     end
     if StriLi_Master == nil then
-        StriLi.master = "";
+        StriLi.master = ObservableString:new();
+        StriLi.master:set("");
     else
-        StriLi.master = StriLi_Master;
+        StriLi.master = ObservableString:new();
+        StriLi.master:set(StriLi_Master);
     end
     if StriLi_newRaidGroup == nil then
         StriLi_newRaidGroup = true;
@@ -224,7 +226,7 @@ end
 
 function StriLi_finalizeAddon()
     StriLi_RaidMembersDB_members = RaidMembersDB:getRawData();
-    StriLi_Master = StriLi.master;
+    StriLi_Master = StriLi.master:get();
     StriLi_ItemHistory = StriLi.ItemHistory:getRawData();
     StriLi_RulesTxt = StriLi.LootRules:getText();
     StriLi.MainFrame.frame:SetUserPlaced(false);
