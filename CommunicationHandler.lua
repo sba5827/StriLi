@@ -31,32 +31,37 @@ StriLi.CommunicationHandler = { waitingForRespond = "",
                                 requestQueue = {}
 };
 
-function StriLi.CommunicationHandler:On_CHAT_MSG_ADDON(...)
+function StriLi.CommunicationHandler:On_CHAT_MSG_ADDON(arg1, arg2, arg3, arg4)
+
+    --DEBUG
+    --if string.sub(arg1, 1, 2) == "SL" then
+    --    print("On_CHAT_MSG_ADDON: "..arg1.." "..arg2.." "..arg3.." "..arg4);
+    --end
 
     if arg1 == "SL_RQ_CFM" then
         self:On_Request_CheckForMaster();
     elseif arg1 == "SL_RS_CFM" then
         self:On_Respond_CheckForMaster(arg2);
     elseif arg1 == "SL_MC" then
-        self:On_MasterChanged(arg2);
+        self:On_MasterChanged(arg2, arg4);
     elseif arg1 == "SL_DC" then
-        self:On_DataChanged(arg2);
+        self:On_DataChanged(arg2, arg4);
     elseif arg1 == "SL_RD" then
-        self:On_ResetData(arg2);
+        self:On_ResetData(arg4);
     elseif arg1 == "SL_RQ_SD" then
-        self:On_Request_SyncData(arg2);
+        self:On_Request_SyncData(arg4);
     elseif arg1 == "SL_RQ_UHS" then
         self:On_Request_UserHasStriLi(arg2);
     elseif arg1 == "SL_RS_UHS" then
-        self:On_Respond_UserHasStriLi(arg2);
+        self:On_Respond_UserHasStriLi(arg4);
     elseif arg1 == "SL_VC" then
         self:On_VersionCheck(arg2);
     elseif arg1 == "SL_IHA" then
-        self:On_ItemHistoryAdd(arg2);
+        self:On_ItemHistoryAdd(arg2, arg4);
     elseif arg1 == "SL_IHC" then
-        self:On_ItemHistoryChanged(arg2);
+        self:On_ItemHistoryChanged(arg2, arg4);
     elseif arg1 == "SL_IHR" then
-        self:On_ItemHistoryRemove(arg2);
+        self:On_ItemHistoryRemove(arg2, arg4);
     end
 
 end
@@ -100,7 +105,7 @@ function StriLi.CommunicationHandler:checkForMaster(cbf, time)
     
     self.timerFrame:SetScript("OnUpdate", function(_, elapsed)
 
-        if waitingForRespond ~= "SL_RS_CFM" then
+        if self.waitingForRespond ~= "SL_RS_CFM" then
             self.timerFrame:SetScript("OnUpdate", nil);
             self.checkForMaster_cbf(StriLi.master:get());
         end
@@ -120,9 +125,7 @@ function StriLi.CommunicationHandler:checkForMaster(cbf, time)
 
 end
 
-function StriLi.CommunicationHandler:On_MasterChanged(msgString)
-
-    local sender, newMaster = string.match(msgString, CONSTS.nextWordPatern);
+function StriLi.CommunicationHandler:On_MasterChanged(newMaster, sender)
 
     if (StriLi.master:get() == sender) or (StriLi.master:get() == "") then
         StriLi.master:set(newMaster);
@@ -140,7 +143,7 @@ end
 function StriLi.CommunicationHandler:sendMasterChanged(newMaster)
 
     if (StriLi.master:get() == UnitName("player")) or (StriLi.master:get() == "") then
-        SendAddonMessage("SL_MC", UnitName("player") .. " " .. newMaster, "RAID");
+        SendAddonMessage("SL_MC", newMaster, "RAID");
         return true;
     end
 
@@ -148,15 +151,14 @@ function StriLi.CommunicationHandler:sendMasterChanged(newMaster)
 
 end
 
-function StriLi.CommunicationHandler:On_DataChanged(msgString)
+function StriLi.CommunicationHandler:On_DataChanged(msgString, sender)
 
-    local SenderName, _next, name, data, arg;
+    local _next, name, data, arg;
 
-    SenderName, _next = string.match(msgString, CONSTS.nextWordPatern);
-    name, _next = string.match(_next, CONSTS.nextWordPatern);
+    name, _next = string.match(msgString, CONSTS.nextWordPatern);
     data, arg = string.match(_next, CONSTS.nextWordPatern);
 
-    if ((SenderName == UnitName("player")) or (StriLi.master:get() ~= SenderName)) and not self.requestedSyncAsMaster then
+    if ((sender == UnitName("player")) or (StriLi.master:get() ~= sender)) and not self.requestedSyncAsMaster then
         return ;
     end
 
@@ -169,7 +171,7 @@ function StriLi.CommunicationHandler:On_DataChanged(msgString)
 
     if (data == "Reregister") then
         StriLi.MainFrame.rows[name]:UpdateReregister(arg); --todo: for consistency Reregister should be an observable String.
-        RaidMembersDB:get(name)["Reregister"] = arg;
+        RaidMembersDB:get(name)[data] = arg;
     elseif (arg == "Combine") then
         if not StriLi.MainFrame:combineMembers(name, data) then
             error(StriLi.Lang.ErrorMsg.CombineMembers1.." "..name.." "..StriLi.Lang.ErrorMsg.CombineMembers2.." "..data.." "..StriLi.Lang.ErrorMsg.CombineMembers3)
@@ -185,7 +187,7 @@ end
 function StriLi.CommunicationHandler:sendDataChanged(name, counterName, counterData, masterIsRequesting)
 
     if (StriLi.master:get() == UnitName("player")) or masterIsRequesting then
-        SendAddonMessage("SL_DC", UnitName("player") .. " " .. name .. " " .. counterName .. " " .. counterData, "RAID");
+        SendAddonMessage("SL_DC", name.." "..counterName.." "..counterData, "RAID");
     end
 
 end
@@ -193,7 +195,7 @@ end
 function StriLi.CommunicationHandler:sendMembersCombined(mem1Name, mem2Name)
 
     if StriLi.master:get() == UnitName("player") then
-        SendAddonMessage("SL_DC", UnitName("player") .. " " .. mem1Name .. " " .. mem2Name .. " " .. "Combine", "RAID");
+        SendAddonMessage("SL_DC", mem1Name.." "..mem2Name.." ".."Combine", "RAID");
     end
 
 end
@@ -201,7 +203,7 @@ end
 function StriLi.CommunicationHandler:sendMemberRemoved(name)
 
     if StriLi.master:get() == UnitName("player") then
-        SendAddonMessage("SL_DC", UnitName("player") .. " " .. name .. " " .. "Remove" .. " non", "RAID");
+        SendAddonMessage("SL_DC", name.." ".."Remove".." non", "RAID");
     end
 
 end
@@ -214,7 +216,7 @@ end
 
 function StriLi.CommunicationHandler:sendResetData()
     if (StriLi.master:get() == UnitName("player")) then
-        SendAddonMessage("SL_RD", UnitName("player"), "RAID");
+        SendAddonMessage("SL_RD", "", "RAID");
     end
 end
 
@@ -264,13 +266,13 @@ function StriLi.CommunicationHandler:sendSycRequest()
         end);
     end
 
-    SendAddonMessage("SL_RQ_SD", UnitName("player"), "RAID");
+    SendAddonMessage("SL_RQ_SD", "", "RAID");
 
 end
 
 function StriLi.CommunicationHandler:On_Request_UserHasStriLi(nameOfRequestedPlayer)
     if nameOfRequestedPlayer == UnitName("player") then
-        SendAddonMessage("SL_RS_UHS", UnitName("player"), "RAID");
+        SendAddonMessage("SL_RS_UHS", "", "RAID");
     end
 end
 
@@ -289,8 +291,7 @@ end
 
 function StriLi.CommunicationHandler:checkIfUserHasStriLi(name, cbf)
 
-    assert(name)
-    assert(cbf);
+    if name == UnitName("player") then return end;
 
     if self.waitingForRespond ~= "" then
         self:addToQueue(StriLi.CommunicationHandler.checkIfUserHasStriLi,{[1]=name, [2]=cbf});
@@ -349,11 +350,11 @@ function StriLi.CommunicationHandler:ShoutVersion()
 
 end
 
-function StriLi.CommunicationHandler:On_ItemHistoryAdd(arguments)
+function StriLi.CommunicationHandler:On_ItemHistoryAdd(arguments, sender)
 
-    local sender, _next = string.match(arguments, CONSTS.nextWordPatern);
     if (sender == UnitName("player") or (StriLi.master:get() ~= sender and StriLi.master:get() ~= "")) and not self.requestedSyncAsMaster then return end
-    local itemLink, _next = string.match(_next, "([^%]]+)%s?(.*)");
+
+    local itemLink, _next = string.match(arguments, "([^%]]+)%s?(.*)");
     local _, _next = string.match(_next, CONSTS.nextWordPatern);
     local player, _next = string.match(_next, CONSTS.nextWordPatern);
     local playerClass, _next = string.match(_next, CONSTS.nextWordPatern);
@@ -371,11 +372,11 @@ function StriLi.CommunicationHandler:On_ItemHistoryAdd(arguments)
 
 end
 
-function StriLi.CommunicationHandler:On_ItemHistoryChanged(arguments)
+function StriLi.CommunicationHandler:On_ItemHistoryChanged(arguments, sender)
 
-    local sender, _next = string.match(arguments, CONSTS.nextWordPatern);
     if sender == UnitName("player") or (StriLi.master:get() ~= sender  and StriLi.master:get() ~= "") then return end
-    local itemLink, _next = string.match(_next, "([^%]]+)%s?(.*)");
+
+    local itemLink, _next = string.match(arguments, "([^%]]+)%s?(.*)");
     local _, _next = string.match(_next, CONSTS.nextWordPatern);
     local player, _next = string.match(_next, CONSTS.nextWordPatern);
     local playerClass, _next = string.match(_next, CONSTS.nextWordPatern);
@@ -392,11 +393,11 @@ function StriLi.CommunicationHandler:On_ItemHistoryChanged(arguments)
 
 end
 
-function StriLi.CommunicationHandler:On_ItemHistoryRemove(arguments)
+function StriLi.CommunicationHandler:On_ItemHistoryRemove(arguments, sender)
 
-    local sender, _next = string.match(arguments, CONSTS.nextWordPatern);
     if sender == UnitName("player") or (StriLi.master:get() ~= sender and StriLi.master:get() ~= "") then return end
-    local index, _next = string.match(_next, CONSTS.nextWordPatern);
+
+    local index, _next = string.match(arguments, CONSTS.nextWordPatern);
 
     index = tonumber(index);
 
@@ -408,17 +409,17 @@ end
 
 function StriLi.CommunicationHandler:Send_ItemHistoryAdd(itemLink, player, playerClass, rollType, roll, index, forced)
     if StriLi.master:get() ~= UnitName("player") and not forced then return end;
-    SendAddonMessage("SL_IHA", UnitName("player").." "..tostring(itemLink).." "..tostring(player).." "..tostring(playerClass).." "..tostring(rollType).." "..tostring(roll).." "..tostring(index), "RAID");
+    SendAddonMessage("SL_IHA", tostring(itemLink).." "..tostring(player).." "..tostring(playerClass).." "..tostring(rollType).." "..tostring(roll).." "..tostring(index), "RAID");
 end
 
 function StriLi.CommunicationHandler:Send_ItemHistoryChanged(itemLink, player, playerClass, rollType, roll, index)
     if StriLi.master:get() ~= UnitName("player") then return end;
-    SendAddonMessage("SL_IHC", UnitName("player").." "..tostring(itemLink).." "..tostring(player).." "..tostring(playerClass).." "..tostring(rollType).." "..tostring(roll).." "..tostring(index), "RAID");
+    SendAddonMessage("SL_IHC", tostring(itemLink).." "..tostring(player).." "..tostring(playerClass).." "..tostring(rollType).." "..tostring(roll).." "..tostring(index), "RAID");
 end
 
 function StriLi.CommunicationHandler:Send_ItemHistoryRemove(index)
     if StriLi.master:get() ~= UnitName("player") then return end;
-    SendAddonMessage("SL_IHR", UnitName("player").." "..tostring(index), "RAID");
+    SendAddonMessage("SL_IHR", tostring(index), "RAID");
 end
 
 function StriLi.CommunicationHandler:addToQueue(queuedRequest, arguments)
