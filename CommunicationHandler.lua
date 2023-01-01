@@ -186,27 +186,21 @@ function StriLi.CommunicationHandler:On_DataChanged(msgString, sender)
 end
 
 function StriLi.CommunicationHandler:sendDataChanged(name, counterName, counterData, masterIsRequesting)
-
     if (StriLi.master:get() == UnitName("player")) or masterIsRequesting then
         SendAddonMessage("SL_DC", name.." "..counterName.." "..counterData, "RAID");
     end
-
 end
 
 function StriLi.CommunicationHandler:sendMembersCombined(mem1Name, mem2Name)
-
     if StriLi.master:get() == UnitName("player") then
         SendAddonMessage("SL_DC", mem1Name.." "..mem2Name.." ".."Combine", "RAID");
     end
-
 end
 
 function StriLi.CommunicationHandler:sendMemberRemoved(name)
-
     if StriLi.master:get() == UnitName("player") then
         SendAddonMessage("SL_DC", name.." ".."Remove".." non", "RAID");
     end
-
 end
 
 function StriLi.CommunicationHandler:On_ResetData(sender)
@@ -223,7 +217,7 @@ end
 
 function StriLi.CommunicationHandler:On_Request_SyncData(sender)
 
-    if ((StriLi.master:get() ~= sender) and (StriLi.master:get() ~= UnitName("player")) or (sender == UnitName("player"))) then
+    if ((StriLi.master:get() ~= sender) and (StriLi.master:get() ~= UnitName("player"))) then
         return;
     end
 
@@ -353,7 +347,7 @@ end
 
 function StriLi.CommunicationHandler:On_ItemHistoryAdd(arguments, sender)
 
-    if (sender == UnitName("player") or (StriLi.master:get() ~= sender and StriLi.master:get() ~= "")) and not self.requestedSyncAsMaster then return end
+    if (StriLi.master:get() ~= sender and StriLi.master:get() ~= "") and not self.requestedSyncAsMaster then return end
 
     local itemLink, _next = string.match(arguments, "([^%]]+)%s?(.*)");
     local _, _next = string.match(_next, CONSTS.nextWordPatern);
@@ -375,7 +369,7 @@ end
 
 function StriLi.CommunicationHandler:On_ItemHistoryChanged(arguments, sender)
 
-    if sender == UnitName("player") or (StriLi.master:get() ~= sender  and StriLi.master:get() ~= "") then return end
+    if (StriLi.master:get() ~= sender  and StriLi.master:get() ~= "") then return end
 
     local itemLink, _next = string.match(arguments, "([^%]]+)%s?(.*)");
     local _, _next = string.match(_next, CONSTS.nextWordPatern);
@@ -396,7 +390,7 @@ end
 
 function StriLi.CommunicationHandler:On_ItemHistoryRemove(arguments, sender)
 
-    if sender == UnitName("player") or (StriLi.master:get() ~= sender and StriLi.master:get() ~= "") then return end
+    if (StriLi.master:get() ~= sender and StriLi.master:get() ~= "") then return end
 
     local index, _next = string.match(arguments, CONSTS.nextWordPatern);
 
