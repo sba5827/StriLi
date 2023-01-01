@@ -38,6 +38,8 @@ function StriLi.CommunicationHandler:On_CHAT_MSG_ADDON(prefix, message, distribu
     --    print("On_CHAT_MSG_ADDON: "..arg1.." "..arg2.." "..arg3.." "..arg4);
     --end
 
+    if sender == UnitName("player") then return end
+
     if prefix == "SL_RQ_CFM" then
         self:On_Request_CheckForMaster();
     elseif prefix == "SL_RS_CFM" then
@@ -68,7 +70,7 @@ end
 
 function StriLi.CommunicationHandler:On_Request_CheckForMaster()
 
-    if (StriLi.master:get() ~= "") and (StriLi.master:get() == UnitName("player")) then
+    if StriLi.master:get() == UnitName("player") then
         SendAddonMessage("SL_RS_CFM", StriLi.master:get(), "RAID");
     end
 
@@ -81,7 +83,7 @@ function StriLi.CommunicationHandler:On_Respond_CheckForMaster(transmittedMaster
         StriLi.master:set(transmittedMaster);
         self.timerFrame:SetScript("OnUpdate", nil);
         self.checkForMaster_cbf(StriLi.master:get()); -- master check done callback
-        self:respondReceived();
+        self:stopWaitingForRespondAndSendNextQueuedRequest();
 
     end
 
@@ -89,13 +91,13 @@ end
 
 function StriLi.CommunicationHandler:checkForMaster(cbf, time)
 
-    if time == nil then
-        time = respondTimeToExpire;
-    end
-
     if self.waitingForRespond ~= "" then
         self:addToQueue(StriLi.CommunicationHandler.checkForMaster,{cbf,time});
         return; -- Can't check for Master, already waiting for some Respond
+    end
+
+    if time == nil then
+        time = respondTimeToExpire;
     end
 
     self.checkForMaster_cbf = cbf;
@@ -116,7 +118,7 @@ function StriLi.CommunicationHandler:checkForMaster(cbf, time)
             StriLi.master:set("");
             self.timerFrame:SetScript("OnUpdate", nil);
             self.checkForMaster_cbf(StriLi.master:get()); -- master check done callback
-            self:respondReceived();
+            self:stopWaitingForRespondAndSendNextQueuedRequest();
         end
 
     end);
@@ -134,7 +136,7 @@ function StriLi.CommunicationHandler:On_MasterChanged(newMaster, sender)
             StriLi.MainFrame.rows[newMaster]:UpdateName("®"..newMaster);
         end
         if self.waitingForRespond == "SL_RS_CFM" then
-            self:respondReceived();
+            self:stopWaitingForRespondAndSendNextQueuedRequest();
         end
     end
 
@@ -158,8 +160,8 @@ function StriLi.CommunicationHandler:On_DataChanged(msgString, sender)
     name, _next = string.match(msgString, CONSTS.nextWordPatern);
     data, arg = string.match(_next, CONSTS.nextWordPatern);
 
-    if ((sender == UnitName("player")) or (StriLi.master:get() ~= sender)) and not self.requestedSyncAsMaster then
-        return ;
+    if (StriLi.master:get() ~= sender) and not self.requestedSyncAsMaster then
+        return;
     end
 
     if not RaidMembersDB:checkForMember(name) then
@@ -170,8 +172,7 @@ function StriLi.CommunicationHandler:On_DataChanged(msgString, sender)
     end
 
     if (data == "Reregister") then
-        StriLi.MainFrame.rows[name]:UpdateReregister(arg); --todo: for consistency Reregister should be an observable String.
-        RaidMembersDB:get(name)[data] = arg;
+        RaidMembersDB:get(name)[data]:set(arg);
     elseif (arg == "Combine") then
         if not StriLi.MainFrame:combineMembers(name, data) then
             error(StriLi.Lang.ErrorMsg.CombineMembers1.." "..name.." "..StriLi.Lang.ErrorMsg.CombineMembers2.." "..data.." "..StriLi.Lang.ErrorMsg.CombineMembers3)
@@ -232,7 +233,7 @@ function StriLi.CommunicationHandler:On_Request_SyncData(sender)
         self:sendDataChanged(name, "Sec", data["Sec"]:get(), true);
         self:sendDataChanged(name, "Token", data["Token"]:get(), true);
         self:sendDataChanged(name, "Fail", data["Fail"]:get(), true);
-        self:sendDataChanged(name, "Reregister", data["Reregister"], true);
+        self:sendDataChanged(name, "Reregister", data["Reregister"]:get(), true);
 
     end
 
@@ -259,7 +260,7 @@ function StriLi.CommunicationHandler:sendSycRequest()
             if self.time < 0.0 then
                 self.requestedSyncAsMaster = false;
                 self.timerFrame:SetScript("OnUpdate", nil);
-                self:respondReceived();
+                self:stopWaitingForRespondAndSendNextQueuedRequest();
             end
 
 
@@ -283,7 +284,7 @@ function StriLi.CommunicationHandler:On_Respond_UserHasStriLi(nameOfRespondingPl
         self.timerFrame:SetScript("OnUpdate", nil);
         self.requestedPlayer = "";
         self.checkUserHasStriLi_cbf(true);
-        self:respondReceived();
+        self:stopWaitingForRespondAndSendNextQueuedRequest();
 
     end
 
@@ -311,7 +312,7 @@ function StriLi.CommunicationHandler:checkIfUserHasStriLi(name, cbf)
             self.timerFrame:SetScript("OnUpdate", nil);
             self.requestedPlayer = "";
             self.checkUserHasStriLi_cbf(false);
-            self:respondReceived();
+            self:stopWaitingForRespondAndSendNextQueuedRequest();
 
         end
 
@@ -426,7 +427,7 @@ function StriLi.CommunicationHandler:addToQueue(queuedRequest, arguments)
     table.insert(self.requestQueue,{[1]=queuedRequest,[2]=arguments});
 end
 
-function StriLi.CommunicationHandler:respondReceived()
+function StriLi.CommunicationHandler:stopWaitingForRespondAndSendNextQueuedRequest()
 
     self.waitingForRespond = "";
 
@@ -436,12 +437,14 @@ function StriLi.CommunicationHandler:respondReceived()
         return;
     end
 
-    if next[1] == StriLi.CommunicationHandler.checkForMaster then
-        StriLi.CommunicationHandler:checkForMaster(next[2][1],next[2][2])
-    elseif next[1] == StriLi.CommunicationHandler.sendSycRequest then
+    local queuedRequest, arguments = next[1], next[2];
+
+    if queuedRequest == StriLi.CommunicationHandler.checkForMaster then
+        StriLi.CommunicationHandler:checkForMaster(arguments[1],arguments[2])
+    elseif queuedRequest == StriLi.CommunicationHandler.sendSycRequest then
         StriLi.CommunicationHandler:sendSycRequest()
-    elseif next[1] == StriLi.CommunicationHandler.checkIfUserHasStriLi then
-        StriLi.CommunicationHandler:checkIfUserHasStriLi(next[2][1],next[2][2])
+    elseif queuedRequest == StriLi.CommunicationHandler.checkIfUserHasStriLi then
+        StriLi.CommunicationHandler:checkIfUserHasStriLi(arguments[1],arguments[2])
     end
 
 end
