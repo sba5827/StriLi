@@ -40,7 +40,7 @@ function RowFrame:reInit(_, _, _, posIndex, raidMember)
     self:UpdateSecCounter(self.raidMember[2]["Sec"]:get());
     self:UpdateTokenCounter(self.raidMember[2]["Token"]:get());
     self:UpdateFailCounter(self.raidMember[2]["Fail"]:get());
-    self:UpdateReregister(self.raidMember[2]["Reregister"]);
+    self:UpdateReregister(self.raidMember[2]["Reregister"]:get());
 
     self:linkCounter(self.raidMember[2]);
 
@@ -73,22 +73,13 @@ function RowFrame:setColumnContent(charName, charData)
     self.Regions.ReregisterCB = CreateFrame("CheckButton", "ReRegisterCheckButton" .. tostring(self.posIndex), self.Children.Reregister, "ChatConfigCheckButtonTemplate");
     self.Regions.ReregisterCB:SetPoint("CENTER", 0, 0);
     self.Regions.ReregisterCB:SetHitRectInsets(0, 0, 0, 0);
-    if (charData["Reregister"] ~= "") then
-        self.Regions.ReregisterCB:SetChecked(true);
-        self.Children.Name:SetScript("OnEnter", function()
-            GameTooltip_SetDefaultAnchor(GameTooltip, self.Children.Name)
-            GameTooltip:SetOwner(self.Children.Name, "ANCHOR_NONE")
-            GameTooltip:SetPoint("CENTER", self.Children.Name, "CENTER", 0, 30)
-            GameTooltip:SetText(charData["Reregister"])
-            GameTooltip:Show()
-        end);
-        self.Children.Name:SetScript("OnLeave", function()
-            GameTooltip:Hide()
-        end);
-    end
+    self:UpdateReregister(charData["Reregister"]:get());
+
     self.Regions.ReregisterCB:SetScript("OnClick", function()
         self:ReregisterRequest(false);
     end)
+
+    charData["Reregister"]:registerObserver(self);
 
     -- Creating counters and initializing them
     self.Regions.MainCounter = CreateFrame("Frame", "CounterMain" .. tostring(self.posIndex), self.Children.Main, "StriLi_Counter_Template2");
@@ -146,6 +137,8 @@ function RowFrame:unlinkCounters()
 
     end
 
+    self.raidMember[2]["Reregister"]:unregisterObserver(self);
+
 end
 
 function RowFrame:UpdateName(name)
@@ -192,7 +185,7 @@ function RowFrame:UpdateReregister(reregister)
             GameTooltip_SetDefaultAnchor(GameTooltip, self.Children.Name)
             GameTooltip:SetOwner(self.Children.Name, "ANCHOR_NONE")
             GameTooltip:SetPoint("CENTER", self.Children.Name, "CENTER", 0, 30)
-            GameTooltip:SetText(self.raidMember[2]["Reregister"])
+            GameTooltip:SetText(reregister)
             GameTooltip:Show()
         end);
         self.Children.Name:SetScript("OnLeave", function()
@@ -233,6 +226,9 @@ function RowFrame:OnValueChanged(sender)
     elseif sender == self.raidMember[2]["Fail"] then
         self:UpdateFailCounter(self.raidMember[2]["Fail"]:get());
 
+    elseif sender == self.raidMember[2]["Reregister"] then
+        self:UpdateReregister(self.raidMember[2]["Reregister"]:get());
+
     end
 
     StriLi.MainFrame:sortRowFrames();
@@ -244,16 +240,16 @@ function RowFrame.ReregisterRequest(self, overwrite)
     if self.Regions.ReregisterCB:GetChecked() or overwrite then
 
         local reregisterInputFrame = TextInputFrame:new(nil, StriLi.Lang.Confirm.ReregisterRequest..": ", function(input)
-            self.raidMember[2]["Reregister"] = input;
-            self:UpdateReregister(input);
+            self.raidMember[2]["Reregister"]:set(input);
+            --self:UpdateReregister(input);
         end, function(_)
-            self:UpdateReregister(self.raidMember[2]["Reregister"]);
+            --self:UpdateReregister(self.raidMember[2]["Reregister"]:get());
         end);
 
         reregisterInputFrame:show();
 
     else
-        self.raidMember[2]["Reregister"] = "";
+        self.raidMember[2]["Reregister"]:set("");
     end
 
 end
@@ -292,11 +288,11 @@ end
 function RowFrame:OnMouseUp(frame, button)
 
     if (button ~= "RightButton") or (not MouseIsOver(frame) or ((StriLi.master:get() ~= "") and (StriLi.master:get() ~= UnitName("player")))) then
-        return
-    end ;
+        return;
+    end
 
     StriLi.dropdownFrame = CreateFrame("Frame", "StriLi_DropdownFrame", frame, "UIDropDownMenuTemplate");
-    -- Bind an initializer function to the dropdown;
+    -- Bind an initializer function to the dropdown
 
     UIDropDownMenu_Initialize(StriLi.dropdownFrame, function(_frame, _level, _menuList)
         self:initDropdownMenu(_frame, _level, _menuList)

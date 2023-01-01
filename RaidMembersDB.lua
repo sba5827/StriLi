@@ -19,11 +19,11 @@ function RaidMembersDB:add(name, class)
 
     self.raidMembers[name] = {
         [1] = class,
-        ["Main"] = ObservableNumber:new(nil),
-        ["Sec"] = ObservableNumber:new(nil),
-        ["Token"] = ObservableNumber:new(nil),
-        ["Fail"] = ObservableNumber:new(nil),
-        ["Reregister"] = ""
+        ["Main"] = ObservableNumber:new(),
+        ["Sec"] = ObservableNumber:new(),
+        ["Token"] = ObservableNumber:new(),
+        ["Fail"] = ObservableNumber:new(),
+        ["Reregister"] = ObservableString:new();
     };
 
     self.size = self.size + 1;
@@ -78,7 +78,7 @@ function RaidMembersDB:getRawData()
                  ["Sec"] = v["Sec"]:get(),
                  ["Token"] = v["Token"]:get(),
                  ["Fail"] = v["Fail"]:get(),
-                 ["Reregister"] = v["Reregister"]
+                 ["Reregister"] = v["Reregister"]:get()
         }
     end
 
@@ -92,17 +92,18 @@ function RaidMembersDB:initFromRawData(rawData)
 
         self.raidMembers[i] = {
             [1] = v[1],
-            ["Main"] = ObservableNumber:new(nil),
-            ["Sec"] = ObservableNumber:new(nil),
-            ["Token"] = ObservableNumber:new(nil),
-            ["Fail"] = ObservableNumber:new(nil),
-            ["Reregister"] = v["Reregister"];
+            ["Main"] = ObservableNumber:new(),
+            ["Sec"] = ObservableNumber:new(),
+            ["Token"] = ObservableNumber:new(),
+            ["Fail"] = ObservableNumber:new(),
+            ["Reregister"] = ObservableString:new();
         };
 
         self.raidMembers[i]["Main"]:set(v["Main"]);
         self.raidMembers[i]["Sec"]:set(v["Sec"]);
         self.raidMembers[i]["Token"]:set(v["Token"]);
         self.raidMembers[i]["Fail"]:set(v["Fail"]);
+        self.raidMembers[i]["Reregister"]:set(v["Reregister"]);
 
         self.size = self.size + 1;
 
