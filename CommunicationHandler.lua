@@ -31,37 +31,37 @@ StriLi.CommunicationHandler = { waitingForRespond = "",
                                 requestQueue = {}
 };
 
-function StriLi.CommunicationHandler:On_CHAT_MSG_ADDON(arg1, arg2, arg3, arg4)
+function StriLi.CommunicationHandler:On_CHAT_MSG_ADDON(prefix, message, distribution_type, sender)
 
     --DEBUG
     --if string.sub(arg1, 1, 2) == "SL" then
     --    print("On_CHAT_MSG_ADDON: "..arg1.." "..arg2.." "..arg3.." "..arg4);
     --end
 
-    if arg1 == "SL_RQ_CFM" then
+    if prefix == "SL_RQ_CFM" then
         self:On_Request_CheckForMaster();
-    elseif arg1 == "SL_RS_CFM" then
-        self:On_Respond_CheckForMaster(arg2);
-    elseif arg1 == "SL_MC" then
-        self:On_MasterChanged(arg2, arg4);
-    elseif arg1 == "SL_DC" then
-        self:On_DataChanged(arg2, arg4);
-    elseif arg1 == "SL_RD" then
-        self:On_ResetData(arg4);
-    elseif arg1 == "SL_RQ_SD" then
-        self:On_Request_SyncData(arg4);
-    elseif arg1 == "SL_RQ_UHS" then
-        self:On_Request_UserHasStriLi(arg2);
-    elseif arg1 == "SL_RS_UHS" then
-        self:On_Respond_UserHasStriLi(arg4);
-    elseif arg1 == "SL_VC" then
-        self:On_VersionCheck(arg2);
-    elseif arg1 == "SL_IHA" then
-        self:On_ItemHistoryAdd(arg2, arg4);
-    elseif arg1 == "SL_IHC" then
-        self:On_ItemHistoryChanged(arg2, arg4);
-    elseif arg1 == "SL_IHR" then
-        self:On_ItemHistoryRemove(arg2, arg4);
+    elseif prefix == "SL_RS_CFM" then
+        self:On_Respond_CheckForMaster(message);
+    elseif prefix == "SL_MC" then
+        self:On_MasterChanged(message, sender);
+    elseif prefix == "SL_DC" then
+        self:On_DataChanged(message, sender);
+    elseif prefix == "SL_RD" then
+        self:On_ResetData(sender);
+    elseif prefix == "SL_RQ_SD" then
+        self:On_Request_SyncData(sender);
+    elseif prefix == "SL_RQ_UHS" then
+        self:On_Request_UserHasStriLi(message);
+    elseif prefix == "SL_RS_UHS" then
+        self:On_Respond_UserHasStriLi(sender);
+    elseif prefix == "SL_VC" then
+        self:On_VersionCheck(message);
+    elseif prefix == "SL_IHA" then
+        self:On_ItemHistoryAdd(message, sender);
+    elseif prefix == "SL_IHC" then
+        self:On_ItemHistoryChanged(message, sender);
+    elseif prefix == "SL_IHR" then
+        self:On_ItemHistoryRemove(message, sender);
     end
 
 end
