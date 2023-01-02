@@ -294,7 +294,7 @@ function StriLi.ItemHistory:OnMouseUp(frame, button, itemFrame)
 
     if (button ~= "RightButton") or (not MouseIsOver(frame) or ((StriLi.master:get() ~= "") and (StriLi.master:get() ~= UnitName("player")))) then
         return;
-    end ;
+    end
 
     StriLi.dropdownFrame = CreateFrame("Frame", "StriLi_DropdownFrame", frame, "UIDropDownMenuTemplate");
     -- Bind an initializer function to the dropdown;

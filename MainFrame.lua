@@ -50,7 +50,6 @@ function StriLi.MainFrame:init()
         self:OnClickItemHistoryButton();
     end)
 
-
     self.frame:SetScript("OnMouseDown", function(frame)
         if (not frame.isMoving) and (frame.isLocked ~= 1) then
             frame:StartMoving();
@@ -63,7 +62,6 @@ function StriLi.MainFrame:init()
             frame.isMoving = false;
         end
     end);
-
 
     self.sortType:registerObserver(self);
     StriLi.master:registerObserver(self);
@@ -209,20 +207,20 @@ function StriLi.MainFrame:removePlayer(raidMemberName, forced)
 
     if self.rows[raidMemberName] ~= nil then
 
-    RaidMembersDB:remove(raidMemberName, forced);
-    table.removeByValue(self.nameTable, raidMemberName);
+        RaidMembersDB:remove(raidMemberName, forced);
+        table.removeByValue(self.nameTable, raidMemberName);
 
-    self.unusedRowFrameStack:push(self.rows[raidMemberName])
-    self.rows[raidMemberName]:hide();
-    self.rows[raidMemberName]:unlinkCounters();
-    self.rows[raidMemberName] = nil;
-    self.rowCount = self.rowCount - 1;
+        self.unusedRowFrameStack:push(self.rows[raidMemberName])
+        self.rows[raidMemberName]:hide();
+        self.rows[raidMemberName]:unlinkCounters();
+        self.rows[raidMemberName] = nil;
+        self.rowCount = self.rowCount - 1;
 
-    self:reIndexFrames();
+        self:reIndexFrames();
 
-    self:resize();
+        self:resize();
 
-    return true;
+        return true;
 
     end
 
