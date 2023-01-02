@@ -1,4 +1,4 @@
-StriLi.ItemHistory = { items = {}, players = {}, rollTypes = {}, rolls = {}, playerClasses = {}, frame = nil, contentFrame = nil, count = 0};
+StriLi.ItemHistory = { items = {}, players = {}, rollTypes = {}, rolls = {}, playerClasses = {}, frame = nil, contentFrame = nil, count = 0, };
 
 local function repositionFrames()
     for index, frame in pairs(StriLi.ItemHistory.contentFrame.children) do
@@ -33,6 +33,8 @@ function StriLi.ItemHistory:init()
 end
 
 function StriLi.ItemHistory:add(itemLink, player, playerClass, rollType, roll, externIndex)
+
+    print("number: "..tostring(externIndex)..", type: "..type(externIndex));
 
     if externIndex ~= nil and externIndex <= self.count then
         return;
@@ -70,8 +72,6 @@ function StriLi.ItemHistory:add(itemLink, player, playerClass, rollType, roll, e
 
     StriLi_SetTextColorByClass(frame.ItemPlayer.FontString, playerClass);
 
-
-
     if self.contentFrame.children == nil then
         self.contentFrame.children = {};
     end
@@ -89,12 +89,6 @@ function StriLi.ItemHistory:On_ItemHistoryChanged(itemLink, player, playerClass,
 
     local itemId = getItemID_fromLink(itemLink);
 
-    table.insert(self.items, itemLink);
-    table.insert(self.players, player);
-    table.insert(self.playerClasses, playerClass);
-    table.insert(self.rollTypes, rollType);
-    table.insert(self.rolls, roll);
-
     self.items[index] = itemLink;
     self.players[index] = player;
     self.playerClasses[index] = playerClass;
@@ -102,7 +96,6 @@ function StriLi.ItemHistory:On_ItemHistoryChanged(itemLink, player, playerClass,
     self.rolls[index] = roll;
 
     local frame = self.contentFrame.children[index];
-
 
     frame.ItemIcon.Texture:SetTexture(GetItemIcon(itemId));
     frame.ItemText.FontString:SetText(itemLink);
