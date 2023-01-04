@@ -108,7 +108,8 @@ function StriLi.AutoRollAnalyser:registerRoll(rollType, playername, number)
         self.playerRolled[playername] = true;
 
         if self:isNHToken() then
-            table.insert(self.rolls[rollType], {["Roll"]=number, ["Name"]=playername, ["Count"]=RaidMembersDB:get(playername)["Token"]:get(), ["Fail"]=RaidMembersDB:get(playername)["Fail"]:get()});
+            local countToGet = ((rollType == "Main" or not StriLiOptions["TokenSecList"]) and "Token" or "TokenSec");
+            table.insert(self.rolls[rollType], {["Roll"]=number, ["Name"]=playername, ["Count"]=RaidMembersDB:get(playername)[countToGet]:get(), ["Fail"]=RaidMembersDB:get(playername)["Fail"]:get()});
         else
             table.insert(self.rolls[rollType], {["Roll"]=number, ["Name"]=playername, ["Count"]=RaidMembersDB:get(playername)[rollType]:get(), ["Fail"]=RaidMembersDB:get(playername)["Fail"]:get()});
         end
@@ -176,9 +177,13 @@ function StriLi.AutoRollAnalyser:increaseWinnerCountAndExpandItemHistory()
     winnerName = self.rolls[rollType][1]["Name"];
 
     if self:isNHToken() then
-        counterToIncrease = "Token"
+        if rollType == "Main" or not StriLiOptions["TokenSecList"] then
+            counterToIncrease = "Token";
+        else
+            counterToIncrease = "TokenSec";
+        end
     else
-        counterToIncrease = rollType
+        counterToIncrease = rollType;
     end
 
     raidMember = RaidMembersDB:get(winnerName);

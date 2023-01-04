@@ -1,4 +1,4 @@
-InfiniteStack = { stackType=nil, stack={}, count=0}
+InfiniteStack = { stackType=nil, stack={}}
 
 function InfiniteStack:new(o, stackType)
 
@@ -13,19 +13,27 @@ function InfiniteStack:new(o, stackType)
 end
 
 function InfiniteStack:push(element)
-	
-	self.count = self.count+1;
-	self.stack[self.count]=element;
-	
+	table.insert(self.stack, element);
 end
 
 function InfiniteStack:pop(...)
-	
-	if self.count < 1 then
+
+	local returnElm =  table.remove(self.stack);
+
+	if returnElm == nil then
 		return self.stackType:new(...);
 	else
-		self.count = self.count-1;
-		return self.stack[self.count+1]:reInit(...);
+		return returnElm:reInit(...);
 	end
 	
+end
+
+function InfiniteStack:dumpRemainingElements()
+
+	local returnElm =  table.remove(self.stack);
+
+	while returnElm ~= nil do
+		returnElm =  table.remove(self.stack);
+	end
+
 end

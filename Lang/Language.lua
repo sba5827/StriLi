@@ -26,6 +26,7 @@ StriLi.Lang = {
         ItemRemoveFailed = "Das entfernen des Items ist fehlgeschlagen, da %s 0 Striche hat.",
         ItemRolltypeChangeFailed = "Das ändern des Strichs von %s zu %s ist fehlgeschlagen, da %s 0 Striche auf %s hat.",
         ItemRolltypeChangeFailed2 = "Das ändern des Strichs von %s zu %s ist fehlgeschlagen, da %s nicht mehr in der Datenbank existiert.",
+        RaidMemNotInDB = "Raidmember %s does not exist in DB.",
     },
     Rolls = {
         StartRoll1 = "Es wird um das Item ",
@@ -43,6 +44,7 @@ StriLi.Lang = {
         Main = "Main",
         Sec = "Sec",
         Token = "Token",
+        TokenSec = "TokenSec",
         Fail = "Fail",
     },
     Name = "Name",
@@ -85,6 +87,7 @@ StriLi.Lang = {
         Main = "Main",
         Sec = "Sec",
         Token = "Token",
+        TokenSec = "TokenSec",
         Fail = "Fail",
         Lock = "Lock",
         Unlock = "Unlock",
@@ -105,6 +108,10 @@ StriLi.Lang = {
         CopyMacro = "Copy and create a macro from it.\n Replace the <> and the text in it with your desired time.",
         ButtonOk = "Ok",
         LootRules = "Loot Rules",
+    },
+    Options = {
+        AutoPromote = "Auto promote StriLi master to raid assist.",
+        TokenSec = "Token sec list.",
     },
 };
 

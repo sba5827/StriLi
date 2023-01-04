@@ -22,6 +22,7 @@ function RaidMembersDB:add(name, class)
         ["Main"] = ObservableNumber:new(),
         ["Sec"] = ObservableNumber:new(),
         ["Token"] = ObservableNumber:new(),
+        ["TokenSec"] = ObservableNumber:new(),
         ["Fail"] = ObservableNumber:new(),
         ["Reregister"] = ObservableString:new();
     };
@@ -36,7 +37,7 @@ function RaidMembersDB:get(name)
         return self.raidMembers[name];
     end
 
-    error("Raidmember " .. name .. " does not exist in DB.");
+    error(string.format(StriLi.Lang.ErrorMsg.RaidMemNotInDB, name));
 
 end
 
@@ -77,6 +78,7 @@ function RaidMembersDB:getRawData()
                  ["Main"] = v["Main"]:get(),
                  ["Sec"] = v["Sec"]:get(),
                  ["Token"] = v["Token"]:get(),
+                 ["TokenSec"] = v["TokenSec"]:get(),
                  ["Fail"] = v["Fail"]:get(),
                  ["Reregister"] = v["Reregister"]:get()
         }
@@ -95,6 +97,7 @@ function RaidMembersDB:initFromRawData(rawData)
             ["Main"] = ObservableNumber:new(),
             ["Sec"] = ObservableNumber:new(),
             ["Token"] = ObservableNumber:new(),
+            ["TokenSec"] = ObservableNumber:new(),
             ["Fail"] = ObservableNumber:new(),
             ["Reregister"] = ObservableString:new();
         };
@@ -102,6 +105,7 @@ function RaidMembersDB:initFromRawData(rawData)
         self.raidMembers[i]["Main"]:set(v["Main"]);
         self.raidMembers[i]["Sec"]:set(v["Sec"]);
         self.raidMembers[i]["Token"]:set(v["Token"]);
+        self.raidMembers[i]["TokenSec"]:set(v["TokenSec"]);
         self.raidMembers[i]["Fail"]:set(v["Fail"]);
         self.raidMembers[i]["Reregister"]:set(v["Reregister"]);
 
@@ -113,7 +117,7 @@ end
 
 function RaidMembersDB:postAllDataToRaid()
     for name, v in pairs(self.raidMembers) do
-        SendChatMessage(name.." || "..StriLi.Lang.TallyMarkTypes.Main..": "..v["Main"]:get().." "..StriLi.Lang.TallyMarkTypes.Sec..": "..v["Sec"]:get().." "..StriLi.Lang.TallyMarkTypes.Token..": "..v["Token"]:get().." "..StriLi.Lang.TallyMarkTypes.Fail..": "..v["Main"]:get(), "RAID");
+        SendChatMessage(name.." || "..StriLi.Lang.TallyMarkTypes.Main..": "..v["Main"]:get().." "..StriLi.Lang.TallyMarkTypes.Sec..": "..v["Sec"]:get().." "..StriLi.Lang.TallyMarkTypes.Token..": "..v["Token"]:get().." "..StriLi.Lang.TallyMarkTypes.TokenSec..": "..v["TokenSec"]:get().." "..StriLi.Lang.TallyMarkTypes.Fail..": "..v["Fail"]:get(), "RAID");
     end
 end
 
@@ -122,7 +126,7 @@ function RaidMembersDB:postNamesOfUnluckyPlayers()
     local playerNamesString = CONSTS.msgColorStringStart.."StriLi: "..StriLi.Lang.Commands.PlayersGotLoot..": "
 
     for name, v in pairs(self.raidMembers) do
-        if v["Main"]:get() == 0 and v["Sec"]:get() == 0 and v["Token"]:get() == 0 then
+        if v["Main"]:get() == 0 and v["Sec"]:get() == 0 and v["Token"]:get() == 0 and v["TokenSec"]:get() == 0 then
             playerNamesString = playerNamesString..name..", ";
         end
     end
@@ -146,6 +150,7 @@ function RaidMembersDB:combineMembers(memName1, memName2)
         mem1["Main"]:add(mem2["Main"]:get());
         mem1["Sec"]:add(mem2["Sec"]:get());
         mem1["Token"]:add(mem2["Token"]:get());
+        mem1["TokenSec"]:add(mem2["TokenSec"]:get());
         mem1["Fail"]:add(mem2["Fail"]:get());
 
         return true;
@@ -158,4 +163,17 @@ end
 
 function RaidMembersDB:getSize()
     return self.size;
+end
+
+function RaidMembersDB:OnTokenListOptionChanged()
+    if (UnitName("player") == StriLi.master:get()) or StriLi.master:get() == "" then
+        if not StriLiOptions["TokenSecList"] then
+            for name, v in pairs(self.raidMembers) do
+                v["Token"]:add(v["TokenSec"]:get());
+                v["TokenSec"]:set(0);
+                StriLi.CommunicationHandler:sendDataChanged(name, "TokenSec", 0, false);
+                --StriLi.ItemHistory:
+            end
+        end
+    end
 end

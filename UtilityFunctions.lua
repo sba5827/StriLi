@@ -185,12 +185,12 @@ function StriLi_initAddon()
 
     StriLi.InitLang()
 
-    local localAddonVersion = tonumber(GetAddOnMetadata("StriLi", "Version"));
+    local addonVersion = tonumber(GetAddOnMetadata("StriLi", "Version"));
 
     if StriLi_LatestVersion == nil then
-        StriLi_LatestVersion = localAddonVersion;
-    elseif StriLi_LatestVersion < localAddonVersion then
-        StriLi_LatestVersion = localAddonVersion;
+        StriLi_LatestVersion = addonVersion;
+    elseif StriLi_LatestVersion < addonVersion then
+        StriLi_LatestVersion = addonVersion;
     end
     if StriLi_Master == nil then
         StriLi.master = ObservableString:new();
@@ -212,7 +212,10 @@ function StriLi_initAddon()
         StriLi_RulesTxt = "";
     end
     if StriLiOptions == nil then
-        StriLiOptions = {};
+        StriLiOptions = {
+            ["AutoPromote"] = false,
+            ["TokenSecList"] = false,
+        };
     end
 
     StriLi.LootRules:setText(StriLi_RulesTxt);
@@ -231,7 +234,7 @@ function StriLi_finalizeAddon()
     StriLi.MainFrame.frame:SetUserPlaced(false);
 end
 
--- removes the first occurring 'value'
+---removes the first occurring 'value'
 function table.removeByValue(list, value)
     for i, v in pairs(list) do
         if v == value then

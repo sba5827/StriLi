@@ -25,6 +25,7 @@ function StriLi_Stub_deDE() return {
         ItemRemoveFailed = "Das entfernen des Items ist fehlgeschlagen, da %s 0 Striche hat.",
         ItemRolltypeChangeFailed = "Das ändern des Strichs von %s zu %s ist fehlgeschlagen, da %s 0 Striche auf %s hat.",
         ItemRolltypeChangeFailed2 = "Das ändern des Strichs von %s zu %s ist fehlgeschlagen, da %s nicht mehr in der Datenbank existiert.",
+        RaidMemNotInDB = "Raidmember %s existiert nicht in der Datenbank.",
     },
     Rolls = {
         StartRoll1 = "Es wird um das Item ",
@@ -42,6 +43,7 @@ function StriLi_Stub_deDE() return {
         Main = "Main",
         Sec = "Sec",
         Token = "Token",
+        TokenSec = "TokenSec",
         Fail = "Fehler",
     },
     Name = "Name",
@@ -84,6 +86,7 @@ function StriLi_Stub_deDE() return {
         Main = "Main",
         Sec = "Sec",
         Token = "Token",
+        TokenSec = "TokenSec",
         Fail = "Fehler",
         Lock = "Sperren",
         Unlock = "Entsperren",
@@ -104,6 +107,10 @@ function StriLi_Stub_deDE() return {
         CopyMacro = "Kopiere und erstelle daraus ein Makro.\n Ersetze dabei das <> und den darin enthaltenen Text durch die gewünschte Zeit.",
         ButtonOk = "Ok",
         LootRules = "Loot Regeln",
+    },
+    Options = {
+        AutoPromote = "StriLi Master automatisch zum Raid-Assistenten ernennen?.",
+        TokenSec = "Token Sec Liste.",
     },
 };
 end

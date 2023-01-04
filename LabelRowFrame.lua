@@ -10,7 +10,8 @@ function LabelRowFrame:new(o, frameName, parentFrame, posIndex)
     self.parentFrame = parentFrame;
     self.posIndex = posIndex;
 
-    self.frame = CreateFrame("Frame", self.frameName, self.parentFrame, "StriLi_Row_Template");
+    local rowTemplateName = (StriLiOptions["TokenSecList"] and "StriLi_Row_Template_TokenSec" or "StriLi_Row_Template");
+    self.frame = CreateFrame("Frame", self.frameName, self.parentFrame, rowTemplateName);
     self.frame:SetPoint("TOPLEFT", self.parentFrame, "TOPLEFT", self.x_offset, self.y_offset - self.posIndex * self.height);
 
     self:setColumnContent();
@@ -21,13 +22,20 @@ end
 
 function LabelRowFrame:setColumnContent()
 
-    self.Children.Name, self.Children.Reregister, self.Children.Main, self.Children.Sec, self.Children.Token, self.Children.Fail = self.frame:GetChildren();
-
+    if StriLiOptions["TokenSecList"] then
+        self.Children.Name, self.Children.Reregister, self.Children.Main, self.Children.Sec, self.Children.Token, self.Children.TokenSec, self.Children.Fail = self.frame:GetChildren();
+    else
+        self.Children.Name, self.Children.Reregister, self.Children.Main, self.Children.Sec, self.Children.Token, self.Children.Fail = self.frame:GetChildren();
+    end
+    
     self.Regions.NameFS = self.Children.Name:CreateFontString("PlayerNameLable", "ARTWORK", "GameFontNormal");
     self.Regions.ReregisterFS = self.Children.Reregister:CreateFontString("ReregisterLable", "ARTWORK", "GameFontNormal");
     self.Regions.MainFS = self.Children.Main:CreateFontString("MainLable", "ARTWORK", "GameFontNormal");
     self.Regions.SecFS = self.Children.Sec:CreateFontString("SecLable", "ARTWORK", "GameFontNormal");
     self.Regions.TokenFS = self.Children.Token:CreateFontString("TokenLabel", "ARTWORK", "GameFontNormal");
+    if StriLiOptions["TokenSecList"] then
+        self.Regions.TokenSecFS = self.Children.TokenSec:CreateFontString("TokenSecLabel", "ARTWORK", "GameFontNormal");
+    end
     self.Regions.FailFS = self.Children.Fail:CreateFontString("FailLable", "ARTWORK", "GameFontNormal");
 
     self.Regions.NameFS:SetPoint("CENTER", 0, 0);
@@ -35,6 +43,9 @@ function LabelRowFrame:setColumnContent()
     self.Regions.MainFS:SetPoint("CENTER", 0, 0);
     self.Regions.SecFS:SetPoint("CENTER", 0, 0);
     self.Regions.TokenFS:SetPoint("CENTER", 0, 0);
+    if StriLiOptions["TokenSecList"] then
+        self.Regions.TokenSecFS:SetPoint("CENTER", 0, 0);
+    end
     self.Regions.FailFS:SetPoint("CENTER", 0, 0);
 
     self.Regions.NameFS:SetText(StriLi.Lang.Labels.Name);
@@ -42,6 +53,9 @@ function LabelRowFrame:setColumnContent()
     self.Regions.MainFS:SetText(StriLi.Lang.Labels.Main);
     self.Regions.SecFS:SetText(StriLi.Lang.Labels.Sec);
     self.Regions.TokenFS:SetText(StriLi.Lang.Labels.Token);
+    if StriLiOptions["TokenSecList"] then
+        self.Regions.TokenSecFS:SetText(StriLi.Lang.Labels.TokenSec);
+    end
     self.Regions.FailFS:SetText(StriLi.Lang.Labels.Fail);
 
 end

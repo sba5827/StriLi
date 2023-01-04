@@ -195,6 +195,96 @@
 			</StatusBar>
 		</Frames>
 	</Frame>
+
+	<Frame name="StriLi_Row_Template_TokenSec" virtual="true">
+		<Size>
+			<AbsDimension x="555" y="30"/>
+		</Size>
+		<Anchors>
+			<Anchor point="TOPLEFT" relativePoint="TOPLEFT">
+				<Offset>
+					<AbsDimension x="35" y="-35"/>
+				</Offset>
+			</Anchor>
+		</Anchors>
+		<Backdrop edgeFile="Interface\DialogFrame\UI-DialogBox-Border">
+			<EdgeSize>
+				<AbsValue val="2"/>
+			</EdgeSize>
+			<BorderColor a="1" r="0" g="0" b="0" />
+		</Backdrop>
+		<Frames>
+			<StatusBar name="StriLi_Name" inherits="StriLi_Template" useParentLevel="true">
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</StatusBar>
+			<StatusBar name="StriLi_Reregisration" inherits="StriLi_Template" useParentLevel="true">
+				<Size>
+					<AbsDimension x="45" y="30"/>
+				</Size>
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="85" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<BarColor r="0.8" g="0.8" b="0.8"/>
+			</StatusBar>
+			<StatusBar name="StriLi_Main" inherits="StriLi_Template" useParentLevel="true">
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="130" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</StatusBar>
+			<StatusBar name="StriLi_Sec" inherits="StriLi_Template" useParentLevel="true">
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="215" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<BarColor r="0.8" g="0.8" b="0.8"/>
+			</StatusBar>
+			<StatusBar name="StriLi_Token" inherits="StriLi_Template" useParentLevel="true">
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="300" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</StatusBar>
+			<StatusBar name="StriLi_TokenSec" inherits="StriLi_Template" useParentLevel="true">
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="385" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<BarColor r="0.8" g="0.8" b="0.8"/>
+			</StatusBar>
+			<StatusBar name="StriLi_Fail" inherits="StriLi_Template" useParentLevel="true">
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="470" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+			</StatusBar>
+		</Frames>
+	</Frame>
 	
 	<Frame name="StriLi_MainFrame_Template" toplevel="false" frameStrata="MEDIUM"
       movable="true" parent="UIParent" enableMouse="true" hidden="true" virtual="true">

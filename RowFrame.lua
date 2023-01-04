@@ -14,7 +14,8 @@ function RowFrame:new(o, frameName, parentFrame, posIndex, raidMember)
     o.Children = {};
     o.Regions = {};
 
-    o.frame = CreateFrame("Frame", o.frameName, o.parentFrame, "StriLi_Row_Template");
+    local rowTemplateName = (StriLiOptions["TokenSecList"] and "StriLi_Row_Template_TokenSec" or "StriLi_Row_Template");
+    o.frame = CreateFrame("Frame", o.frameName, o.parentFrame, rowTemplateName);
     o.frame:SetPoint("TOPLEFT", o.parentFrame, "TOPLEFT", o.x_offset, o.y_offset - o.posIndex * o.height);
 
     o:setColumnContent(o.raidMember[1], o.raidMember[2]);
@@ -54,8 +55,12 @@ end
 
 function RowFrame:setColumnContent(charName, charData)
 
-    self.Children.Name, self.Children.Reregister, self.Children.Main, self.Children.Sec, self.Children.Token, self.Children.Fail = self.frame:GetChildren();
-
+    if StriLiOptions["TokenSecList"] then
+        self.Children.Name, self.Children.Reregister, self.Children.Main, self.Children.Sec, self.Children.Token, self.Children.TokenSec, self.Children.Fail = self.frame:GetChildren();
+    else
+        self.Children.Name, self.Children.Reregister, self.Children.Main, self.Children.Sec, self.Children.Token, self.Children.Fail = self.frame:GetChildren();
+    end
+    
     self.Children.Name:EnableMouse(true);
     self.Children.Name:SetScript("OnMouseUp", function(frame, button)
         self:OnMouseUp(frame, button);
@@ -85,6 +90,9 @@ function RowFrame:setColumnContent(charName, charData)
     self.Regions.MainCounter = CreateFrame("Frame", "CounterMain" .. tostring(self.posIndex), self.Children.Main, "StriLi_Counter_Template2");
     self.Regions.SecCounter = CreateFrame("Frame", "CounterSec" .. tostring(self.posIndex), self.Children.Sec, "StriLi_Counter_Template2");
     self.Regions.TokenCounter = CreateFrame("Frame", "CounterToken" .. tostring(self.posIndex), self.Children.Token, "StriLi_Counter_Template2");
+    if StriLiOptions["TokenSecList"] then
+        self.Regions.TokenSecCounter = CreateFrame("Frame", "CounterTokenSec" .. tostring(self.posIndex), self.Children.TokenSec, "StriLi_Counter_Template2");
+    end
     self.Regions.FailCounter = CreateFrame("Frame", "CounterFail" .. tostring(self.posIndex), self.Children.Fail, "StriLi_Counter_Template2");
 
     self:linkCounter(charData);
@@ -92,19 +100,30 @@ function RowFrame:setColumnContent(charName, charData)
     self.Regions.MainCounterFS = self.Regions.MainCounter:GetRegions();
     self.Regions.SecCounterFS = self.Regions.SecCounter:GetRegions();
     self.Regions.TokenCounterFS = self.Regions.TokenCounter:GetRegions();
+    if StriLiOptions["TokenSecList"] then
+        self.Regions.TokenSecCounterFS = self.Regions.TokenSecCounter:GetRegions();
+    end
     self.Regions.FailCounterFS = self.Regions.FailCounter:GetRegions();
 
     self:UpdateMainCounter(charData["Main"]:get());
     self:UpdateSecCounter(charData["Sec"]:get());
     self:UpdateTokenCounter(charData["Token"]:get());
+    if StriLiOptions["TokenSecList"] then
+        self:UpdateTokenSecCounter(charData["TokenSec"]:get());
+    end
     self:UpdateFailCounter(charData["Fail"]:get());
 
 end
 
 function RowFrame:linkCounter(charData)
-
-    local aTable = { ["Main"] = self.Regions.MainCounter, ["Sec"] = self.Regions.SecCounter, ["Token"] = self.Regions.TokenCounter, ["Fail"] = self.Regions.FailCounter };
-
+    
+    local aTable = nil;
+    if StriLiOptions["TokenSecList"] then
+        aTable = { ["Main"] = self.Regions.MainCounter, ["Sec"] = self.Regions.SecCounter, ["Token"] = self.Regions.TokenCounter, ["TokenSec"] = self.Regions.TokenSecCounter, ["Fail"] = self.Regions.FailCounter };
+    else
+        aTable = { ["Main"] = self.Regions.MainCounter, ["Sec"] = self.Regions.SecCounter, ["Token"] = self.Regions.TokenCounter, ["Fail"] = self.Regions.FailCounter };
+    end
+    
     for key, _ in pairs(aTable) do
 
         local plusButton, minusButton = aTable[key]:GetChildren();
@@ -125,7 +144,12 @@ end
 
 function RowFrame:unlinkCounters()
 
-    local aTable = { ["Main"] = self.Regions.MainCounter, ["Sec"] = self.Regions.SecCounter, ["Token"] = self.Regions.TokenCounter, ["Fail"] = self.Regions.FailCounter };
+    local aTable = nil;
+    if StriLiOptions["TokenSecList"] then
+        aTable = { ["Main"] = self.Regions.MainCounter, ["Sec"] = self.Regions.SecCounter, ["Token"] = self.Regions.TokenCounter, ["TokenSec"] = self.Regions.TokenSecCounter, ["Fail"] = self.Regions.FailCounter };
+    else
+        aTable = { ["Main"] = self.Regions.MainCounter, ["Sec"] = self.Regions.SecCounter, ["Token"] = self.Regions.TokenCounter, ["Fail"] = self.Regions.FailCounter };
+    end
 
     for key, counter in pairs(aTable) do
 
@@ -169,9 +193,17 @@ function RowFrame:UpdateTokenCounter(count)
     end
 end
 
+function RowFrame:UpdateTokenSecCounter(count)
+    self.Regions.TokenSecCounterFS:SetText(tostring(count));
+    StriLi_ColorCounterCell(self.Children.TokenSec, count, true);
+    if not StriLi.CommunicationHandler.requestedSyncAsMaster then
+        StriLi.CommunicationHandler:sendDataChanged(self:getName():gsub('%®', ''):gsub('%•', ''), "TokenSec", count, false);
+    end
+end
+
 function RowFrame:UpdateFailCounter(count)
     self.Regions.FailCounterFS:SetText(tostring(count));
-    StriLi_ColorCounterCell(self.Children.Fail, count, true);
+    StriLi_ColorCounterCell(self.Children.Fail, count, not StriLiOptions["TokenSecList"]);
     if not StriLi.CommunicationHandler.requestedSyncAsMaster then
         StriLi.CommunicationHandler:sendDataChanged(self:getName():gsub('%®', ''):gsub('%•', ''), "Fail", count, false);
     end
@@ -222,6 +254,9 @@ function RowFrame:OnValueChanged(sender)
 
     elseif sender == self.raidMember[2]["Token"] then
         self:UpdateTokenCounter(self.raidMember[2]["Token"]:get());
+    
+    elseif sender == self.raidMember[2]["TokenSec"] and StriLiOptions["TokenSecList"] then
+        self:UpdateTokenSecCounter(self.raidMember[2]["TokenSec"]:get());
 
     elseif sender == self.raidMember[2]["Fail"] then
         self:UpdateFailCounter(self.raidMember[2]["Fail"]:get());
@@ -241,9 +276,8 @@ function RowFrame.ReregisterRequest(self, overwrite)
 
         local reregisterInputFrame = TextInputFrame:new(nil, StriLi.Lang.Confirm.ReregisterRequest..": ", function(input)
             self.raidMember[2]["Reregister"]:set(input);
-            --self:UpdateReregister(input);
         end, function(_)
-            --self:UpdateReregister(self.raidMember[2]["Reregister"]:get());
+            
         end);
 
         reregisterInputFrame:show();
@@ -407,8 +441,13 @@ end
 
 function RowFrame:enableButtons()
 
-    local aTable = { ["Main"] = self.Regions.MainCounter, ["Sec"] = self.Regions.SecCounter, ["Token"] = self.Regions.TokenCounter, ["Fail"] = self.Regions.FailCounter };
-
+    local aTable = nil;
+    if StriLiOptions["TokenSecList"] then
+        aTable = { ["Main"] = self.Regions.MainCounter, ["Sec"] = self.Regions.SecCounter, ["Token"] = self.Regions.TokenCounter, ["TokenSec"] = self.Regions.TokenSecCounter, ["Fail"] = self.Regions.FailCounter };
+    else
+        aTable = { ["Main"] = self.Regions.MainCounter, ["Sec"] = self.Regions.SecCounter, ["Token"] = self.Regions.TokenCounter, ["Fail"] = self.Regions.FailCounter };
+    end
+    
     for key, _ in pairs(aTable) do
 
         local plusButton, minusButton = aTable[key]:GetChildren();
@@ -425,8 +464,13 @@ end
 
 function RowFrame:disableButtons()
 
-    local aTable = { ["Main"] = self.Regions.MainCounter, ["Sec"] = self.Regions.SecCounter, ["Token"] = self.Regions.TokenCounter, ["Fail"] = self.Regions.FailCounter };
-
+    local aTable = nil;
+    if StriLiOptions["TokenSecList"] then
+        aTable = { ["Main"] = self.Regions.MainCounter, ["Sec"] = self.Regions.SecCounter, ["Token"] = self.Regions.TokenCounter, ["TokenSec"] = self.Regions.TokenSecCounter, ["Fail"] = self.Regions.FailCounter };
+    else
+        aTable = { ["Main"] = self.Regions.MainCounter, ["Sec"] = self.Regions.SecCounter, ["Token"] = self.Regions.TokenCounter, ["Fail"] = self.Regions.FailCounter };
+    end
+    
     for key, _ in pairs(aTable) do
 
         local plusButton, minusButton = aTable[key]:GetChildren();

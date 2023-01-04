@@ -22,6 +22,7 @@ function StriLi.EventHandler:OnEvent(event, ...)
         print("|cff00ffffStriLi "..StriLi.Lang.version.." " .. GetAddOnMetadata("StriLi", "Version") .. " "..StriLi.Lang.loaded.."|r");
         StriLi_initAddon();
         StriLi.MainFrame:init();
+        StriLi.ItemHistory:initFromRawData(StriLi_ItemHistory);
         StriLi.LootRules:init();
         StriLi_OptionFrame_init();
         if tonumber(StriLi_LatestVersion) > tonumber(GetAddOnMetadata("StriLi", "Version")) then

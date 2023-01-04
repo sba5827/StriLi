@@ -18,8 +18,6 @@ local function getItemID_fromLink(itemLink)
 
 end
 
--- CreateFrame("Frame","NAME", StriLi.ItemHistory.frame.ScrollFrame, "StriLi_Row_Template");
-
 function StriLi.ItemHistory:init()
 
     self.frame = CreateFrame("FRAME","StriLi_ItemHistory_Frame", StriLi.MainFrame.frame,"StriLi_ItemHistory_Template");
@@ -34,7 +32,7 @@ end
 
 function StriLi.ItemHistory:add(itemLink, player, playerClass, rollType, roll, externIndex)
 
-    print("number: "..tostring(externIndex)..", type: "..type(externIndex));
+    ---print("number: "..tostring(externIndex)..", type: "..type(externIndex));
 
     if externIndex ~= nil and externIndex <= self.count then
         return;
@@ -384,10 +382,20 @@ function StriLi.ItemHistory:initDropdownMenu(frame, level, menuList, itemFrame)
             end
         end
     elseif menuList == "Lists" then
-        for k, list in pairs({
-            ["Main"] = StriLi.Lang.TallyMarkTypes.Main,
-            ["Sec"] = StriLi.Lang.TallyMarkTypes.Sec,
-            ["Token"] = StriLi.Lang.TallyMarkTypes.Token}) do
+        local aList = nil;
+
+        if StriLiOptions["TokenSecList"] then
+            aList = {   ["Main"] = StriLi.Lang.TallyMarkTypes.Main,
+                        ["Sec"] = StriLi.Lang.TallyMarkTypes.Sec,
+                        ["Token"] = StriLi.Lang.TallyMarkTypes.Token,
+                        ["TokenSec"] = StriLi.Lang.TallyMarkTypes.TokenSec};
+        else
+            aList = {   ["Main"] = StriLi.Lang.TallyMarkTypes.Main,
+                        ["Sec"] = StriLi.Lang.TallyMarkTypes.Sec,
+                        ["Token"] = StriLi.Lang.TallyMarkTypes.Token};
+        end
+
+        for k, list in pairs(aList) do
 
             if list ~= itemFrame.ItemRollType.FontString:GetText() then
 

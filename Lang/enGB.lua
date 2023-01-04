@@ -25,6 +25,7 @@ function StriLi_Stub_enGB() return {
         ItemRemoveFailed = "Removing the item failed because %s has 0 tally marks.",
         ItemRolltypeChangeFailed = "Changing the tally mark from %s to %s failed because %s has 0 tally marks on %s.",
         ItemRolltypeChangeFailed2 = "Changing the stroke from %s to %s failed because %s no longer exists in the database.",
+        RaidMemNotInDB = "Raidmember %s does not exist in DB.",
     },
     Rolls = {
         StartRoll1 = "Roll for Item ",
@@ -42,6 +43,7 @@ function StriLi_Stub_enGB() return {
         Main = "Main",
         Sec = "Sec",
         Token = "Token",
+        TokenSec = "TokenSec",
         Fail = "Fail",
     },
     Name = "Name",
@@ -84,6 +86,7 @@ function StriLi_Stub_enGB() return {
         Main = "Main",
         Sec = "Sec",
         Token = "Token",
+        TokenSec = "TokenSec",
         Fail = "Fail",
         Lock = "Lock",
         Unlock = "Unlock",
@@ -104,6 +107,10 @@ function StriLi_Stub_enGB() return {
         CopyMacro = "Copy and create a macro from it.\n Replace the <> and the text in it with your desired time.",
         ButtonOk = "Ok",
         LootRules = "Loot Rules",
+    },
+    Options = {
+        AutoPromote = "Auto promote StriLi master to raid assist.",
+        TokenSec = "Token sec list.",
     },
 };
 end
