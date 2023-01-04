@@ -4,7 +4,7 @@
 This Addon was developed for WoW version 3.3.5a WotLK. No guarantee that it will work with other versions.
 
 ## How to Install
-Download the latest [releases](https://github.com/sba5827/StriLi/releases/tag/3.04). Unzip the folder to your WoW Addons folder. Eg.:
+Download the latest [releases](https://github.com/sba5827/StriLi/releases/tag/3.05). Unzip the folder to your WoW Addons folder. Eg.:
 
     C:\Users\USERNAME\..\WoW\Interface\AddOns\
     
@@ -14,7 +14,7 @@ Make sure that the folder name of the unzipped folder is StriLi, otherwise the a
 
 And **NOT** like:
 
-    C:\Users\USERNAME\..\WoW\Interface\AddOns\StriLi-3.04
+    C:\Users\USERNAME\..\WoW\Interface\AddOns\StriLi-3.05
     
 Example Screenshot:
     ![Sceenshot_README](https://user-images.githubusercontent.com/38493688/200170842-d6c7f710-3bb1-491a-9796-1b8fb252d9c7.PNG)
@@ -62,7 +62,7 @@ Examples:
 Dieses Addon wurde für WoW Version 3.3.5a WotLK entwickelt. Es gibt keine Garantie, dass es mit anderen Versionen funktioniert.
 
 ## Wie man es installiert
-Laden Sie die neueste [Version](https://github.com/sba5827/StriLi/releases/tag/3.04) herunter. Entpacken Sie den Ordner in Ihren WoW Addons Ordner. z.B.:
+Laden Sie die neueste [Version](https://github.com/sba5827/StriLi/releases/tag/3.05) herunter. Entpacken Sie den Ordner in Ihren WoW Addons Ordner. z.B.:
 
     C:\Users\USERNAME\..\WoW\Interface\AddOns\
     
@@ -72,7 +72,7 @@ Achten Sie darauf, dass der Ordnername des entpackten Ordners StriLi lautet, son
 
 Und **NICHT** wie:
 
-    C:\Benutzer\USERNAME\..\WoW\Interface\AddOns\StriLi-3.04
+    C:\Benutzer\USERNAME\..\WoW\Interface\AddOns\StriLi-3.05
     
 Beispiel Screenshot:
     ![Sceenshot_README](https://user-images.githubusercontent.com/38493688/200170842-d6c7f710-3bb1-491a-9796-1b8fb252d9c7.PNG)
