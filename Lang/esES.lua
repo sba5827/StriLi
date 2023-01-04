@@ -25,6 +25,7 @@ function StriLi_Stub_esES() return {
         ItemRemoveFailed = "La eliminación del elemento ha fallado porque %s tiene 0 guiones.",
         ItemRolltypeChangeFailed = "El cambio de trazo de %s a %s falló porque %s tiene 0 trazos en %s.",
         ItemRolltypeChangeFailed2 = "El cambio del trazo de %s a %s ha fallado porque %s ya no existe en la base de datos.",
+        RaidMemNotInDB = "Raidmember %s does not exist in DB.",
     },
     Rolls = {
         StartRoll1 = "Se tiran los dados por el objeto ",
@@ -42,6 +43,7 @@ function StriLi_Stub_esES() return {
         Main = "Principal",
         Sec = "Segundo",
         Token = "Token",
+        TokenSec = "TokenSegundo",
         Fail = "Error",
     },
     Name = "Nombre",
@@ -84,6 +86,7 @@ function StriLi_Stub_esES() return {
         Main = "Principal",
         Sec = "Segundo",
         Token = "Token",
+        TokenSec = "TokenSeg",
         Fail = "Error",
         Lock = "Bloquear",
         Unlock = "Desbloquear",
@@ -104,6 +107,10 @@ function StriLi_Stub_esES() return {
         CopyMacro = "Copia y crea una macro a partir de ella.\n Sustituye el <> y el texto que contiene por la hora que desees.",
         ButtonOk = "Ok",
         LootRules = "Normas de botín",
+    },
+    Options = {
+        AutoPromote = "Ascenso automático del maestro StriLi a asistente de incursión.",
+        TokenSec = "Lista Token sec.",
     },
 };
 end

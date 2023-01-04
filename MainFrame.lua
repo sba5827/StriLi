@@ -7,10 +7,12 @@ local SortType_t = { NAME_ASCENDING = 1,
                      SEC_DESCENDING = 6,
                      TOKEN_ASCENDING = 7,
                      TOKEN_DESCENDING = 8,
-                     FAIL_ASCENDING = 9,
-                     FAIL_DESCENDING = 10,
-                     CLASS_ASCENDING = 11,
-                     CLASS_DESCENDING = 12};
+                     TOKENSEC_ASCENDING = 9,
+                     TOKENSEC_DESCENDING = 10,
+                     FAIL_ASCENDING = 11,
+                     FAIL_DESCENDING = 12,
+                     CLASS_ASCENDING = 13,
+                     CLASS_DESCENDING = 14};
 
 StriLi.MainFrame = { frame = nil, labelRow = nil, rows = {}, children = {}, unusedRowFrameStack = nil, rowCount = 0,  sortType = ObservableNumber:new(nil), nameTable = {}};
 
@@ -20,7 +22,9 @@ function StriLi.MainFrame:init()
         self.frame = CreateFrame("FRAME", "StriLi_MainFrame", UIParent, "StriLi_MainFrame_Template");
     end
 
-    tinsert(UISpecialFrames, "StriLi_MainFrame");
+    self:adaptWidth();
+
+    tinsert(UISpecialFrames, "StriLi_MainFrame"); --making MainFrame closeable with esc-key
 
     self.frame.FontString:SetText("StriLi "..GetAddOnMetadata("StriLi", "Version"));
     self.frame.FontString:SetTextColor(0,0.9,1.0);
@@ -74,8 +78,6 @@ function StriLi.MainFrame:init()
 
     self:OnMasterChanged();
 
-    StriLi.ItemHistory:initFromRawData(StriLi_ItemHistory);
-
 end
 
 function StriLi.MainFrame:show()
@@ -94,6 +96,14 @@ function StriLi.MainFrame:toggle()
         self:show();
     end
 
+end
+
+function StriLi.MainFrame:adaptWidth()
+    if StriLiOptions["TokenSecList"] then
+        self.frame:SetWidth(625);
+    else
+        self.frame:SetWidth(540);
+    end
 end
 
 function StriLi.MainFrame:setupLabelRow()
@@ -130,6 +140,15 @@ function StriLi.MainFrame:setupLabelRow()
                 self.sortType:set(SortType_t.TOKEN_ASCENDING);
             end
         end);
+        if StriLiOptions["TokenSecList"] then
+            self.labelRow.Children.TokenSec:SetScript("OnMouseUp", function()
+                if self.sortType:get() == SortType_t.TOKENSEC_ASCENDING then
+                    self.sortType:set(SortType_t.TOKENSEC_DESCENDING);
+                else
+                    self.sortType:set(SortType_t.TOKENSEC_ASCENDING);
+                end
+            end);
+        end
         self.labelRow.Children.Fail:SetScript("OnMouseUp", function()
             if self.sortType:get() == SortType_t.FAIL_ASCENDING then
                 self.sortType:set(SortType_t.FAIL_DESCENDING);
@@ -142,6 +161,9 @@ function StriLi.MainFrame:setupLabelRow()
         self.labelRow.Children.Main:EnableMouse(true);
         self.labelRow.Children.Sec:EnableMouse(true);
         self.labelRow.Children.Token:EnableMouse(true);
+        if StriLiOptions["TokenSecList"] then
+            self.labelRow.Children.TokenSec:EnableMouse(true);
+        end
         self.labelRow.Children.Fail:EnableMouse(true);
 
 
@@ -385,6 +407,16 @@ function StriLi.MainFrame:initDropdownMenu(frame, level, menuList)
         self.sortType:set(SortType_t.TOKEN_DESCENDING);
     end;
     UIDropDownMenu_AddButton(info);
+    if StriLiOptions["TokenSecList"] then
+        info.text, info.hasArrow, info.func = StriLi.Lang.Labels.TokenSec.." "..StriLi.Lang.Labels.Ascending, false, function()
+            self.sortType:set(SortType_t.TOKENSEC_ASCENDING);
+        end;
+        UIDropDownMenu_AddButton(info);
+        info.text, info.hasArrow, info.func = StriLi.Lang.Labels.TokenSec.." "..StriLi.Lang.Labels.Descending, false, function()
+            self.sortType:set(SortType_t.TOKENSEC_DESCENDING);
+        end;
+        UIDropDownMenu_AddButton(info);
+    end
     info.text, info.hasArrow, info.func = StriLi.Lang.Labels.Fail.." "..StriLi.Lang.Labels.Ascending, false, function()
         self.sortType:set(SortType_t.FAIL_ASCENDING);
     end;
@@ -444,6 +476,9 @@ function StriLi.MainFrame:sortRowFrames()
     self.labelRow.Regions.NameFS:SetText(StriLi.Lang.Labels.Name);
     self.labelRow.Regions.MainFS:SetText(StriLi.Lang.Labels.Main);
     self.labelRow.Regions.SecFS:SetText(StriLi.Lang.Labels.Sec);
+    if StriLiOptions["TokenSecList"] then
+        self.labelRow.Regions.TokenSecFS:SetText(StriLi.Lang.Labels.TokenSec);
+    end
     self.labelRow.Regions.TokenFS:SetText(StriLi.Lang.Labels.Token);
     self.labelRow.Regions.FailFS:SetText(StriLi.Lang.Labels.Fail);
 
@@ -478,6 +513,14 @@ function StriLi.MainFrame:sortRowFrames()
     elseif  self.sortType:get() == SortType_t.TOKEN_DESCENDING    then
         self:sortByCounter(false, "Token");
         self.labelRow.Regions.TokenFS:SetText(StriLi.Lang.Labels.Token..StriLi.Lang.Labels.Descending);
+
+    elseif  self.sortType:get() == SortType_t.TOKENSEC_ASCENDING     then
+        self:sortByCounter(true,"TokenSec");
+        self.labelRow.Regions.TokenSecFS:SetText(StriLi.Lang.Labels.TokenSec..StriLi.Lang.Labels.Ascending);
+
+    elseif  self.sortType:get() == SortType_t.TOKENSEC_DESCENDING    then
+        self:sortByCounter(false, "TokenSec");
+        self.labelRow.Regions.TokenSecFS:SetText(StriLi.Lang.Labels.TokenSec..StriLi.Lang.Labels.Descending);
 
     elseif  self.sortType:get() == SortType_t.FAIL_ASCENDING      then
         self:sortByCounter(true,"Fail");
@@ -566,5 +609,25 @@ function StriLi.MainFrame:sortByClass(invertedOrder)
     end
 
     table.sort(self.nameTable,cmpFnc);
+
+end
+
+function StriLi.MainFrame:OnTokenListOptionChanged()
+
+    self.labelRow:hide();
+
+    self.labelRow = nil;
+    self.unusedRowFrameStack:dumpRemainingElements();
+
+    for player, frame in pairs(self.rows) do
+        frame:hide();
+        frame:unlinkCounters();
+        self.rows[player] = nil;
+        table.remove(self.nameTable);
+    end
+
+    self.rowCount = 0;
+
+    self:init();
 
 end
