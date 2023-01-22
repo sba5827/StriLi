@@ -319,7 +319,7 @@ end
 
 function StriLi.CommunicationHandler:On_VersionCheck(transmittedVersion)
     if tonumber(StriLi_LatestVersion) < tonumber(transmittedVersion) then
-        StriLi_LatestVersion = transmittedVersion;
+        StriLi_LatestVersion = tonumber(transmittedVersion);
     end
 end
 

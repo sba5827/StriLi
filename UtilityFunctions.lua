@@ -187,6 +187,10 @@ function StriLi_initAddon()
 
     local addonVersion = tonumber(GetAddOnMetadata("StriLi", "Version"));
 
+    if StriLi_LatestVersion ~= nil then
+        StriLi_LatestVersion = tonumber(StriLi_LatestVersion);
+    end
+
     if StriLi_LatestVersion == nil then
         StriLi_LatestVersion = addonVersion;
     elseif StriLi_LatestVersion < addonVersion then
