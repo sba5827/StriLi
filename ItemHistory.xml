@@ -2,14 +2,14 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd">
 
-    <Frame name="StriLi_ItemHistory_Template" virtual="true" toplevel="true" movable="true" enableMouse="true" hidden="true" frameStrata = "MEDIUM">
+    <Frame name="StriLi_ItemHistory_Template" virtual="true" toplevel="false" movable="true" enableMouse="true" hidden="true" frameStrata = "MEDIUM">
         <Size>
             <AbsDimension x="570" y="200"/>
         </Size>
         <Anchors>
-            <Anchor point="RIGHT">
+            <Anchor point="BOTTOM">
                 <Offset>
-                    <AbsDimension x="570" y="0"/>
+                    <AbsDimension x="555" y="300"/>
                 </Offset>
             </Anchor>
         </Anchors>

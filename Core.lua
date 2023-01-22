@@ -3,7 +3,13 @@ local StriLiLDB = LibStub("LibDataBroker-1.1"):NewDataObject("StriLi!", {
     type = "data source",
     text = "StriLi!",
     icon = "Interface\\AddOns\\StriLi\\StriLiIcon",
-    OnClick = function() StriLi.MainFrame:toggle() end,
+    OnClick = function(this, button)
+        if button == "LeftButton" then
+            StriLi.MainFrame:toggle()
+        elseif button == "RightButton" then
+            StriLi.ItemHistory:toggle()
+        end
+    end,
 })
 local icon = LibStub("LibDBIcon-1.0")
 

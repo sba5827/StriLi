@@ -20,7 +20,8 @@ end
 
 function StriLi.ItemHistory:init()
 
-    self.frame = CreateFrame("FRAME","StriLi_ItemHistory_Frame", StriLi.MainFrame.frame,"StriLi_ItemHistory_Template");
+    self.frame = CreateFrame("FRAME","StriLi_ItemHistory_Frame", UIParent,"StriLi_ItemHistory_Template");
+    tinsert(UISpecialFrames, "StriLi_ItemHistory_Frame"); --making MainFrame closeable with esc-key
     self.contentFrame = self.frame.ScrollFrame.Content;
     self.frame.ScrollFrame.ScrollBar = StriLi_ItemHistory_Frame_ScrollFrameScrollBar;
     self.frame.ScrollFrame.ScrollBar:SetPoint("TOPLEFT",StriLi_ItemHistory_Frame_ScrollFrame,530,-16);
@@ -28,6 +29,27 @@ function StriLi.ItemHistory:init()
     self.frame.ScrollFrame.ScrollBar:SetValueStep(1);
     self.frame.ScrollFrame.ScrollBar:SetMinMaxValues(0, 1000);
 
+    self.frame:SetScript("OnMouseDown", function(frame)
+        if (not frame.isMoving) and (frame.isLocked ~= 1) then
+            frame:StartMoving();
+            frame.isMoving = true;
+        end
+    end);
+    self.frame:SetScript("OnMouseUp", function(frame)
+        if (frame.isMoving) then
+            frame:StopMovingOrSizing();
+            frame.isMoving = false;
+        end
+    end);
+
+end
+
+function StriLi.ItemHistory:toggle()
+    if self.frame:IsShown() then
+        self.frame:Hide();
+    else
+        self.frame:Show();
+    end
 end
 
 function StriLi.ItemHistory:add(itemLink, player, playerClass, rollType, roll, externIndex)
