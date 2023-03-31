@@ -174,7 +174,7 @@ function StriLi.CommunicationHandler:On_DataChanged(msgString, sender)
     if (data == "Reregister") then
         RaidMembersDB:get(name)[data]:set(arg);
     elseif (arg == "Combine") then
-        if not StriLi.MainFrame:combineMembers(name, data) then
+        if not StriLi.MainFrame:removePlayer(data, true) then
             error(StriLi.Lang.ErrorMsg.CombineMembers1.." "..name.." "..StriLi.Lang.ErrorMsg.CombineMembers2.." "..data.." "..StriLi.Lang.ErrorMsg.CombineMembers3)
         end
     elseif (data == "Remove") then

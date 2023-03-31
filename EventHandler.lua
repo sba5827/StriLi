@@ -76,9 +76,7 @@ function StriLi.EventHandler:OnRaidLeft()
 
     StriLi.confirmFrame = ConfirmDialogFrame:new(nil, StriLi.Lang.Confirm.RaidLeftResetData,
             function()
-                for player, _ in pairs(StriLi.MainFrame.rows) do
-                    StriLi.MainFrame:removePlayer(player, true);
-                end
+                StriLi.MainFrame:resetData();
             end,
             nil);
 
