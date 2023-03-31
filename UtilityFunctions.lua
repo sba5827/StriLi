@@ -188,6 +188,7 @@ function StriLi_initAddon()
     local addonVersion = tonumber(GetAddOnMetadata("StriLi", "Version"));
 
     if StriLi_LatestVersion ~= nil then
+        --Secure that StriLi_LatestVersion will never be a String.
         StriLi_LatestVersion = tonumber(StriLi_LatestVersion);
     end
 

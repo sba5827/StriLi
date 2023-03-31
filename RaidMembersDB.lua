@@ -44,7 +44,7 @@ end
 function RaidMembersDB:remove(name, forced)
 
     if not forced then
-        local raidMemberIndex = StriLi_GetRaidIndexOfPlayer(raidMemberName);
+        local raidMemberIndex = StriLi_GetRaidIndexOfPlayer(name);
 
         if raidMemberIndex > 40 then
             error("WTF?!");
@@ -54,7 +54,7 @@ function RaidMembersDB:remove(name, forced)
             local _, _, _, _, _, _, _, online = GetRaidRosterInfo(raidMemberIndex);
 
             if online then
-                print (CONSTS.StriLi.msgColorStringStart.."StriLi: "..StriLi.Lang.ErrorMsg.RemoveOnlineRaidmember.."|r");
+                print (CONSTS.msgColorStringStart.."StriLi: "..StriLi.Lang.ErrorMsg.RemoveOnlineRaidmember.."|r");
                 return false;
             end
         end

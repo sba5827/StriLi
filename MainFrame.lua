@@ -14,7 +14,7 @@ local SortType_t = { NAME_ASCENDING = 1,
                      CLASS_ASCENDING = 13,
                      CLASS_DESCENDING = 14};
 
-StriLi.MainFrame = { frame = nil, labelRow = nil, rows = {}, children = {}, unusedRowFrameStack = nil, rowCount = 0,  sortType = ObservableNumber:new(nil), nameTable = {}};
+StriLi.MainFrame = { frame = nil, labelRow = nil, rows = {}, children = {}, unusedRowFrameStack = nil, rowCount = 0,  sortType = ObservableNumber:new(nil), nameTable = {}, sortIgnore = false};
 
 function StriLi.MainFrame:init()
 
@@ -283,9 +283,13 @@ function StriLi.MainFrame:combineMembers(memName1, memName2)
         return false;
     end
 
+    self.sortIgnore = true;
+
     if RaidMembersDB:combineMembers(memName1, memName2) then
         self:removePlayer(memName2, false);
     end
+
+    self.sortIgnore = false;
 
     return true;
 
@@ -472,6 +476,8 @@ end
 
 
 function StriLi.MainFrame:sortRowFrames()
+
+    if self.sortIgnore then return; end
 
     self.labelRow.Regions.NameFS:SetText(StriLi.Lang.Labels.Name);
     self.labelRow.Regions.MainFS:SetText(StriLi.Lang.Labels.Main);
