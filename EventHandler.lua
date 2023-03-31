@@ -119,11 +119,7 @@ function StriLi.EventHandler:OnJoiningNewRaidgoup()
         StriLi.confirmFrame = ConfirmDialogFrame:new(nil, StriLi.Lang.Confirm.NewRaidResetData,
                 function()
 
-                    for player, _ in pairs(StriLi.MainFrame.rows) do
-                        StriLi.MainFrame:removePlayer(player, true);
-                    end
-
-                    self:addNewPlayers();
+                    StriLi.MainFrame:resetData();
                     StriLi.CommunicationHandler:sendSycRequest();
 
                 end,
