@@ -19,6 +19,7 @@ end
 function StriLi.EventHandler:OnEvent(event, ...)
 
     if event == "ADDON_LOADED" and arg1 == "StriLi" then
+        StriLi.startup = true;
         print("|cff00ffffStriLi "..StriLi.Lang.version.." " .. GetAddOnMetadata("StriLi", "Version") .. " "..StriLi.Lang.loaded.."|r");
         StriLi_initAddon();
         StriLi.MainFrame:init();
@@ -34,6 +35,7 @@ function StriLi.EventHandler:OnEvent(event, ...)
             versionFrame:Show();
             editBox:SetScript("OnEscapePressed", function(self) versionFrame:Hide() end);
         end
+        StriLi.startup = false;
     elseif event == "PARTY_MEMBERS_CHANGED" then
         self:OnPartyMembersChanged();
     elseif event == "PLAYER_LOGOUT" then

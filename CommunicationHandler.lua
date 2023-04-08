@@ -186,7 +186,7 @@ function StriLi.CommunicationHandler:On_DataChanged(msgString, sender)
 end
 
 function StriLi.CommunicationHandler:sendDataChanged(name, counterName, counterData, masterIsRequesting)
-    if (StriLi.master:get() == UnitName("player")) or masterIsRequesting then
+    if ((StriLi.master:get() == UnitName("player")) or masterIsRequesting) and not StriLi.startup then
         SendAddonMessage("SL_DC", name.." "..counterName.." "..counterData, "RAID");
     end
 end
