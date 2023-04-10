@@ -112,5 +112,10 @@ function StriLi_Stub_esES() return {
         AutoPromote = "Ascenso automático del maestro StriLi a asistente de incursión.",
         TokenSec = "Lista Token sec.",
     },
+    Tooltip = {
+        rightClickText = "|cffff0000RightClick|r Open/Close ItemHistory",
+        leftClickText = "|cff1eff00LeftClick|r Open/Close StriLi",
+        dragClickText = "|cffccccccLeftClick + Drag|r Move Minimap-Button",
+    },
 };
 end

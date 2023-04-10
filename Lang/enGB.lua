@@ -112,5 +112,10 @@ function StriLi_Stub_enGB() return {
         AutoPromote = "Auto promote StriLi master to raid assist.",
         TokenSec = "Token sec list.",
     },
+    Tooltip = {
+        rightClickText = "|cffff0000RightClick|r Open/Close ItemHistory",
+        leftClickText = "|cff1eff00LeftClick|r Open/Close StriLi",
+        dragClickText = "|cffccccccLeftClick + Drag|r Move Minimap-Button",
+    },
 };
 end

@@ -112,5 +112,10 @@ function StriLi_Stub_deDE() return {
         AutoPromote = "StriLi Master automatisch zum Raid-Assistenten ernennen?.",
         TokenSec = "Token Sec Liste.",
     },
+    Tooltip = {
+        rightClickText = "|cffff0000RechtsKlick|r Öffnet/Schließt ItemHistory",
+        leftClickText = "|cff1eff00LinksKlick|r Öffnet/Schließt StriLi",
+        dragClickText = "|cffccccccLinksKlick + Ziehen|r Minimap-Button bewegen",
+    },
 };
 end
