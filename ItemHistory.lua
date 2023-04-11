@@ -77,6 +77,17 @@ function StriLi.ItemHistory:add(itemLink, player, playerClass, rollType, roll, e
 
     local frame = CreateFrame("Frame",nil, self.contentFrame, "StriLi_ItemHistoryPlate_Template");
     frame:SetPoint("BOTTOMLEFT", 0, 30*self.count-2);
+    frame:SetScript("OnEnter", function()
+        if (itemLink) then
+            GameTooltip:SetOwner(frame, "ANCHOR_TOP")
+            GameTooltip:SetHyperlink(itemLink)
+            GameTooltip:Show()
+        end
+    end)
+
+    frame:SetScript("OnLeave", function()
+        GameTooltip:Hide()
+    end)
 
     self.count = self.count + 1;
 
