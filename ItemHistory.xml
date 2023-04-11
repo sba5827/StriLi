@@ -4,7 +4,7 @@
 
     <Frame name="StriLi_ItemHistory_Template" virtual="true" toplevel="false" movable="true" enableMouse="true" hidden="true" frameStrata = "MEDIUM">
         <Size>
-            <AbsDimension x="570" y="200"/>
+            <AbsDimension x="570" y="252"/>
         </Size>
         <Anchors>
             <Anchor point="BOTTOM">
@@ -27,15 +27,40 @@
                 <AbsValue val="8"/>
             </EdgeSize>
         </Backdrop>
+        <Layers>
+            <Layer level="ARTWORK">
+                <Texture name="StriLi_ItemHistory_Header" file="" parentkey="Header">
+                    <Size>
+                        <AbsDimension x="400" y="64"/>
+                    </Size>
+                    <Anchors>
+                        <Anchor point="TOP">
+                            <Offset>
+                                <AbsDimension x="0" y="0"/>
+                            </Offset>
+                        </Anchor>
+                    </Anchors>
+                </Texture>
+                <FontString inherits="GameFontNormal" text="StriLi ItemHistory" parentkey="FontString">
+                    <Anchors>
+                        <Anchor point="TOP" relativeTo="StriLi_ItemHistory_Header">
+                            <Offset>
+                                <AbsDimension x="0" y="-13"/>
+                            </Offset>
+                        </Anchor>
+                    </Anchors>
+                </FontString>
+            </Layer>
+        </Layers>
         <Frames>
             <ScrollFrame name="$parent_ScrollFrame" EnableMouseWheel="true" inherits="UIPanelScrollFrameTemplate" parentKey="ScrollFrame">
                 <Size>
-                    <AbsDimension x="530" y="180"/>
+                    <AbsDimension x="530" y="210"/>
                 </Size>
                 <Anchors>
                     <Anchor point="CENTER">
                         <Offset>
-                            <AbsDimension x="0" y="0"/>
+                            <AbsDimension x="0" y="-10"/>
                         </Offset>
                     </Anchor>
                 </Anchors>
@@ -65,6 +90,21 @@
                     <OnMouseWheel>StriLi.ItemHistory:OnMouseWheel(arg1)</OnMouseWheel>
                 </Scripts>
             </ScrollFrame>
+            <Button name="StriLi_ItemHistory_Close" inherits="UIPanelCloseButton" text="X">
+                <Size>
+                    <AbsDimension x="20" y="20"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="TOPRIGHT">
+                        <Offset>
+                            <AbsDimension x="-5" y="-7"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnClick>HideUIPanel(self:GetParent())</OnClick>
+                </Scripts>
+            </Button>
         </Frames>
 
     </Frame>
