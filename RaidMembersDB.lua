@@ -25,6 +25,7 @@ function RaidMembersDB:add(name, class)
         ["TokenSec"] = ObservableNumber:new(),
         ["Fail"] = ObservableNumber:new(),
         ["Reregister"] = ObservableString:new();
+        ["IsStriLiAssist"] = false;
     };
 
     self.size = self.size + 1;
@@ -69,6 +70,14 @@ function RaidMembersDB:remove(name, forced)
 
 end
 
+function RaidMembersDB:isMemberAssist(name)
+    return self:get(name)["IsStriLiAssist"];
+end
+
+function RaidMembersDB:setMemberAsAssist(name)
+    self:get(name)["IsStriLiAssist"] = true;
+end
+
 function RaidMembersDB:getRawData()
 
     local t = {}
@@ -80,7 +89,8 @@ function RaidMembersDB:getRawData()
                  ["Token"] = v["Token"]:get(),
                  ["TokenSec"] = v["TokenSec"]:get(),
                  ["Fail"] = v["Fail"]:get(),
-                 ["Reregister"] = v["Reregister"]:get()
+                 ["Reregister"] = v["Reregister"]:get(),
+                 ["IsStriLiAssist"] = v["IsStriLiAssist"]
         }
     end
 
@@ -100,6 +110,7 @@ function RaidMembersDB:initFromRawData(rawData)
             ["TokenSec"] = ObservableNumber:new(),
             ["Fail"] = ObservableNumber:new(),
             ["Reregister"] = ObservableString:new();
+            ["IsStriLiAssist"] = v["IsStriLiAssist"];
         };
 
         self.raidMembers[i]["Main"]:set(v["Main"]);
