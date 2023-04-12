@@ -142,7 +142,7 @@ function StriLi.ItemHistory:remove(index)
 
     assert(type(index) == "number", StriLi.Lang.ErrorMsg.Argument.." index "..StriLi.Lang.ErrorMsg.IsNotNumber);
 
-    if StriLi.master:get() == UnitName("player") then -- if not master this function was called by communication handler -> only edit UI.
+    if StriLi_isPlayerMaster() then -- if not master this function was called by communication handler -> only edit UI.
         local exists, raidMember = pcall(RaidMembersDB.get, RaidMembersDB ,self.players[index]);
 
         if exists then
@@ -323,7 +323,7 @@ end
 
 function StriLi.ItemHistory:OnMouseUp(frame, button, itemFrame)
 
-    if (button ~= "RightButton") or (not MouseIsOver(frame) or ((StriLi.master:get() ~= "") and (StriLi.master:get() ~= UnitName("player")))) then
+    if (button ~= "RightButton") or (not MouseIsOver(frame) or ((StriLi.master:get() ~= "") and (not StriLi_isPlayerMaster()))) then
         return;
     end
 

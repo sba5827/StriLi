@@ -76,7 +76,7 @@ function StriLi.MainFrame:init()
 
     self.sortType:set(SortType_t.CLASS_ASCENDING);
 
-    self:OnMasterChanged();
+    self:OnMasterOrAssistChanged();
 
 end
 
@@ -177,6 +177,10 @@ end
 
 function StriLi.MainFrame:addPlayer(raidMember)
 
+    if raidMember[1] == UnitName("player") then
+        raidMember[2]["IsStriLiAssist"]:registerObserver(self);
+    end
+    
     self.rows[raidMember[1]] = self.unusedRowFrameStack:pop(nil, "StriLi_RowFrame" .. tostring(self.rowCount), self.frame, self.rowCount + 1, raidMember);
     self.rowCount = self.rowCount + 1;
     self.rows[raidMember[1]]:setCombineFunction(function(memName1, memName2) self:combineMembers(memName1, memName2) end);
@@ -194,11 +198,15 @@ function StriLi.MainFrame:addPlayer(raidMember)
 
     else
 
-        if UnitName("player") == raidMember[1] then
+        if UnitName("player") == raidMember[1] and RaidMembersDB:isMemberAssist(UnitName("player")) then
+            self.rows[raidMember[1]]:UpdateName("¬"..raidMember[1]);
+        elseif UnitName("player") == raidMember[1] then
             self.rows[raidMember[1]]:UpdateName("•"..raidMember[1]);
         else
             StriLi.CommunicationHandler:checkIfUserHasStriLi(raidMember[1], function(userHasStriLi)
-                if userHasStriLi then
+                if userHasStriLi and RaidMembersDB:isMemberAssist(raidMember[1]) then
+                    self.rows[raidMember[1]]:UpdateName("¬"..raidMember[1]);
+                elseif userHasStriLi then
                     self.rows[raidMember[1]]:UpdateName("•"..raidMember[1]);
                 end
             end);
@@ -270,7 +278,9 @@ function StriLi.MainFrame:OnValueChanged(sender)
     if sender == self.sortType then
         self:sortRowFrames();
     elseif sender == StriLi.master then
-        self:OnMasterChanged();
+        self:OnMasterOrAssistChanged();
+    elseif sender == RaidMembersDB:get(UnitName("player"))["IsStriLiAssist"] then
+        self:OnMasterOrAssistChanged();
     else
         error("WTF?!");
     end
@@ -297,7 +307,7 @@ end
 
 function StriLi.MainFrame:OnClickSyncButton()
 
-    if StriLi.master:get() == UnitName("player") then
+    if StriLi_isPlayerMaster() then
         if StriLi.confirmFrame ~= nil then
             StriLi.confirmFrame:hide();
         end
@@ -449,9 +459,9 @@ function StriLi.MainFrame:resetData()
     StriLi.EventHandler:addNewPlayers();
 end
 
-function StriLi.MainFrame:OnMasterChanged()
+function StriLi.MainFrame:OnMasterOrAssistChanged()
 
-    if StriLi.master:get() ~= UnitName("player") and StriLi.master:get() ~= "" then
+    if not StriLi_isPlayerMaster() and StriLi.master:get() ~= "" and not RaidMembersDB:isMemberAssist(UnitName("player")) then
 
         for _, rowFrame in pairs(self.rows) do
             rowFrame:disableButtons();
@@ -466,14 +476,14 @@ function StriLi.MainFrame:OnMasterChanged()
             rowFrame:enableButtons();
         end
 
-        self.children.resetButton:Enable();
+        if StriLi_isPlayerMaster() or StriLi.master:get() == "" then
+            self.children.resetButton:Enable();
+        end
         self.children.lockButton:Enable();
 
     end
 
 end
-
-
 
 function StriLi.MainFrame:sortRowFrames()
 

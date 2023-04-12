@@ -74,7 +74,7 @@ end
 
 function StriLi.CommunicationHandler:On_Request_CheckForMaster()
 
-    if StriLi.master:get() == UnitName("player") then
+    if StriLi_isPlayerMaster() then
         SendAddonMessage("SL_RS_CFM", StriLi.master:get(), "RAID");
     end
 
@@ -148,7 +148,7 @@ end
 
 function StriLi.CommunicationHandler:sendMasterChanged(newMaster)
 
-    if (StriLi.master:get() == UnitName("player")) or (StriLi.master:get() == "") then
+    if (StriLi_isPlayerMaster()) or (StriLi.master:get() == "") then
         SendAddonMessage("SL_MC", newMaster, "RAID");
         return true;
     end
@@ -159,7 +159,7 @@ end
 
 function StriLi.CommunicationHandler:On_DataChanged(msgString, sender)
 
-    if (StriLi.master:get() ~= sender) and not self.requestedSyncAsMaster and not (RaidMembersDB:isMemberAssist(sender) and StriLi.master:get() == UnitName("player")) then
+    if (StriLi.master:get() ~= sender) and not self.requestedSyncAsMaster and not (RaidMembersDB:isMemberAssist(sender) and StriLi_isPlayerMaster()) then
         return;
     end
 
@@ -179,7 +179,7 @@ function StriLi.CommunicationHandler:On_DataChanged(msgString, sender)
         return;
     end
 
-    if (data == "Reregister") and not assistChange then
+    if (data == "Reregister") then
         RaidMembersDB:get(name)[data]:set(arg);
     elseif (arg == "Combine") and not assistChange then
         if not StriLi.MainFrame:removePlayer(data, true) then
@@ -197,19 +197,19 @@ function StriLi.CommunicationHandler:On_DataChanged(msgString, sender)
 end
 
 function StriLi.CommunicationHandler:sendDataChanged(name, counterName, counterData, masterIsRequesting)
-    if ((StriLi.master:get() == UnitName("player")) or masterIsRequesting or RaidMembersDB:isMemberAssist(UnitName("player"))) and not StriLi.startup then
+    if ((StriLi_isPlayerMaster()) or masterIsRequesting or RaidMembersDB:isMemberAssist(UnitName("player"))) and not StriLi.startup then
         SendAddonMessage("SL_DC", name.." "..counterName.." "..counterData, "RAID");
     end
 end
 
 function StriLi.CommunicationHandler:sendMembersCombined(mem1Name, mem2Name)
-    if StriLi.master:get() == UnitName("player") then
+    if SStriLi_isPlayerMaster() then
         SendAddonMessage("SL_DC", mem1Name.." "..mem2Name.." ".."Combine", "RAID");
     end
 end
 
 function StriLi.CommunicationHandler:sendMemberRemoved(name)
-    if StriLi.master:get() == UnitName("player") then
+    if StriLi_isPlayerMaster() then
         SendAddonMessage("SL_DC", name.." ".."Remove".." non", "RAID");
     end
 end
@@ -221,14 +221,14 @@ function StriLi.CommunicationHandler:On_ResetData(sender)
 end
 
 function StriLi.CommunicationHandler:sendResetData()
-    if (StriLi.master:get() == UnitName("player")) then
+    if (StriLi_isPlayerMaster()) then
         SendAddonMessage("SL_RD", "", "RAID");
     end
 end
 
 function StriLi.CommunicationHandler:On_Request_SyncData(sender)
 
-    if ((StriLi.master:get() ~= sender) and (StriLi.master:get() ~= UnitName("player"))) then
+    if ((StriLi.master:get() ~= sender) and (not StriLi_isPlayerMaster())) then
         return;
     end
 
@@ -255,7 +255,7 @@ function StriLi.CommunicationHandler:sendSycRequest()
         return;
     end
 
-    if StriLi.master:get() == UnitName("player") then
+    if StriLi_isPlayerMaster() then
         self.requestedSyncAsMaster = true;
         self.time = 2.0;
         self.waitingForRespond = "SL_RQ_SD"
@@ -380,7 +380,7 @@ end
 
 function StriLi.CommunicationHandler:On_ItemHistoryChanged(arguments, sender)
 
-    if (StriLi.master:get() ~= sender  and StriLi.master:get() ~= "" and not (RaidMembersDB:isMemberAssist(sender) and StriLi.master:get() == UnitName("player")) ) then return end
+    if (StriLi.master:get() ~= sender  and StriLi.master:get() ~= "" and not (RaidMembersDB:isMemberAssist(sender) and StriLi_isPlayerMaster())) then return end
 
 
     local itemLink, _next = string.match(arguments, "([^%]]+)%s?(.*)");
@@ -398,7 +398,7 @@ function StriLi.CommunicationHandler:On_ItemHistoryChanged(arguments, sender)
 
     StriLi.ItemHistory:On_ItemHistoryChanged(itemLink.."]|h|r", player, playerClass, rollType, roll, tonumber(index));
 
-    if RaidMembersDB:isMemberAssist(sender) and (StriLi.master:get() == UnitName("player")) then
+    if RaidMembersDB:isMemberAssist(sender) and (StriLi_isPlayerMaster()) then
         self:Send_ItemHistoryChanged(itemLink, player, playerClass, rollType, roll, index);
     end
 
@@ -419,17 +419,17 @@ function StriLi.CommunicationHandler:On_ItemHistoryRemove(arguments, sender)
 end
 
 function StriLi.CommunicationHandler:Send_ItemHistoryAdd(itemLink, player, playerClass, rollType, roll, index, forced)
-    if StriLi.master:get() ~= UnitName("player") and not forced then return end;
+    if not StriLi_isPlayerMaster() and not forced then return end;
     SendAddonMessage("SL_IHA", tostring(itemLink).." "..tostring(player).." "..tostring(playerClass).." "..tostring(rollType).." "..tostring(roll).." "..tostring(index), "RAID");
 end
 
 function StriLi.CommunicationHandler:Send_ItemHistoryChanged(itemLink, player, playerClass, rollType, roll, index)
-    if (StriLi.master:get() ~= UnitName("player")) and not RaidMembersDB:isMemberAssist(UnitName("player")) then return end;
+    if (not StriLi_isPlayerMaster()) and not RaidMembersDB:isMemberAssist(UnitName("player")) then return end;
     SendAddonMessage("SL_IHC", tostring(itemLink).." "..tostring(player).." "..tostring(playerClass).." "..tostring(rollType).." "..tostring(roll).." "..tostring(index), "RAID");
 end
 
 function StriLi.CommunicationHandler:Send_ItemHistoryRemove(index)
-    if StriLi.master:get() ~= UnitName("player") then return end;
+    if not StriLi_isPlayerMaster() then return end;
     SendAddonMessage("SL_IHR", tostring(index), "RAID");
 end
 
@@ -460,7 +460,7 @@ function StriLi.CommunicationHandler:stopWaitingForRespondAndSendNextQueuedReque
 end
 
 function StriLi.CommunicationHandler:Send_promoteMemberToStriLiAssist(name)
-    if StriLi.master:get() ~= UnitName("player") then return end;
+    if not StriLi_isPlayerMaster() then return end;
     SendAddonMessage("SL_PMA", name, "RAID");
 end
 

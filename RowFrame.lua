@@ -20,7 +20,7 @@ function RowFrame:new(o, frameName, parentFrame, posIndex, raidMember)
 
     o:setColumnContent(o.raidMember[1], o.raidMember[2]);
 
-    if StriLi.master:get() ~= UnitName("player") and StriLi.master:get() ~= "" then
+    if not StriLi_isPlayerMaster() and StriLi.master:get() ~= "" and not RaidMembersDB:isMemberAssist(UnitName("player")) then
         o:disableButtons();
     end
 
@@ -45,7 +45,7 @@ function RowFrame:reInit(_, _, _, posIndex, raidMember)
 
     self:linkCounter(self.raidMember[2]);
 
-    if StriLi.master:get() ~= UnitName("player") and StriLi.master:get() ~= "" then
+    if not StriLi_isPlayerMaster() and StriLi.master:get() ~= "" and not RaidMembersDB:isMemberAssist(UnitName("player")) then
         self:disableButtons();
     end
 
@@ -173,7 +173,7 @@ function RowFrame:UpdateMainCounter(count)
     self.Regions.MainCounterFS:SetText(tostring(count));
     StriLi_ColorCounterCell(self.Children.Main, count, false);
     if not StriLi.CommunicationHandler.requestedSyncAsMaster then
-        StriLi.CommunicationHandler:sendDataChanged(self:getName():gsub('%®', ''):gsub('%•', ''), "Main", count, false);
+        StriLi.CommunicationHandler:sendDataChanged(self:getName():gsub('%®', ''):gsub('%•', ''):gsub('%¬', ''), "Main", count, false);
     end
 end
 
@@ -181,7 +181,7 @@ function RowFrame:UpdateSecCounter(count)
     self.Regions.SecCounterFS:SetText(tostring(count));
     StriLi_ColorCounterCell(self.Children.Sec, count, true);
     if not StriLi.CommunicationHandler.requestedSyncAsMaster then
-        StriLi.CommunicationHandler:sendDataChanged(self:getName():gsub('%®', ''):gsub('%•', ''), "Sec", count, false);
+        StriLi.CommunicationHandler:sendDataChanged(self:getName():gsub('%®', ''):gsub('%•', ''):gsub('%¬', ''), "Sec", count, false);
     end
 end
 
@@ -189,7 +189,7 @@ function RowFrame:UpdateTokenCounter(count)
     self.Regions.TokenCounterFS:SetText(tostring(count));
     StriLi_ColorCounterCell(self.Children.Token, count, false);
     if not StriLi.CommunicationHandler.requestedSyncAsMaster then
-        StriLi.CommunicationHandler:sendDataChanged(self:getName():gsub('%®', ''):gsub('%•', ''), "Token", count, false);
+        StriLi.CommunicationHandler:sendDataChanged(self:getName():gsub('%®', ''):gsub('%•', ''):gsub('%¬', ''), "Token", count, false);
     end
 end
 
@@ -197,7 +197,7 @@ function RowFrame:UpdateTokenSecCounter(count)
     self.Regions.TokenSecCounterFS:SetText(tostring(count));
     StriLi_ColorCounterCell(self.Children.TokenSec, count, true);
     if not StriLi.CommunicationHandler.requestedSyncAsMaster then
-        StriLi.CommunicationHandler:sendDataChanged(self:getName():gsub('%®', ''):gsub('%•', ''), "TokenSec", count, false);
+        StriLi.CommunicationHandler:sendDataChanged(self:getName():gsub('%®', ''):gsub('%•', ''):gsub('%¬', ''), "TokenSec", count, false);
     end
 end
 
@@ -205,7 +205,7 @@ function RowFrame:UpdateFailCounter(count)
     self.Regions.FailCounterFS:SetText(tostring(count));
     StriLi_ColorCounterCell(self.Children.Fail, count, not StriLiOptions["TokenSecList"]);
     if not StriLi.CommunicationHandler.requestedSyncAsMaster then
-        StriLi.CommunicationHandler:sendDataChanged(self:getName():gsub('%®', ''):gsub('%•', ''), "Fail", count, false);
+        StriLi.CommunicationHandler:sendDataChanged(self:getName():gsub('%®', ''):gsub('%•', ''):gsub('%¬', ''), "Fail", count, false);
     end
 end
 
@@ -230,7 +230,7 @@ function RowFrame:UpdateReregister(reregister)
     end
 
     if not StriLi.CommunicationHandler.requestedSyncAsMaster then
-        StriLi.CommunicationHandler:sendDataChanged(self:getName():gsub('%®', ''):gsub('%•', ''), "Reregister", reregister, false);
+        StriLi.CommunicationHandler:sendDataChanged(self:getName():gsub('%®', ''):gsub('%•', ''):gsub('%¬', ''), "Reregister", reregister, false);
     end
 end
 
@@ -321,7 +321,11 @@ end
 
 function RowFrame:OnMouseUp(frame, button)
 
-    if (button ~= "RightButton") or (not MouseIsOver(frame) or ((StriLi.master:get() ~= "") and (StriLi.master:get() ~= UnitName("player")))) then
+    if (button ~= "RightButton")
+            or not MouseIsOver(frame)
+            or ((StriLi.master:get() ~= "")
+                and (not StriLi_isPlayerMaster())
+                and (not RaidMembersDB:isMemberAssist(UnitName("player")))) then
         return;
     end
 
@@ -338,22 +342,24 @@ end
 
 function RowFrame:initDropdownMenu(frame, level, menuList)
 
+    local bAssist = RaidMembersDB:isMemberAssist(UnitName("player")) and not StriLi_isPlayerMaster();
+
     local info = UIDropDownMenu_CreateInfo();
 
     local pFrame = frame:GetParent();
     local _, fString = pFrame:GetRegions();
-    local playerName = fString:GetText():gsub('%®', ''):gsub('%•', '');
+    local playerName = fString:GetText():gsub('%®', ''):gsub('%•', ''):gsub('%¬', '');
 
     if level == 1 then
 
         -- Outermost menu level
-        info.text, info.hasArrow, info.menuList = StriLi.Lang.Commands.CombineMembers, true, "Players";
+        info.text, info.hasArrow, info.menuList, info.disabled = StriLi.Lang.Commands.CombineMembers, true, "Players", bAssist;
         UIDropDownMenu_AddButton(info);
         info.text, info.hasArrow, info.func, info.self = StriLi.Lang.Commands.Reregister, false, function()
             self:ReregisterRequest(true)
         end;
         UIDropDownMenu_AddButton(info);
-        info.text, info.hasArrow, info.func = StriLi.Lang.Commands.SetMaster, false, function()
+        info.text, info.hasArrow, info.disabled, info.func = StriLi.Lang.Commands.SetMaster, false, bAssist, function()
 
             StriLi.dropdownFrame:Hide();
 
@@ -371,7 +377,7 @@ function RowFrame:initDropdownMenu(frame, level, menuList)
 
         end;
         UIDropDownMenu_AddButton(info);
-        info.text, info.hasArrow, info.func = StriLi.Lang.Commands.Remove, false, function()
+        info.text, info.hasArrow, info.disabled, info.func = StriLi.Lang.Commands.Remove, false, bAssist, function()
 
             StriLi.dropdownFrame:Hide();
 
@@ -387,11 +393,29 @@ function RowFrame:initDropdownMenu(frame, level, menuList)
         end;
         UIDropDownMenu_AddButton(info);
 
+        --TODO: new String for new Command
+
+        info.text, info.hasArrow, info.disabled, info.func = "Assist", false, bAssist, function()
+
+            StriLi.dropdownFrame:Hide();
+
+            local confirmFrame = ConfirmDialogFrame:new(nil, StriLi.Lang.Confirm.AreYouSureTo.." "..playerName.." ".."set as Assist",
+                    function()
+                       StriLi_SetAssist(playerName);
+                    end,
+                    nil);
+
+            confirmFrame:show();
+
+        end;
+        UIDropDownMenu_AddButton(info);
+
     elseif menuList == "Players" then
         for k, v in pairs(RaidMembersDB.raidMembers) do
 
             if (k ~= playerName) then
 
+                info.disabled = bAssist;
                 info.text = k;
                 info.colorCode = "|cff" .. Strili_GetHexClassColorCode(v[1]);
                 info.func = function(_, arg1, arg2)
