@@ -13,10 +13,12 @@
     SL_MC       -> MC = Master Changed
     SL_DC       -> DC = Data Changed
     SL_RD       -> RD = Reset Data
+    SL_PMA      -> PMA = Promote Member as Assist
     SL_RQ_SD    -> SD = Synchronize Data
     SL_RQ_UHS   -> UHS = User Has StriLi
     SL_RS_UHS
     SL_VC       -> VC = Version Check
+
 
 --]]
 
@@ -64,6 +66,8 @@ function StriLi.CommunicationHandler:On_CHAT_MSG_ADDON(prefix, message, distribu
         self:On_ItemHistoryChanged(message, sender);
     elseif prefix == "SL_IHR" then
         self:On_ItemHistoryRemove(message, sender);
+    elseif prefix == "SL_PMA" then
+        self:On_promoteMemberToStriLiAssist(message, sender);
     end
 
 end
@@ -441,4 +445,14 @@ function StriLi.CommunicationHandler:stopWaitingForRespondAndSendNextQueuedReque
         StriLi.CommunicationHandler:checkIfUserHasStriLi(arguments[1],arguments[2])
     end
 
+end
+
+function StriLi.CommunicationHandler:Sent_promoteMemberToStriLiAssist(name)
+    if StriLi.master:get() ~= UnitName("player") then return end;
+    SendAddonMessage("SL_PMA", name, "RAID");
+end
+
+function StriLi.CommunicationHandler:On_promoteMemberToStriLiAssist(memberName, sender)
+    if StriLi.master:get() ~= sender then return end;
+    RaidMembersDB:setMemberAsAssist(memberName);
 end
