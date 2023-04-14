@@ -35,7 +35,12 @@ function RowFrame:reInit(_, _, _, posIndex, raidMember)
 
     self.frame:SetPoint("TOPLEFT", self.parentFrame, "TOPLEFT", self.x_offset, self.y_offset - self.posIndex * self.height);
 
-    self:UpdateName(self.raidMember[1]);
+    if self.raidMember[2]["IsStriLiAssist"]:get() then
+        self:UpdateName("¬"..self.raidMember[1]);
+    else
+        self:UpdateName(self.raidMember[1]);
+    end
+
     StriLi_SetTextColorByClass(self.Regions.NameFS, raidMember[2][1]);
     self:UpdateMainCounter(self.raidMember[2]["Main"]:get());
     self:UpdateSecCounter(self.raidMember[2]["Sec"]:get());
@@ -139,6 +144,8 @@ function RowFrame:linkCounter(charData)
         charData[key]:registerObserver(self);
 
     end
+
+    charData["IsStriLiAssist"]:registerObserver(self);
 
 end
 
@@ -264,6 +271,12 @@ function RowFrame:OnValueChanged(sender)
     elseif sender == self.raidMember[2]["Reregister"] then
         self:UpdateReregister(self.raidMember[2]["Reregister"]:get());
 
+    elseif sender == self.raidMember[2]["IsStriLiAssist"] then
+        print("Assist of %s changed", self.raidMember[1]);
+        if self.raidMember[2]["IsStriLiAssist"]:get() then
+            self:UpdateName("¬"..self.raidMember[1])
+        end
+
     end
 
     StriLi.MainFrame:sortRowFrames();
@@ -355,7 +368,7 @@ function RowFrame:initDropdownMenu(frame, level, menuList)
         -- Outermost menu level
         info.text, info.hasArrow, info.menuList, info.disabled = StriLi.Lang.Commands.CombineMembers, true, "Players", bAssist;
         UIDropDownMenu_AddButton(info);
-        info.text, info.hasArrow, info.func, info.self = StriLi.Lang.Commands.Reregister, false, function()
+        info.text, info.hasArrow, info.disabled, info.func = StriLi.Lang.Commands.Reregister, false, false, function()
             self:ReregisterRequest(true)
         end;
         UIDropDownMenu_AddButton(info);
@@ -465,7 +478,7 @@ end
 
 function RowFrame:enableButtons()
 
-    local aTable = nil;
+    local aTable;
     if StriLiOptions["TokenSecList"] then
         aTable = { ["Main"] = self.Regions.MainCounter, ["Sec"] = self.Regions.SecCounter, ["Token"] = self.Regions.TokenCounter, ["TokenSec"] = self.Regions.TokenSecCounter, ["Fail"] = self.Regions.FailCounter };
     else
@@ -488,7 +501,7 @@ end
 
 function RowFrame:disableButtons()
 
-    local aTable = nil;
+    local aTable;
     if StriLiOptions["TokenSecList"] then
         aTable = { ["Main"] = self.Regions.MainCounter, ["Sec"] = self.Regions.SecCounter, ["Token"] = self.Regions.TokenCounter, ["TokenSec"] = self.Regions.TokenSecCounter, ["Fail"] = self.Regions.FailCounter };
     else

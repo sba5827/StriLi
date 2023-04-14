@@ -163,7 +163,7 @@ function StriLi.CommunicationHandler:On_DataChanged(msgString, sender)
         return;
     end
 
-    local assistChange = RaidMembersDB:isMemberAssist(sender);
+    local assistChange = RaidMembersDB:isMemberAssist(sender) and not (StriLi.master:get() == sender) ;
 
     local _next, name, data, arg;
 
@@ -179,8 +179,10 @@ function StriLi.CommunicationHandler:On_DataChanged(msgString, sender)
         return;
     end
 
+    StriLi.communicationTriggeredDataChange = true;
     if (data == "Reregister") then
         RaidMembersDB:get(name)[data]:set(arg);
+        StriLi.communicationTriggeredDataChange = false;
     elseif (arg == "Combine") and not assistChange then
         if not StriLi.MainFrame:removePlayer(data, true) then
             error(StriLi.Lang.ErrorMsg.CombineMembers1.." "..name.." "..StriLi.Lang.ErrorMsg.CombineMembers2.." "..data.." "..StriLi.Lang.ErrorMsg.CombineMembers3)
@@ -189,15 +191,17 @@ function StriLi.CommunicationHandler:On_DataChanged(msgString, sender)
         StriLi.MainFrame:removePlayer(name, false);
     else
         RaidMembersDB:get(name)[data]:set(tonumber(arg));
+        StriLi.communicationTriggeredDataChange = false;
         if assistChange then
             self:sendDataChanged(name, data, arg, false);
         end
     end
 
+
 end
 
 function StriLi.CommunicationHandler:sendDataChanged(name, counterName, counterData, masterIsRequesting)
-    if ((StriLi_isPlayerMaster()) or masterIsRequesting or RaidMembersDB:isMemberAssist(UnitName("player"))) and not StriLi.startup then
+    if ((StriLi_isPlayerMaster()) or masterIsRequesting or RaidMembersDB:isMemberAssist(UnitName("player"))) and not StriLi.startup and not StriLi.communicationTriggeredDataChange then
         SendAddonMessage("SL_DC", name.." "..counterName.." "..counterData, "RAID");
     end
 end
@@ -460,11 +464,14 @@ function StriLi.CommunicationHandler:stopWaitingForRespondAndSendNextQueuedReque
 end
 
 function StriLi.CommunicationHandler:Send_promoteMemberToStriLiAssist(name)
-    if not StriLi_isPlayerMaster() then return end;
+    if not StriLi_isPlayerMaster() then return false end;
     SendAddonMessage("SL_PMA", name, "RAID");
+
+    return true;
 end
 
 function StriLi.CommunicationHandler:On_promoteMemberToStriLiAssist(memberName, sender)
     if StriLi.master:get() ~= sender then return end;
     RaidMembersDB:setMemberAsAssist(memberName);
+    --StriLi.MainFrame:OnMemberPromptedToAssist(memberName);
 end

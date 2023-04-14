@@ -237,7 +237,12 @@ function StriLi.MainFrame:removePlayer(raidMemberName, forced)
 
     if self.rows[raidMemberName] ~= nil then
 
+        if RaidMembersDB:checkForMember(UnitName("player")) then
+            RaidMembersDB:get(UnitName("player"))["IsStriLiAssist"]:unregisterObserver(self);
+        end
+
         RaidMembersDB:remove(raidMemberName, forced);
+
         table.removeByValue(self.nameTable, raidMemberName);
 
         self.unusedRowFrameStack:push(self.rows[raidMemberName])
@@ -457,6 +462,8 @@ function StriLi.MainFrame:resetData()
     StriLi.ItemHistory:reset();
 
     StriLi.EventHandler:addNewPlayers();
+
+    StriLi.MainFrame:OnMasterOrAssistChanged();
 end
 
 function StriLi.MainFrame:OnMasterOrAssistChanged()
@@ -478,6 +485,8 @@ function StriLi.MainFrame:OnMasterOrAssistChanged()
 
         if StriLi_isPlayerMaster() or StriLi.master:get() == "" then
             self.children.resetButton:Enable();
+        else
+            self.children.resetButton:Disable();
         end
         self.children.lockButton:Enable();
 
