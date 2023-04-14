@@ -16,6 +16,10 @@ CONSTS = protect({
     msgColorStringEnd = "|r",
 });
 
+function StriLi_isPlayerMaster()
+    return StriLi.master:get() == UnitName("player");
+end
+
 function StriLi_SetMaster(arg1)
 
     local newMasterName = arg1;
@@ -46,7 +50,7 @@ end
 
 function StriLi_tryToSetNewMaster(newMasterName)
 
-    if StriLi.master:get() == UnitName("player") then
+    if StriLi_isPlayerMaster() then
 
         StriLi.CommunicationHandler:checkIfUserHasStriLi(newMasterName, function(userHasStriLi)
             if userHasStriLi then
@@ -54,7 +58,11 @@ function StriLi_tryToSetNewMaster(newMasterName)
                     if StriLiOptions["AutoPromote"] then PromoteToAssistant(newMasterName) end
                     StriLi.master:set(newMasterName);
                     if newMasterName ~= "" then
-                        StriLi.MainFrame.rows[UnitName("player")]:UpdateName("•"..UnitName("player"));
+                        if RaidMembersDB:isMemberAssist(UnitName("player")) then
+                            StriLi.MainFrame.rows[UnitName("player")]:UpdateName("¬"..UnitName("player"));
+                        else
+                            StriLi.MainFrame.rows[UnitName("player")]:UpdateName("•"..UnitName("player"));
+                        end
                         StriLi.MainFrame.rows[newMasterName]:UpdateName("®"..newMasterName);
                     end
                 end
@@ -65,6 +73,54 @@ function StriLi_tryToSetNewMaster(newMasterName)
                         ..StriLi.Lang.ErrorMsg.Cause3.."\n - "
                         ..newMasterName.." "..StriLi.Lang.ErrorMsg.Cause4.."\n - "
                         ..newMasterName.." "..StriLi.Lang.ErrorMsg.Cause5.."|r");
+            end
+
+        end);
+
+    end
+
+end
+
+function StriLi_SetAssist(name)
+
+    local numOfMembers = GetNumRaidMembers();
+
+    local found = false;
+
+    for i = 1, numOfMembers, 1 do
+        local name, _ = GetRaidRosterInfo(i);
+        if (name == name) then
+            found = true;
+            StriLi_tryToSetAssist(name);
+            break;
+        end
+    end
+
+    if not found then
+        print(CONSTS.msgColorStringStart..name.." "..StriLi.Lang.ErrorMsg.SetAssistNotPossible.." "..name.." "..StriLi.Lang.ErrorMsg.PlayerNotInRaid.."|r");
+    end
+
+end
+
+function StriLi_tryToSetAssist(name)
+
+    if StriLi_isPlayerMaster() then
+
+        StriLi.CommunicationHandler:checkIfUserHasStriLi(name, function(userHasStriLi)
+            if userHasStriLi then
+                if StriLi.CommunicationHandler:Send_promoteMemberToStriLiAssist(name) then
+                    RaidMembersDB:setMemberAsAssist(name);
+                    if name ~= "" then
+                        StriLi.MainFrame.rows[name]:UpdateName("¬"..name);
+                    end
+                end
+            else
+                print(CONSTS.msgColorStringStart..name.." "..StriLi.Lang.ErrorMsg.SetAssistNotPossible.." "..StriLi.Lang.ErrorMsg.PossibleCauses..":\n - "
+                        ..name.." "..StriLi.Lang.ErrorMsg.Cause1.."\n - "
+                        ..name.." "..StriLi.Lang.ErrorMsg.Cause2.."\n - "
+                        ..StriLi.Lang.ErrorMsg.Cause3.."\n - "
+                        ..name.." "..StriLi.Lang.ErrorMsg.Cause4.."\n - "
+                        ..name.." "..StriLi.Lang.ErrorMsg.Cause5.."|r");
             end
 
         end);

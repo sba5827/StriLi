@@ -24,7 +24,8 @@ function RaidMembersDB:add(name, class)
         ["Token"] = ObservableNumber:new(),
         ["TokenSec"] = ObservableNumber:new(),
         ["Fail"] = ObservableNumber:new(),
-        ["Reregister"] = ObservableString:new();
+        ["Reregister"] = ObservableString:new(),
+        ["IsStriLiAssist"] = ObservableBool:new(),
     };
 
     self.size = self.size + 1;
@@ -69,6 +70,22 @@ function RaidMembersDB:remove(name, forced)
 
 end
 
+function RaidMembersDB:isMemberAssist(name)
+    if self:checkForMember(name) then
+        return self:get(name)["IsStriLiAssist"]:get();
+    else
+        return false;
+    end
+end
+
+function RaidMembersDB:setMemberAsAssist(name)
+    self:get(name)["IsStriLiAssist"]:set(true);
+end
+
+function RaidMembersDB:unsetMemberAsAssist(name)
+    self:get(name)["IsStriLiAssist"]:set(false);
+end
+
 function RaidMembersDB:getRawData()
 
     local t = {}
@@ -80,7 +97,8 @@ function RaidMembersDB:getRawData()
                  ["Token"] = v["Token"]:get(),
                  ["TokenSec"] = v["TokenSec"]:get(),
                  ["Fail"] = v["Fail"]:get(),
-                 ["Reregister"] = v["Reregister"]:get()
+                 ["Reregister"] = v["Reregister"]:get(),
+                 ["IsStriLiAssist"] = v["IsStriLiAssist"]:get(),
         }
     end
 
@@ -100,6 +118,7 @@ function RaidMembersDB:initFromRawData(rawData)
             ["TokenSec"] = ObservableNumber:new(),
             ["Fail"] = ObservableNumber:new(),
             ["Reregister"] = ObservableString:new();
+            ["IsStriLiAssist"] = ObservableBool:new();
         };
 
         self.raidMembers[i]["Main"]:set(v["Main"]);
@@ -108,6 +127,7 @@ function RaidMembersDB:initFromRawData(rawData)
         self.raidMembers[i]["TokenSec"]:set(v["TokenSec"]);
         self.raidMembers[i]["Fail"]:set(v["Fail"]);
         self.raidMembers[i]["Reregister"]:set(v["Reregister"]);
+        self.raidMembers[i]["IsStriLiAssist"]:set(v["IsStriLiAssist"]);
 
         self.size = self.size + 1;
 

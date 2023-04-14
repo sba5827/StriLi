@@ -13,6 +13,7 @@ function StriLi_Stub_esES() return {
         RemoveOnlineRaidmember = "No se puede expulsar de StriLi a ningún miembro de la redada que esté conectado.",
         ObserverImplement = "El Observer debe implementar OnValueChanged",
         SetMasterNotPossible = "no puede ser nombrado Maestro.",
+        SetAssistNotPossible = "no puede ser nombrado StriLi-Ayudante.",
         RankToLow = "Rango demasiado bajo",
         PlayerNotInRaid = "no está en el grupo de asalto.",
         PossibleCauses = "Posibles causas",
@@ -59,6 +60,8 @@ function StriLi_Stub_esES() return {
         CombineMembers = "Fusionar con",
         Reregister = "Vuelva a registrar",
         SetMaster = "Nombrar Maestro",
+        SetAssist = "Nombrar StriLi-Ayudante",
+        UnsetAssist = "StriLi-Ayudante eliminar",
         Remove = "Eliminar",
         YourNotMaster = "No eres el maestro de StriLi.",
         PlayerChange = "Asignar a otro jugador",
@@ -72,6 +75,8 @@ function StriLi_Stub_esES() return {
         SyncDataConfirm = "Eres el Maestro StriLi. ¿Estás seguro de que quieres sincronizar los datos? Tus datos se sobrescribirán.",
         AreYouSureTo = "¿Estás seguro de que quieres",
         SetMaster = "para convertirse en Maestro?",
+        SetAssist = "para convertirse en StriLi-Ayudante?",
+        UnsetAssist = "eliminar el estado de el StriLi-Ayudante?",
         Remove = "¿quiere eliminar?",
         Combine1 = "quiere fusionarse con",
         Combine2 = "?",
@@ -111,6 +116,11 @@ function StriLi_Stub_esES() return {
     Options = {
         AutoPromote = "Ascenso automático del maestro StriLi a asistente de incursión.",
         TokenSec = "Lista Token sec.",
+    },
+    Tooltip = {
+        rightClickText = "|cffff0000RightClick|r Open/Close ItemHistory",
+        leftClickText = "|cff1eff00LeftClick|r Open/Close StriLi",
+        dragClickText = "|cffccccccLeftClick + Drag|r Move Minimap-Button",
     },
 };
 end

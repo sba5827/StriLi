@@ -77,6 +77,17 @@ function StriLi.ItemHistory:add(itemLink, player, playerClass, rollType, roll, e
 
     local frame = CreateFrame("Frame",nil, self.contentFrame, "StriLi_ItemHistoryPlate_Template");
     frame:SetPoint("BOTTOMLEFT", 0, 30*self.count-2);
+    frame:SetScript("OnEnter", function()
+        if (itemLink) then
+            GameTooltip:SetOwner(frame, "ANCHOR_TOP")
+            GameTooltip:SetHyperlink(itemLink)
+            GameTooltip:Show()
+        end
+    end)
+
+    frame:SetScript("OnLeave", function()
+        GameTooltip:Hide()
+    end)
 
     self.count = self.count + 1;
 
@@ -131,7 +142,7 @@ function StriLi.ItemHistory:remove(index)
 
     assert(type(index) == "number", StriLi.Lang.ErrorMsg.Argument.." index "..StriLi.Lang.ErrorMsg.IsNotNumber);
 
-    if StriLi.master:get() == UnitName("player") then -- if not master this function was called by communication handler -> only edit UI.
+    if StriLi_isPlayerMaster() then -- if not master this function was called by communication handler -> only edit UI.
         local exists, raidMember = pcall(RaidMembersDB.get, RaidMembersDB ,self.players[index]);
 
         if exists then
@@ -312,7 +323,7 @@ end
 
 function StriLi.ItemHistory:OnMouseUp(frame, button, itemFrame)
 
-    if (button ~= "RightButton") or (not MouseIsOver(frame) or ((StriLi.master:get() ~= "") and (StriLi.master:get() ~= UnitName("player")))) then
+    if (button ~= "RightButton") or (not MouseIsOver(frame) or ((StriLi.master:get() ~= "") and (not StriLi_isPlayerMaster())) and not RaidMembersDB:isMemberAssist(UnitName("player"))) then
         return;
     end
 
@@ -329,17 +340,18 @@ end
 
 function StriLi.ItemHistory:initDropdownMenu(frame, level, menuList, itemFrame)
     local info = UIDropDownMenu_CreateInfo();
+    local bAssist = RaidMembersDB:isMemberAssist(UnitName("player")) and not StriLi_isPlayerMaster();
 
     if level == 1 then
 
         -- Outermost menu level
-        info.text, info.hasArrow, info.menuList = StriLi.Lang.Commands.PlayerChange, true, "Players";
+        info.disabled, info.text, info.hasArrow, info.menuList = false, StriLi.Lang.Commands.PlayerChange, true, "Players";
         UIDropDownMenu_AddButton(info);
 
-        info.text, info.hasArrow, info.menuList = StriLi.Lang.Commands.RolltypeChange, true, "Lists";
+        info.disabled, info.text, info.hasArrow, info.menuList = false, StriLi.Lang.Commands.RolltypeChange, true, "Lists";
         UIDropDownMenu_AddButton(info);
 
-        info.text, info.hasArrow, info.func = StriLi.Lang.Commands.Remove, false, function(_, arg1)
+        info.disabled, info.text, info.hasArrow, info.func = bAssist, StriLi.Lang.Commands.Remove, false, function(_, arg1)
 
             StriLi.dropdownFrame:Hide()
 
@@ -370,6 +382,7 @@ function StriLi.ItemHistory:initDropdownMenu(frame, level, menuList, itemFrame)
 
             if k ~= itemFrame.ItemPlayer.FontString:GetText() then
 
+                info.disabled = false;
                 info.text = k;
                 info.colorCode = "|cff" .. Strili_GetHexClassColorCode(v[1]);
                 info.func = function(_, arg1)
@@ -421,6 +434,7 @@ function StriLi.ItemHistory:initDropdownMenu(frame, level, menuList, itemFrame)
 
             if list ~= itemFrame.ItemRollType.FontString:GetText() then
 
+                info.disabled = false;
                 info.text = list;
                 info.func = function(_, arg1)
 

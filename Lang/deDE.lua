@@ -13,6 +13,7 @@ function StriLi_Stub_deDE() return {
         RemoveOnlineRaidmember = "Es können keine Raidmember die Online sind aus StriLi entfernt werden.",
         ObserverImplement = "Observer muss OnValueChanged implementieren",
         SetMasterNotPossible = "kann nicht zum Master ernannt werden.",
+        SetAssistNotPossible = "kann nicht zum StriLi-Assist ernannt werden.",
         RankToLow = "Rang zu niedrig",
         PlayerNotInRaid = "befindet sich nicht in der Raidgruppe.",
         PossibleCauses = "Mögliche Ursachen",
@@ -59,6 +60,8 @@ function StriLi_Stub_deDE() return {
         CombineMembers = "Zusammenlegen mit",
         Reregister = "Ummelden",
         SetMaster = "Zu Master ernennen",
+        SetAssist = "Zu StriLi-Assist ernennen",
+        UnsetAssist = "StriLi-Assist Status entfernen",
         Remove = "Entfernen",
         YourNotMaster = "Du bist nicht der StriLi master.",
         PlayerChange = "Anderem Spieler zuweisen",
@@ -72,6 +75,8 @@ function StriLi_Stub_deDE() return {
         SyncDataConfirm = "Du bist StriLi-Master. Bist du sicher das du die Daten Synchronisieren möchtest? Deine Daten werden überschrieben.",
         AreYouSureTo = "Bist du sicher, dass du",
         SetMaster = "zum Master ernennen möchtest?",
+        SetAssist = "zum StriLi-Assist ernennen möchtest?",
+        UnsetAssist = "den StriLi-Assist Status entfernen möchtest?",
         Remove = "entfernen möchtest?",
         Combine1 = "mit",
         Combine2 = "zusammenlegen möchtest?",
@@ -111,6 +116,11 @@ function StriLi_Stub_deDE() return {
     Options = {
         AutoPromote = "StriLi Master automatisch zum Raid-Assistenten ernennen?.",
         TokenSec = "Token Sec Liste.",
+    },
+    Tooltip = {
+        rightClickText = "|cffff0000RechtsKlick|r Öffnet/Schließt ItemHistory",
+        leftClickText = "|cff1eff00LinksKlick|r Öffnet/Schließt StriLi",
+        dragClickText = "|cffccccccLinksKlick + Ziehen|r Minimap-Button bewegen",
     },
 };
 end

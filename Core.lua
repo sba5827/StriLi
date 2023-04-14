@@ -3,6 +3,13 @@ local StriLiLDB = LibStub("LibDataBroker-1.1"):NewDataObject("StriLi!", {
     type = "data source",
     text = "StriLi!",
     icon = "Interface\\AddOns\\StriLi\\StriLiIcon",
+    OnTooltipShow = function(tooltip)
+        tooltip:SetText(string.format("%40s","StriLi "..GetAddOnMetadata("StriLi", "Version")), 0,0.9,1)
+        tooltip:AddLine(StriLi.Lang.Tooltip.leftClickText, 1, 1, 1)
+        tooltip:AddLine(StriLi.Lang.Tooltip.rightClickText, 1, 1, 1)
+        tooltip:AddLine(StriLi.Lang.Tooltip.dragClickText, 1, 1, 1)
+        tooltip:Show()
+    end,
     OnClick = function(this, button)
         if button == "LeftButton" then
             StriLi.MainFrame:toggle()

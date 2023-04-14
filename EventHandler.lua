@@ -173,8 +173,12 @@ function StriLi.EventHandler:addNewPlayers()
         end
 
         StriLi.CommunicationHandler:checkIfUserHasStriLi(name, function(userHasStriLi)
-            if userHasStriLi and not (StriLi.master:get() == name) then
+            if userHasStriLi and not (StriLi.master:get() == name) and not RaidMembersDB:isMemberAssist(name) then
                 StriLi.MainFrame.rows[name]:UpdateName("•"..name);
+            elseif userHasStriLi and not (StriLi.master:get() == name) and RaidMembersDB:isMemberAssist(name) then
+                StriLi.MainFrame.rows[name]:UpdateName("¬"..name);
+            elseif userHasStriLi and (StriLi.master:get() == name) then
+                StriLi.MainFrame.rows[name]:UpdateName("®"..name);
             end
         end);
 

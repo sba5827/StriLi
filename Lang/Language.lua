@@ -14,6 +14,7 @@ StriLi.Lang = {
         RemoveOnlineRaidmember = "You can't remove online raidmembers from StriLi.",
         ObserverImplement = "observer must implement OnValueChanged",
         SetMasterNotPossible = "kann nicht zum Master ernannt werden.",
+        SetAssistNotPossible = "kann nicht zum StriLi-Assist ernannt werden.",
         RankToLow = "Rang zu niedrig",
         PlayerNotInRaid = "befindet sich nicht in der Raidgruppe.",
         PossibleCauses = "Mögliche Ursachen",
@@ -60,6 +61,8 @@ StriLi.Lang = {
         CombineMembers = "Zusammenlegen mit",
         Reregister = "Ummelden",
         SetMaster = "Zu Master ernennen",
+        SetAssist = "Zu StriLi-Assist ernennen",
+        UnsetAssist = "StriLi-Assist Status entfernen",
         Remove = "Entfernen",
         YourNotMaster = "You are not the StriLi master.",
         PlayerChange = "Anderem Spieler zuweisen",
@@ -73,6 +76,8 @@ StriLi.Lang = {
         ReregisterRequest = "Gib den Spec an auf den Umgemeldet wird",
         AreYouSureTo = "Bist du sicher, dass du",
         SetMaster = "zum Master ernennen möchtest?",
+        SetAssist = "zum StriLi-Assist ernennen möchtest?",
+        UnsetAssist = "den StriLi-Assist Status entfernen möchtest?",
         Remove = "entfernen möchtest?",
         Combine1 = "mit",
         Combine2 = "zusammenlegen möchtest?",
@@ -112,6 +117,11 @@ StriLi.Lang = {
     Options = {
         AutoPromote = "Auto promote StriLi master to raid assist.",
         TokenSec = "Token sec list.",
+    },
+    Tooltip = {
+        rightClickText = "|cffff0000RightClick|r Open/Close ItemHistory",
+        leftClickText = "|cff1eff00LeftClick|r Open/Close StriLi",
+        dragClickText = "|cffccccccLeftClick + Drag|r Move Minimap-Button",
     },
 };
 
