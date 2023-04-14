@@ -107,3 +107,16 @@ function ObservableString:new(o)
 
     return o;
 end
+
+ObservableBool = Observable:new();
+
+function ObservableBool:new(o)
+    o = o or Observable:new(o);
+    setmetatable(o, self)
+    self.__index = self
+
+    o.var = false;
+    o.varOld = false;
+
+    return o;
+end
