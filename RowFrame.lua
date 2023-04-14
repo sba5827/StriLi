@@ -272,9 +272,18 @@ function RowFrame:OnValueChanged(sender)
         self:UpdateReregister(self.raidMember[2]["Reregister"]:get());
 
     elseif sender == self.raidMember[2]["IsStriLiAssist"] then
-        print("Assist of %s changed", self.raidMember[1]);
         if self.raidMember[2]["IsStriLiAssist"]:get() then
             self:UpdateName("¬"..self.raidMember[1])
+        elseif UnitName("player") ~= self.raidMember[1] then
+            StriLi.CommunicationHandler:checkIfUserHasStriLi(self.raidMember[1], function(hasStriLi)
+                if hasStriLi then
+                    self:UpdateName("•"..self.raidMember[1]);
+                else
+                    self:UpdateName(self.raidMember[1]);
+                end
+            end)
+        else
+            self:UpdateName("•"..self.raidMember[1]);
         end
 
     end
@@ -408,19 +417,37 @@ function RowFrame:initDropdownMenu(frame, level, menuList)
 
         --TODO: new String for new Command
 
-        info.text, info.hasArrow, info.disabled, info.func = "Assist", false, bAssist, function()
+        if not RaidMembersDB:isMemberAssist(self.raidMember[1]) then
+            info.text, info.hasArrow, info.disabled, info.func = "Assist", false, bAssist, function()
 
-            StriLi.dropdownFrame:Hide();
+                StriLi.dropdownFrame:Hide();
 
-            local confirmFrame = ConfirmDialogFrame:new(nil, StriLi.Lang.Confirm.AreYouSureTo.." "..playerName.." ".."set as Assist",
-                    function()
-                       StriLi_SetAssist(playerName);
-                    end,
-                    nil);
+                local confirmFrame = ConfirmDialogFrame:new(nil, StriLi.Lang.Confirm.AreYouSureTo.." "..playerName.." ".."set as Assist",
+                        function()
+                            StriLi_SetAssist(playerName);
+                        end,
+                        nil);
 
-            confirmFrame:show();
+                confirmFrame:show();
 
-        end;
+            end;
+        else
+            info.text, info.hasArrow, info.disabled, info.func = "not Assist", false, bAssist, function()
+
+                StriLi.dropdownFrame:Hide();
+
+                local confirmFrame = ConfirmDialogFrame:new(nil, StriLi.Lang.Confirm.AreYouSureTo.." "..playerName.." ".."remove Assist",
+                        function()
+                            RaidMembersDB:unsetMemberAsAssist(playerName);
+                            StriLi.CommunicationHandler:Send_demoteMemberAsStriLiAssist(playerName);
+                        end,
+                        nil);
+
+                confirmFrame:show();
+
+            end;
+        end
+
         UIDropDownMenu_AddButton(info);
 
     elseif menuList == "Players" then

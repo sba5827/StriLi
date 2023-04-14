@@ -14,6 +14,7 @@
     SL_DC       -> DC = Data Changed
     SL_RD       -> RD = Reset Data
     SL_PMA      -> PMA = Promote Member as Assist
+    SL_DMA      -> DMA = Demote Member as Assist
     SL_RQ_SD    -> SD = Synchronize Data
     SL_RQ_UHS   -> UHS = User Has StriLi
     SL_RS_UHS
@@ -68,6 +69,8 @@ function StriLi.CommunicationHandler:On_CHAT_MSG_ADDON(prefix, message, distribu
         self:On_ItemHistoryRemove(message, sender);
     elseif prefix == "SL_PMA" then
         self:On_promoteMemberToStriLiAssist(message, sender);
+    elseif prefix == "SL_DMA" then
+        self:On_demoteMemberAsStriLiAssist(message, sender);
     end
 
 end
@@ -470,8 +473,19 @@ function StriLi.CommunicationHandler:Send_promoteMemberToStriLiAssist(name)
     return true;
 end
 
+function StriLi.CommunicationHandler:Send_demoteMemberAsStriLiAssist(name)
+    if not StriLi_isPlayerMaster() then return false end;
+    SendAddonMessage("SL_DMA", name, "RAID");
+
+    return true;
+end
+
 function StriLi.CommunicationHandler:On_promoteMemberToStriLiAssist(memberName, sender)
     if StriLi.master:get() ~= sender then return end;
     RaidMembersDB:setMemberAsAssist(memberName);
-    --StriLi.MainFrame:OnMemberPromptedToAssist(memberName);
+end
+
+function StriLi.CommunicationHandler:On_demoteMemberAsStriLiAssist(memberName, sender)
+    if StriLi.master:get() ~= sender then return end;
+    RaidMembersDB:unsetMemberAsAssist(memberName);
 end

@@ -82,6 +82,10 @@ function RaidMembersDB:setMemberAsAssist(name)
     self:get(name)["IsStriLiAssist"]:set(true);
 end
 
+function RaidMembersDB:unsetMemberAsAssist(name)
+    self:get(name)["IsStriLiAssist"]:set(false);
+end
+
 function RaidMembersDB:getRawData()
 
     local t = {}
