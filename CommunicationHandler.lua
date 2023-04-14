@@ -37,9 +37,9 @@ StriLi.CommunicationHandler = { waitingForRespond = "",
 function StriLi.CommunicationHandler:On_CHAT_MSG_ADDON(prefix, message, distribution_type, sender)
 
     --DEBUG
-    --if string.sub(arg1, 1, 2) == "SL" then
-    --    print("On_CHAT_MSG_ADDON: "..arg1.." "..arg2.." "..arg3.." "..arg4);
-    --end
+    if string.sub(arg1, 1, 2) == "SL" then
+        print("On_CHAT_MSG_ADDON: "..arg1.." "..arg2.." "..arg3.." "..arg4);
+    end
 
     if sender == UnitName("player") then return end
 
@@ -152,6 +152,10 @@ end
 function StriLi.CommunicationHandler:sendMasterChanged(newMaster)
 
     if (StriLi_isPlayerMaster()) or (StriLi.master:get() == "") then
+        if RaidMembersDB:isMemberAssist(newMaster) then
+            self:Send_demoteMemberAsStriLiAssist(newMaster);
+            RaidMembersDB:unsetMemberAsAssist(newMaster);
+        end
         SendAddonMessage("SL_MC", newMaster, "RAID");
         return true;
     end
@@ -166,7 +170,7 @@ function StriLi.CommunicationHandler:On_DataChanged(msgString, sender)
         return;
     end
 
-    local assistChange = RaidMembersDB:isMemberAssist(sender) and not (StriLi.master:get() == sender) ;
+    local assistChange = RaidMembersDB:isMemberAssist(sender) and not (StriLi.master:get() == sender);
 
     local _next, name, data, arg;
 
@@ -210,7 +214,7 @@ function StriLi.CommunicationHandler:sendDataChanged(name, counterName, counterD
 end
 
 function StriLi.CommunicationHandler:sendMembersCombined(mem1Name, mem2Name)
-    if SStriLi_isPlayerMaster() then
+    if StriLi_isPlayerMaster() then
         SendAddonMessage("SL_DC", mem1Name.." "..mem2Name.." ".."Combine", "RAID");
     end
 end
@@ -406,7 +410,7 @@ function StriLi.CommunicationHandler:On_ItemHistoryChanged(arguments, sender)
     StriLi.ItemHistory:On_ItemHistoryChanged(itemLink.."]|h|r", player, playerClass, rollType, roll, tonumber(index));
 
     if RaidMembersDB:isMemberAssist(sender) and (StriLi_isPlayerMaster()) then
-        self:Send_ItemHistoryChanged(itemLink, player, playerClass, rollType, roll, index);
+        self:Send_ItemHistoryChanged(itemLink.."]|h|r", player, playerClass, rollType, roll, index);
     end
 
 end

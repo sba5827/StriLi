@@ -276,8 +276,10 @@ function RowFrame:OnValueChanged(sender)
             self:UpdateName("¬"..self.raidMember[1])
         elseif UnitName("player") ~= self.raidMember[1] then
             StriLi.CommunicationHandler:checkIfUserHasStriLi(self.raidMember[1], function(hasStriLi)
-                if hasStriLi then
+                if hasStriLi and not StriLi.master:get() == self.raidMember[1] then
                     self:UpdateName("•"..self.raidMember[1]);
+                elseif hasStriLi and StriLi.master:get() == self.raidMember[1] then
+                    self:UpdateName("®"..self.raidMember[1]);
                 else
                     self:UpdateName(self.raidMember[1]);
                 end
@@ -446,6 +448,10 @@ function RowFrame:initDropdownMenu(frame, level, menuList)
                 confirmFrame:show();
 
             end;
+        end
+
+        if self.raidMember[1] == StriLi.master:get() then
+            info.disabled = true;
         end
 
         UIDropDownMenu_AddButton(info);
