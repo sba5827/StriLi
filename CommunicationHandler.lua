@@ -37,9 +37,9 @@ StriLi.CommunicationHandler = { waitingForRespond = "",
 function StriLi.CommunicationHandler:On_CHAT_MSG_ADDON(prefix, message, distribution_type, sender)
 
     --DEBUG
-    if string.sub(arg1, 1, 2) == "SL" then
-        print("On_CHAT_MSG_ADDON: "..arg1.." "..arg2.." "..arg3.." "..arg4);
-    end
+    --if string.sub(arg1, 1, 2) == "SL" then
+    --    print("On_CHAT_MSG_ADDON: "..arg1.." "..arg2.." "..arg3.." "..arg4);
+    --end
 
     if sender == UnitName("player") then return end
 

@@ -83,8 +83,6 @@ end
 
 function StriLi_SetAssist(name)
 
-    --TODO: new ErrorStrings for not possible to set Assist.
-
     local numOfMembers = GetNumRaidMembers();
 
     local found = false;
@@ -99,14 +97,12 @@ function StriLi_SetAssist(name)
     end
 
     if not found then
-        print(CONSTS.msgColorStringStart..name.." "..StriLi.Lang.ErrorMsg.SetMasterNotPossible.." "..name.." "..StriLi.Lang.ErrorMsg.PlayerNotInRaid.."|r");
+        print(CONSTS.msgColorStringStart..name.." "..StriLi.Lang.ErrorMsg.SetAssistNotPossible.." "..name.." "..StriLi.Lang.ErrorMsg.PlayerNotInRaid.."|r");
     end
 
 end
 
 function StriLi_tryToSetAssist(name)
-
-    --TODO: new ErrorStrings for not possible to set Assist.
 
     if StriLi_isPlayerMaster() then
 
@@ -119,7 +115,7 @@ function StriLi_tryToSetAssist(name)
                     end
                 end
             else
-                print(CONSTS.msgColorStringStart..name.." "..StriLi.Lang.ErrorMsg.SetMasterNotPossible.." "..StriLi.Lang.ErrorMsg.PossibleCauses..":\n - "
+                print(CONSTS.msgColorStringStart..name.." "..StriLi.Lang.ErrorMsg.SetAssistNotPossible.." "..StriLi.Lang.ErrorMsg.PossibleCauses..":\n - "
                         ..name.." "..StriLi.Lang.ErrorMsg.Cause1.."\n - "
                         ..name.." "..StriLi.Lang.ErrorMsg.Cause2.."\n - "
                         ..StriLi.Lang.ErrorMsg.Cause3.."\n - "
