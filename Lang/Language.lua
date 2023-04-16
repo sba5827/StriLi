@@ -64,6 +64,7 @@ StriLi.Lang = {
         SetAssist = "Zu StriLi-Assist ernennen",
         UnsetAssist = "StriLi-Assist Status entfernen",
         Remove = "Entfernen",
+        Print = "Alle Würfe zeigen",
         YourNotMaster = "You are not the StriLi master.",
         PlayerChange = "Anderem Spieler zuweisen",
         RolltypeChange = "Strich ändern",

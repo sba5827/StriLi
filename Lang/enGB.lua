@@ -63,6 +63,7 @@ function StriLi_Stub_enGB() return {
         SetAssist = "Set as StriLi-Assist",
         UnsetAssist = "Remove StriLi-Assist Status",
         Remove = "Remove",
+        Print = "Mostrar todos los rollos",
         YourNotMaster = "You are not the StriLi master.",
         PlayerChange = "Assign to another player",
         RolltypeChange = "Change tally-mark",
