@@ -63,6 +63,7 @@ function StriLi_Stub_deDE() return {
         SetAssist = "Zu StriLi-Assist ernennen",
         UnsetAssist = "StriLi-Assist Status entfernen",
         Remove = "Entfernen",
+        Print = "Alle Würfe zeigen",
         YourNotMaster = "Du bist nicht der StriLi master.",
         PlayerChange = "Anderem Spieler zuweisen",
         RolltypeChange = "Strich ändern",

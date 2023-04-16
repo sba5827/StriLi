@@ -254,7 +254,7 @@ function StriLi.CommunicationHandler:On_Request_SyncData(sender)
     end
 
     for index, itemLink in pairs(StriLi.ItemHistory.items) do
-        self:Send_ItemHistoryAdd(itemLink, StriLi.ItemHistory.players[index], StriLi.ItemHistory.playerClasses[index], StriLi.ItemHistory.rollTypes[index], StriLi.ItemHistory.rolls[index], index, true);
+        self:Send_ItemHistoryAdd(itemLink, StriLi.ItemHistory.players[index], StriLi.ItemHistory.playerClasses[index], StriLi.ItemHistory.rollTypes[index], StriLi.ItemHistory.rolls[index], index, true, StriLi.ItemHistory.allRolls[index]);
     end
 
 end
@@ -380,12 +380,36 @@ function StriLi.CommunicationHandler:On_ItemHistoryAdd(arguments, sender)
     local rollNum = tonumber(roll);
     local index, _next = string.match(_next, CONSTS.nextWordPatern);
     local indexNum = tonumber(index);
+    local allRolls = {["Main"]={}, ["Sec"]={}};
+
+    local isMain, isRoll = true, true;
+    local stringRoll, stringName = "", "";
+
+    for aString in string.gmatch(_next, "[^_]+") do
+        if aString == "Main" then
+            isMain = true;
+        elseif aString == "Sec" then
+            isMain = false;
+        else
+            isRoll = not isRoll;
+            if isRoll then
+                stringRoll = aString;
+                if isMain then
+                    table.insert(allRolls["Main"], {["Roll"] = stringRoll, ["Name"] = stringName});
+                else
+                    table.insert(allRolls["Sec"], {["Roll"] = stringRoll, ["Name"] = stringName});
+                end
+            else
+                stringName = aString;
+            end
+        end
+    end
 
     if rollNum ~= nil then
         roll = rollNum;
     end
 
-    StriLi.ItemHistory:add(itemLink.."]|h|r", player, playerClass, rollType, roll, indexNum);
+    StriLi.ItemHistory:add(itemLink.."]|h|r", player, playerClass, rollType, roll, indexNum, allRolls);
 
 end
 
@@ -429,9 +453,20 @@ function StriLi.CommunicationHandler:On_ItemHistoryRemove(arguments, sender)
 
 end
 
-function StriLi.CommunicationHandler:Send_ItemHistoryAdd(itemLink, player, playerClass, rollType, roll, index, forced)
+function StriLi.CommunicationHandler:Send_ItemHistoryAdd(itemLink, player, playerClass, rollType, roll, index, forced, allRolls)
     if not StriLi_isPlayerMaster() and not forced then return end;
-    SendAddonMessage("SL_IHA", tostring(itemLink).." "..tostring(player).." "..tostring(playerClass).." "..tostring(rollType).." "..tostring(roll).." "..tostring(index), "RAID");
+    local s = "";
+
+    for k, v in pairs(allRolls) do
+        s = s..k.."_";
+        for k2, v2 in pairs(v) do
+            s = s..v2["Name"].."_"..v2["Roll"].."_"
+        end
+    end
+
+    print(s);
+
+    SendAddonMessage("SL_IHA", tostring(itemLink).." "..tostring(player).." "..tostring(playerClass).." "..tostring(rollType).." "..tostring(roll).." "..tostring(index).." "..s, "RAID");
 end
 
 function StriLi.CommunicationHandler:Send_ItemHistoryChanged(itemLink, player, playerClass, rollType, roll, index)

@@ -1,4 +1,4 @@
-StriLi.ItemHistory = { items = {}, players = {}, rollTypes = {}, rolls = {}, playerClasses = {}, frame = nil, contentFrame = nil, count = 0, };
+StriLi.ItemHistory = { items = {}, players = {}, rollTypes = {}, rolls = {}, playerClasses = {}, allRolls = {}, frame = nil, contentFrame = nil, count = 0, };
 
 local function repositionFrames()
     for index, frame in pairs(StriLi.ItemHistory.contentFrame.children) do
@@ -52,7 +52,10 @@ function StriLi.ItemHistory:toggle()
     end
 end
 
-function StriLi.ItemHistory:add(itemLink, player, playerClass, rollType, roll, externIndex)
+-----------------------------------------------------------------------------------------------------------
+--- allRolls_table: {["Main"]= {["Roll"]=1-100, ["Name"]=XYZ}, ["Sec"] = {["Roll"]=1-99, ["Name"]=XYZ}} ---
+-----------------------------------------------------------------------------------------------------------
+function StriLi.ItemHistory:add(itemLink, player, playerClass, rollType, roll, externIndex, allRolls_table)
 
     ---print("number: "..tostring(externIndex)..", type: "..type(externIndex));
 
@@ -72,6 +75,7 @@ function StriLi.ItemHistory:add(itemLink, player, playerClass, rollType, roll, e
     table.insert(self.playerClasses, playerClass);
     table.insert(self.rollTypes, rollType);
     table.insert(self.rolls, roll);
+    table.insert(self.allRolls, allRolls_table);
 
     self.contentFrame:SetHeight(self.contentFrame:GetHeight() + 30);
 
@@ -108,6 +112,21 @@ function StriLi.ItemHistory:add(itemLink, player, playerClass, rollType, roll, e
     end
 
     self.contentFrame.children[self.count] = frame;
+
+end
+
+function StriLi.ItemHistory:printRollsForItem(index)
+
+    print(self.items[index])
+    print(CONSTS.msgColorStringStart..StriLi.Lang.Labels.Main..CONSTS.msgColorStringEnd);
+    for k,v in pairs(self.allRolls[index]["Main"]) do
+        print(CONSTS.msgColorStringStart..v["Name"]..": "..v["Roll"]..CONSTS.msgColorStringEnd);
+    end
+
+    print(CONSTS.msgColorStringStart..StriLi.Lang.Labels.Sec..CONSTS.msgColorStringEnd);
+    for k,v in pairs(self.allRolls[index]["Sec"]) do
+        print(CONSTS.msgColorStringStart..v["Name"]..": "..v["Roll"]..CONSTS.msgColorStringEnd);
+    end
 
 end
 
@@ -162,6 +181,7 @@ function StriLi.ItemHistory:remove(index)
     table.remove(self.playerClasses, index);
     table.remove(self.rollTypes, index);
     table.remove(self.rolls, index);
+    table.remove(self.allRolls, index);
 
 
     local frame = table.remove(self.contentFrame.children, index);
@@ -287,6 +307,7 @@ function StriLi.ItemHistory:reset()
         self.playerClasses = {};
         self.rollTypes = {};
         self.rolls = {};
+        self.allRolls = {};
     end
 
     self.contentFrame:SetHeight(0);
@@ -304,6 +325,7 @@ function StriLi.ItemHistory:getRawData()
     t["playerClasses"] = self.playerClasses;
     t["rollTypes"] = self.rollTypes;
     t["rolls"] = self.rolls;
+    t["allRolls"] = self.allRolls;
 
     return t;
 
@@ -316,14 +338,14 @@ function StriLi.ItemHistory:initFromRawData(rawData)
     if rawData["count"] == nil then return end
 
     for i = 1, rawData["count"] do
-        self:add(rawData["items"][i], rawData["players"][i], rawData["playerClasses"][i], rawData["rollTypes"][i], rawData["rolls"][i]);
+        self:add(rawData["items"][i], rawData["players"][i], rawData["playerClasses"][i], rawData["rollTypes"][i], rawData["rolls"][i], nil,  rawData["allRolls"][i]);
     end
 
 end
 
 function StriLi.ItemHistory:OnMouseUp(frame, button, itemFrame)
 
-    if (button ~= "RightButton") or (not MouseIsOver(frame) or ((StriLi.master:get() ~= "") and (not StriLi_isPlayerMaster())) and not RaidMembersDB:isMemberAssist(UnitName("player"))) then
+    if (button ~= "RightButton") or not MouseIsOver(frame) then
         return;
     end
 
@@ -331,8 +353,12 @@ function StriLi.ItemHistory:OnMouseUp(frame, button, itemFrame)
     -- Bind an initializer function to the dropdown;
 
     UIDropDownMenu_Initialize(StriLi.dropdownFrame, function(_frame, _level, _menuList)
-        self:initDropdownMenu(_frame, _level, _menuList, itemFrame)
-    end, "MENU");
+        if ((StriLi.master:get() ~= "") and (not StriLi_isPlayerMaster())) and not RaidMembersDB:isMemberAssist(UnitName("player")) then
+            self:initDropdownMenuSlave(_frame, _level, _menuList, itemFrame);
+        else
+            self:initDropdownMenu(_frame, _level, _menuList, itemFrame)
+        end
+        end, "MENU");
 
     ToggleDropDownMenu(1, nil, StriLi.dropdownFrame, "cursor", 3, -3, nil, nil, 0.2);
 
@@ -374,6 +400,18 @@ function StriLi.ItemHistory:initDropdownMenu(frame, level, menuList, itemFrame)
 
             confirmFrame:show();
 
+        end;
+        UIDropDownMenu_AddButton(info);
+
+        info.disabled, info.text, info.hasArrow, info.func = false, StriLi.Lang.Commands.Print, false, function(_, arg1)
+            local index = nil;
+
+            for k,v in pairs(self.contentFrame.children) do
+                if v == itemFrame then
+                    index = k;
+                end
+            end
+            self:printRollsForItem(index);
         end;
         UIDropDownMenu_AddButton(info);
 
@@ -467,4 +505,26 @@ function StriLi.ItemHistory:initDropdownMenu(frame, level, menuList, itemFrame)
 
         end
     end
+end
+
+function StriLi.ItemHistory:initDropdownMenuSlave(frame, level, menuList, itemFrame)
+    local info = UIDropDownMenu_CreateInfo();
+
+    if level == 1 then
+
+        -- Outermost menu level
+        info.disabled, info.text, info.hasArrow, info.func = false, StriLi.Lang.Commands.Print, false, function(_, arg1)
+            local index = nil;
+
+            for k,v in pairs(self.contentFrame.children) do
+                if v == itemFrame then
+                    index = k;
+                end
+            end
+            self:printRollsForItem(index);
+        end;
+        UIDropDownMenu_AddButton(info);
+
+    end
+
 end

@@ -63,6 +63,7 @@ function StriLi_Stub_esES() return {
         SetAssist = "Nombrar StriLi-Ayudante",
         UnsetAssist = "StriLi-Ayudante eliminar",
         Remove = "Eliminar",
+        Print = "Alle Würfe zeigen",
         YourNotMaster = "No eres el maestro de StriLi.",
         PlayerChange = "Asignar a otro jugador",
         RolltypeChange = "Cambiar el ictus",

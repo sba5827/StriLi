@@ -189,7 +189,23 @@ function StriLi.AutoRollAnalyser:increaseWinnerCountAndExpandItemHistory()
     raidMember = RaidMembersDB:get(winnerName);
     raidMember[counterToIncrease]:add(1);
 
-    StriLi.ItemHistory:add(self.item, winnerName, raidMember[1], counterToIncrease, self.rolls[rollType][1]["Roll"], nil);
-    StriLi.CommunicationHandler:Send_ItemHistoryAdd(self.item, winnerName, raidMember[1], counterToIncrease, self.rolls[rollType][1]["Roll"], nil, false);
+    local rollsToSave = {["Main"]={}, ["Sec"]={}};
+
+    local i = 1;
+
+    while self.rolls["Main"][i] do
+        table.insert(rollsToSave["Main"], {["Roll"] = self.rolls["Main"][i]["Roll"], ["Name"] = self.rolls["Main"][i]["Name"]});
+        i = i+1;
+    end
+
+    local i = 1;
+
+    while self.rolls["Sec"][i] do
+        table.insert(rollsToSave["Sec"], {["Roll"] = self.rolls["Sec"][i]["Roll"], ["Name"] = self.rolls["Sec"][i]["Name"]});
+        i = i+1;
+    end
+
+    StriLi.ItemHistory:add(self.item, winnerName, raidMember[1], counterToIncrease, self.rolls[rollType][1]["Roll"], nil, rollsToSave);
+    StriLi.CommunicationHandler:Send_ItemHistoryAdd(self.item, winnerName, raidMember[1], counterToIncrease, self.rolls[rollType][1]["Roll"], nil, false, rollsToSave);
 
 end
