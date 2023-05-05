@@ -117,6 +117,7 @@ function StriLi_Stub_enGB() return {
     Options = {
         AutoPromote = "Auto promote StriLi master to raid assist.",
         TokenSec = "Token sec list.",
+        IgnoreGroup = "Ignore group",
     },
     Tooltip = {
         rightClickText = "|cffff0000RightClick|r Open/Close ItemHistory",

@@ -43,8 +43,7 @@ function StriLi_OptionFrame_init()
 
     local fsIgnoreGroup  = optionFrame:CreateFontString("ARTWORK", nil, "GameFontNormal")
     fsIgnoreGroup:SetPoint("TOPLEFT", 30, -85)
-    --fsIgnoreGroup:SetText(StriLi.Lang.Options.fsIgnoreGroup);
-    fsIgnoreGroup:SetText("IgnoreGroups: ");
+    fsIgnoreGroup:SetText(StriLi.Lang.Options.IgnoreGroup..": ");
 
     local checkBoxIgnoreGroup_table = {};
     local fsIgnoreGroup_table = {};
