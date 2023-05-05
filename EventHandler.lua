@@ -155,8 +155,12 @@ function StriLi.EventHandler:addNewPlayers()
 
     for i = 1, numOfMembers do
 
-        local name = GetRaidRosterInfo(i);
+        local name, _, subgroup = GetRaidRosterInfo(i);
         if (name == nil) then
+            return ;
+        end
+
+        if (StriLiOptions["IgnoreGroup"..subgroup]) then
             return ;
         end
 

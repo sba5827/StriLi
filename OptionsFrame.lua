@@ -40,4 +40,30 @@ function StriLi_OptionFrame_init()
     local fsTokenSecList  = optionFrame:CreateFontString("ARTWORK", nil, "GameFontNormal")
     fsTokenSecList:SetPoint("TOPLEFT", 60, -55)
     fsTokenSecList:SetText(StriLi.Lang.Options.TokenSec);
+
+    local fsIgnoreGroup  = optionFrame:CreateFontString("ARTWORK", nil, "GameFontNormal")
+    fsIgnoreGroup:SetPoint("TOPLEFT", 30, -85)
+    --fsIgnoreGroup:SetText(StriLi.Lang.Options.fsIgnoreGroup);
+    fsIgnoreGroup:SetText("IgnoreGroups: ");
+
+    local checkBoxIgnoreGroup_table = {};
+    local fsIgnoreGroup_table = {};
+
+    for i = 1, 8 do
+        table.insert(checkBoxIgnoreGroup_table, CreateFrame("CheckButton", nil, optionFrame, "ChatConfigCheckButtonTemplate"));
+        table.insert(fsIgnoreGroup_table, optionFrame:CreateFontString("ARTWORK", nil, "GameFontNormal"));
+        checkBoxIgnoreGroup_table[i]:SetPoint("TOPLEFT", 120+i*20, -95);
+        checkBoxIgnoreGroup_table[i]:SetHitRectInsets(0, 0, 0, 0);
+
+        if StriLiOptions["IgnoreGroup"..i] then checkBoxIgnoreGroup_table[i]:SetChecked(true) end
+        checkBoxIgnoreGroup_table[i]:SetScript("OnClick",
+                function(this, button, down)
+                    StriLiOptions["IgnoreGroup"..i] = this:GetChecked();
+                end);
+
+        fsIgnoreGroup_table[i]:SetPoint("TOPLEFT", 127+i*20, -85)
+        --fsIgnoreGroup_table[i]:SetText(StriLi.Lang.Options.fsIgnoreGroup);
+        fsIgnoreGroup_table[i]:SetText(i);
+    end
+
 end
