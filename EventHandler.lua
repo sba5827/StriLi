@@ -160,32 +160,30 @@ function StriLi.EventHandler:addNewPlayers()
             return ;
         end
 
-        if (StriLiOptions["IgnoreGroup"..subgroup]) then
-            return ;
-        end
+        if not (StriLiOptions["IgnoreGroup"..subgroup]) then
 
-        if StriLi.master:get() == name then
-            masterIsInRaid = true;
-        end
-
-        local _, englishClass = UnitClass("raid" .. tostring(i));
-        local existingMember = RaidMembersDB:checkForMember(name);
-
-        if not existingMember then
-            RaidMembersDB:add(name, englishClass);
-            StriLi.MainFrame:addPlayer({ name, RaidMembersDB:get(name) });
-        end
-
-        StriLi.CommunicationHandler:checkIfUserHasStriLi(name, function(userHasStriLi)
-            if userHasStriLi and not (StriLi.master:get() == name) and not RaidMembersDB:isMemberAssist(name) then
-                StriLi.MainFrame.rows[name]:UpdateName("•"..name);
-            elseif userHasStriLi and not (StriLi.master:get() == name) and RaidMembersDB:isMemberAssist(name) then
-                StriLi.MainFrame.rows[name]:UpdateName("¬"..name);
-            elseif userHasStriLi and (StriLi.master:get() == name) then
-                StriLi.MainFrame.rows[name]:UpdateName("®"..name);
+            if StriLi.master:get() == name then
+                masterIsInRaid = true;
             end
-        end);
 
+            local _, englishClass = UnitClass("raid" .. tostring(i));
+            local existingMember = RaidMembersDB:checkForMember(name);
+
+            if not existingMember then
+                RaidMembersDB:add(name, englishClass);
+                StriLi.MainFrame:addPlayer({ name, RaidMembersDB:get(name) });
+            end
+
+            StriLi.CommunicationHandler:checkIfUserHasStriLi(name, function(userHasStriLi)
+                if userHasStriLi and not (StriLi.master:get() == name) and not RaidMembersDB:isMemberAssist(name) then
+                    StriLi.MainFrame.rows[name]:UpdateName("•"..name);
+                elseif userHasStriLi and not (StriLi.master:get() == name) and RaidMembersDB:isMemberAssist(name) then
+                    StriLi.MainFrame.rows[name]:UpdateName("¬"..name);
+                elseif userHasStriLi and (StriLi.master:get() == name) then
+                    StriLi.MainFrame.rows[name]:UpdateName("®"..name);
+                end
+            end);
+        end
     end
 
     if not masterIsInRaid then
