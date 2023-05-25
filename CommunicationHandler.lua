@@ -464,7 +464,7 @@ function StriLi.CommunicationHandler:Send_ItemHistoryAdd(itemLink, player, playe
         end
     end
 
-    print(s);
+    --print(s);
 
     SendAddonMessage("SL_IHA", tostring(itemLink).." "..tostring(player).." "..tostring(playerClass).." "..tostring(rollType).." "..tostring(roll).." "..tostring(index).." "..s, "RAID");
 end
