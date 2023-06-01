@@ -88,8 +88,8 @@ function StriLi_SetAssist(name)
     local found = false;
 
     for i = 1, numOfMembers, 1 do
-        local name, _ = GetRaidRosterInfo(i);
-        if (name == name) then
+        local _name, _ = GetRaidRosterInfo(i);
+        if (_name == name) then
             found = true;
             StriLi_tryToSetAssist(name);
             break;

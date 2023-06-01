@@ -104,6 +104,8 @@ end
 
 function StriLi.AutoRollAnalyser:registerRoll(rollType, playername, number)
 
+    if not RaidMembersDB:checkForMember(playername) then return end --if player in ignored list
+
     if self.playerRolled[playername] == nil then
 
         self.playerRolled[playername] = true;
