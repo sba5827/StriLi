@@ -117,7 +117,7 @@
 	
 	<Frame name="StriLi_Row_Template" virtual="true">
 		<Size>
-			<AbsDimension x="470" y="30"/>
+			<AbsDimension x="555" y="30"/>
 		</Size>
 		<Anchors>
 			<Anchor point="TOPLEFT" relativePoint="TOPLEFT">
@@ -133,11 +133,21 @@
 			<BorderColor a="1" r="0" g="0" b="0" />
 		</Backdrop>
 		<Frames>
-			<StatusBar name="StriLi_Name" inherits="StriLi_Template" useParentLevel="true">
+			<StatusBar name="StriLi_Status" inherits="StriLi_Template" useParentLevel="true">
 				<Anchors>
 					<Anchor point="TOPLEFT">
 						<Offset>
 							<AbsDimension x="0" y="0"/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<BarColor r="0.8" g="0.8" b="0.8"/>
+			</StatusBar>
+			<StatusBar name="StriLi_Name" inherits="StriLi_Template" useParentLevel="true">
+				<Anchors>
+					<Anchor point="TOPLEFT">
+						<Offset>
+							<AbsDimension x="85" y="0"/>
 						</Offset>
 					</Anchor>
 				</Anchors>
@@ -149,7 +159,7 @@
 				<Anchors>
 					<Anchor point="TOPLEFT">
 						<Offset>
-							<AbsDimension x="85" y="0"/>
+							<AbsDimension x="170" y="0"/>
 						</Offset>
 					</Anchor>
 				</Anchors>
@@ -159,7 +169,7 @@
 				<Anchors>
 					<Anchor point="TOPLEFT">
 						<Offset>
-							<AbsDimension x="130" y="0"/>
+							<AbsDimension x="215" y="0"/>
 						</Offset>
 					</Anchor>
 				</Anchors>
@@ -168,7 +178,7 @@
 				<Anchors>
 					<Anchor point="TOPLEFT">
 						<Offset>
-							<AbsDimension x="215" y="0"/>
+							<AbsDimension x="300" y="0"/>
 						</Offset>
 					</Anchor>
 				</Anchors>
@@ -178,7 +188,7 @@
 				<Anchors>
 					<Anchor point="TOPLEFT">
 						<Offset>
-							<AbsDimension x="300" y="0"/>
+							<AbsDimension x="385" y="0"/>
 						</Offset>
 					</Anchor>
 				</Anchors>
@@ -187,7 +197,7 @@
 				<Anchors>
 					<Anchor point="TOPLEFT">
 						<Offset>
-							<AbsDimension x="385" y="0"/>
+							<AbsDimension x="470" y="0"/>
 						</Offset>
 					</Anchor>
 				</Anchors>

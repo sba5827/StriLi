@@ -88,6 +88,7 @@ function StriLi_Stub_enGB() return {
         ItemRolltypeChange = "you want to change the tally-mark?",
     },
     Labels = {
+        Status = "StriLi Status",
         Name = "Name",
         Reregister = "R",
         Main = "Main",

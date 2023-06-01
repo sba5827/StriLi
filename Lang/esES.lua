@@ -88,6 +88,7 @@ function StriLi_Stub_esES() return {
         ItemRolltypeChange = "cambiar la carrera?",
     },
     Labels = {
+        Status = "StriLi Estado",
         Name = "Nombre",
         Reregister = "R",
         Main = "Principal",

@@ -88,6 +88,7 @@ function StriLi_Stub_deDE() return {
         ItemRolltypeChange = "den Strich ändern möchtest?",
     },
     Labels = {
+        Status = "StriLi Status",
         Name = "Name",
         Reregister = "U",
         Main = "Main",

@@ -176,11 +176,14 @@ function StriLi.EventHandler:addNewPlayers()
 
             StriLi.CommunicationHandler:checkIfUserHasStriLi(name, function(userHasStriLi)
                 if userHasStriLi and not (StriLi.master:get() == name) and not RaidMembersDB:isMemberAssist(name) then
-                    StriLi.MainFrame.rows[name]:UpdateName("•"..name);
+
+                    StriLi.MainFrame.rows[name]:setStatus(RowFrameStatus_t.HasStriLi);
                 elseif userHasStriLi and not (StriLi.master:get() == name) and RaidMembersDB:isMemberAssist(name) then
-                    StriLi.MainFrame.rows[name]:UpdateName("¬"..name);
+
+                    StriLi.MainFrame.rows[name]:setStatus(RowFrameStatus_t.StriLiAssist);
                 elseif userHasStriLi and (StriLi.master:get() == name) then
-                    StriLi.MainFrame.rows[name]:UpdateName("®"..name);
+
+                    StriLi.MainFrame.rows[name]:setStatus(RowFrameStatus_t.StriLiMaster);
                 end
             end);
         end
@@ -189,7 +192,7 @@ function StriLi.EventHandler:addNewPlayers()
     if not masterIsInRaid then
 
         if StriLi.MainFrame.rows[StriLi.master:get()] ~= nil then
-            StriLi.MainFrame.rows[StriLi.master:get()]:UpdateName(StriLi.master:get());
+            StriLi.MainFrame.rows[StriLi.master:get()]:setStatus(RowFrameStatus_t.None);
         end
 
         StriLi.master:set("");
