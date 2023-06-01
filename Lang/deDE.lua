@@ -39,6 +39,7 @@ function StriLi_Stub_deDE() return {
         RollCanceled = "Würfeln abgebrochen.",
         RollAlreadyInProgress = "Es wird schon um ein Item gewürfelt. Um den Vorgang zu unterbrechen tippe",
         RollReassigned = "Bearbeitet",
+        Winner = "%s hat potentiell %s gewonnen!",
     },
     TallyMarkTypes = {
         Main = "Main",

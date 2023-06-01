@@ -39,6 +39,7 @@ function StriLi_Stub_esES() return {
         RollCanceled = "Dados cancelados.",
         RollAlreadyInProgress = "Ya se están tirando los dados para un artículo. Para interrumpir el proceso, escriba",
         RollReassigned = "Editado",
+        Winner = "¡%s ha ganado potencialmente %s!",
     },
     TallyMarkTypes = {
         Main = "Principal",

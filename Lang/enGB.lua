@@ -39,6 +39,7 @@ function StriLi_Stub_enGB() return {
         RollCanceled = "Roll canceled.",
         RollAlreadyInProgress = "You have already a roll in progress. To cancel a current roll type",
         RollReassigned = "Edited",
+        Winner = "%s has potentially won %s!",
     },
     TallyMarkTypes = {
         Main = "Main",
