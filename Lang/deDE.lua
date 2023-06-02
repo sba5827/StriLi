@@ -117,7 +117,7 @@ function StriLi_Stub_deDE() return {
         LootRules = "Loot Regeln",
     },
     Options = {
-        AutoPromote = "StriLi Master automatisch zum Raid-Assistenten ernennen?.",
+        AutoPromote = "StriLi Master automatisch zum Raid-Assistenten ernennen.",
         TokenSec = "Token Sec Liste.",
         IgnoreGroup = "Gruppe ignorieren",
     },
@@ -125,6 +125,9 @@ function StriLi_Stub_deDE() return {
         rightClickText = "|cffff0000RechtsKlick|r Öffnet/Schließt ItemHistory",
         leftClickText = "|cff1eff00LinksKlick|r Öffnet/Schließt StriLi",
         dragClickText = "|cffccccccLinksKlick + Ziehen|r Minimap-Button bewegen",
+        master = "StriLi-Master. \nHat alle StriLi Berechtigungen. \nKann StriLi-Assistenten ernennen.",
+        assist = "StriLi-Assistent. \nKann Ummeldungen eintragen. \nKann Striche manuell anpassen (auch über das Fenster Item Verlauf).",
+        hasStriLi = "Hat das Addon StriLi aktiviert.",
     },
 };
 end

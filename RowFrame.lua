@@ -74,7 +74,7 @@ function RowFrame:setColumnContent(charName, charData)
     else
         self.Children.Status, self.Children.Name, self.Children.Reregister, self.Children.Main, self.Children.Sec, self.Children.Token, self.Children.Fail = self.frame:GetChildren();
     end
-    
+    self.Children.Status:EnableMouse(true);
     self.Children.Name:EnableMouse(true);
     self.Children.Name:SetScript("OnMouseUp", function(frame, button)
         self:OnMouseUp(frame, button);
@@ -572,11 +572,30 @@ function RowFrame:disableButtons()
 end
 
 function RowFrame:setStatus(status)
+
+    local toolTippText = nil;
+
     if status == RowFrameStatus_t.HasStriLi then
         self.Regions.StatusFS:SetText("S");
+        toolTippText = StriLi.Lang.Tooltip.hasStriLi;
     elseif status == RowFrameStatus_t.StriLiAssist then
         self.Regions.StatusFS:SetText("A");
+        toolTippText = StriLi.Lang.Tooltip.assist;
     elseif status == RowFrameStatus_t.StriLiMaster then
         self.Regions.StatusFS:SetText("M");
+        toolTippText = StriLi.Lang.Tooltip.master;
     end
+
+    self.Children.Status:SetScript("OnEnter", function()
+        if toolTippText then
+            GameTooltip:SetOwner(self.Children.Status, "ANCHOR_TOP")
+            GameTooltip:AddLine(toolTippText)
+            GameTooltip:Show()
+        end
+    end)
+
+    self.Children.Status:SetScript("OnLeave", function()
+        GameTooltip:Hide()
+    end)
+
 end

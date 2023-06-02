@@ -125,6 +125,9 @@ function StriLi_Stub_esES() return {
         rightClickText = "|cffff0000RightClick|r Open/Close ItemHistory",
         leftClickText = "|cff1eff00LeftClick|r Open/Close StriLi",
         dragClickText = "|cffccccccLeftClick + Drag|r Move Minimap-Button",
+        master = "Maestro StriLi. Tiene todos los permisos de StriLi. Puede nombrar asistentes StriLi.",
+        assist = "Asistente StriLi. Puede introducir nuevos registros. Puede ajustar los trazos manualmente (también a través de la ventana Historial de artículos).",
+        hasStriLi = "Activado el addon StriLi.",
     },
 };
 end
