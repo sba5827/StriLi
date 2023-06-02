@@ -308,3 +308,16 @@ function table.removeByValue(list, value)
         end
     end
 end
+
+function delayedFunctionCall(delay_s, functionToCall)
+    local timerFrame = CreateFrame("Frame");
+    local time = delay_s;
+
+    timerFrame:SetScript("OnUpdate", function(_, elapsedTime)
+        time = time - elapsedTime;
+        if time < 0.0 then
+            functionToCall();
+            timerFrame:SetScript("OnUpdate", nil);
+        end
+    end)
+end
