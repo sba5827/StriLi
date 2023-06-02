@@ -72,6 +72,7 @@ function StriLi.AutoRollAnalyser:finalize()
     self.timerFrame:SetScript("OnUpdate", nil);
 
     self:sortRolls();
+    self:shoutWinner();
     self:shoutRolls();
     self:increaseWinnerCountAndExpandItemHistory();
 
@@ -102,6 +103,8 @@ function StriLi.AutoRollAnalyser:On_CHAT_MSG_SYSTEM(text)
 end
 
 function StriLi.AutoRollAnalyser:registerRoll(rollType, playername, number)
+
+    if not RaidMembersDB:checkForMember(playername) then return end --if player in ignored list
 
     if self.playerRolled[playername] == nil then
 
@@ -145,7 +148,23 @@ function StriLi.AutoRollAnalyser:sortRolls()
 
 end
 
+function StriLi.AutoRollAnalyser:shoutWinner()
+    local rollType = nil;
+
+    if self.rolls["Main"][1] == nil and self.rolls["Sec"][1] == nil then
+        return;
+    elseif self.rolls["Main"][1] == nil then
+        rollType = "Sec";
+    else
+        rollType = "Main";
+    end
+
+    SendChatMessage(string.format(StriLi.Lang.Rolls.Winner, self.rolls[rollType][1]["Name"], self.item), "RAID");
+
+end
+
 function StriLi.AutoRollAnalyser:shoutRolls()
+    local winnerShout = false;
 
     for k,v in pairs(self.rolls) do
         if k == "Main" then

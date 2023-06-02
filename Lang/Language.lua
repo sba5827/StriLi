@@ -40,6 +40,7 @@ StriLi.Lang = {
         RollCanceled = "Roll canceled.",
         RollAlreadyInProgress = "You have already a roll in progress. To cancel a current roll type",
         RollReassigned = "Edited",
+        Winner = "%s hat potentiell %s gewonnen!",
     },
     TallyMarkTypes = {
         Main = "Main",
@@ -88,6 +89,7 @@ StriLi.Lang = {
         ItemRolltypeChange = "den Strich ändern möchtest?",
     },
     Labels = {
+        Status = "StriLi Status",
         Name = "Name",
         Reregister = "U",
         Main = "Main",
@@ -124,6 +126,9 @@ StriLi.Lang = {
         rightClickText = "|cffff0000RightClick|r Open/Close ItemHistory",
         leftClickText = "|cff1eff00LeftClick|r Open/Close StriLi",
         dragClickText = "|cffccccccLeftClick + Drag|r Move Minimap-Button",
+        master = "",
+        assist = "",
+        hasStriLi = "",
     },
 };
 
@@ -137,8 +142,8 @@ function StriLi.InitLang()
         StriLi.Lang = StriLi_Stub_enGB();
     elseif lang == "esES" then
         StriLi.Lang = StriLi_Stub_esES();
-    else
-        --error("WTF?!");
+    else --default english
+        StriLi.Lang = StriLi_Stub_enGB();
     end
 
 end

@@ -23,11 +23,12 @@ end
 function LabelRowFrame:setColumnContent()
 
     if StriLiOptions["TokenSecList"] then
-        self.Children.Name, self.Children.Reregister, self.Children.Main, self.Children.Sec, self.Children.Token, self.Children.TokenSec, self.Children.Fail = self.frame:GetChildren();
+        self.Children.Status, self.Children.Name, self.Children.Reregister, self.Children.Main, self.Children.Sec, self.Children.Token, self.Children.TokenSec, self.Children.Fail = self.frame:GetChildren();
     else
-        self.Children.Name, self.Children.Reregister, self.Children.Main, self.Children.Sec, self.Children.Token, self.Children.Fail = self.frame:GetChildren();
+        self.Children.Status, self.Children.Name, self.Children.Reregister, self.Children.Main, self.Children.Sec, self.Children.Token, self.Children.Fail = self.frame:GetChildren();
     end
-    
+
+    self.Regions.StatusFS = self.Children.Status:CreateFontString("PlayerStatusLable", "ARTWORK", "GameFontNormal");
     self.Regions.NameFS = self.Children.Name:CreateFontString("PlayerNameLable", "ARTWORK", "GameFontNormal");
     self.Regions.ReregisterFS = self.Children.Reregister:CreateFontString("ReregisterLable", "ARTWORK", "GameFontNormal");
     self.Regions.MainFS = self.Children.Main:CreateFontString("MainLable", "ARTWORK", "GameFontNormal");
@@ -38,6 +39,7 @@ function LabelRowFrame:setColumnContent()
     end
     self.Regions.FailFS = self.Children.Fail:CreateFontString("FailLable", "ARTWORK", "GameFontNormal");
 
+    self.Regions.StatusFS:SetPoint("CENTER", 0, 0);
     self.Regions.NameFS:SetPoint("CENTER", 0, 0);
     self.Regions.ReregisterFS:SetPoint("CENTER", 0, 0);
     self.Regions.MainFS:SetPoint("CENTER", 0, 0);
@@ -48,6 +50,7 @@ function LabelRowFrame:setColumnContent()
     end
     self.Regions.FailFS:SetPoint("CENTER", 0, 0);
 
+    self.Regions.StatusFS:SetText(StriLi.Lang.Labels.Status);
     self.Regions.NameFS:SetText(StriLi.Lang.Labels.Name);
     self.Regions.ReregisterFS:SetText(StriLi.Lang.Labels.Reregister);
     self.Regions.MainFS:SetText(StriLi.Lang.Labels.Main);

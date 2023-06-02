@@ -39,6 +39,7 @@ function StriLi_Stub_deDE() return {
         RollCanceled = "Würfeln abgebrochen.",
         RollAlreadyInProgress = "Es wird schon um ein Item gewürfelt. Um den Vorgang zu unterbrechen tippe",
         RollReassigned = "Bearbeitet",
+        Winner = "%s hat potentiell %s gewonnen!",
     },
     TallyMarkTypes = {
         Main = "Main",
@@ -87,6 +88,7 @@ function StriLi_Stub_deDE() return {
         ItemRolltypeChange = "den Strich ändern möchtest?",
     },
     Labels = {
+        Status = "StriLi Status",
         Name = "Name",
         Reregister = "U",
         Main = "Main",
@@ -115,7 +117,7 @@ function StriLi_Stub_deDE() return {
         LootRules = "Loot Regeln",
     },
     Options = {
-        AutoPromote = "StriLi Master automatisch zum Raid-Assistenten ernennen?.",
+        AutoPromote = "StriLi Master automatisch zum Raid-Assistenten ernennen.",
         TokenSec = "Token Sec Liste.",
         IgnoreGroup = "Gruppe ignorieren",
     },
@@ -123,6 +125,9 @@ function StriLi_Stub_deDE() return {
         rightClickText = "|cffff0000RechtsKlick|r Öffnet/Schließt ItemHistory",
         leftClickText = "|cff1eff00LinksKlick|r Öffnet/Schließt StriLi",
         dragClickText = "|cffccccccLinksKlick + Ziehen|r Minimap-Button bewegen",
+        master = "StriLi-Master.|cffffffff \nHat alle StriLi Berechtigungen. \nKann StriLi-Assistenten ernennen.|r",
+        assist = "StriLi-Assistent.|cffffffff \nKann Ummeldungen eintragen. \nKann Striche manuell anpassen (auch über das Fenster Item Verlauf).|r",
+        hasStriLi = "Hat das Addon StriLi aktiviert.",
     },
 };
 end

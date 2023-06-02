@@ -39,6 +39,7 @@ function StriLi_Stub_esES() return {
         RollCanceled = "Dados cancelados.",
         RollAlreadyInProgress = "Ya se están tirando los dados para un artículo. Para interrumpir el proceso, escriba",
         RollReassigned = "Editado",
+        Winner = "¡%s ha ganado potencialmente %s!",
     },
     TallyMarkTypes = {
         Main = "Principal",
@@ -87,6 +88,7 @@ function StriLi_Stub_esES() return {
         ItemRolltypeChange = "cambiar la carrera?",
     },
     Labels = {
+        Status = "StriLi Estado",
         Name = "Nombre",
         Reregister = "R",
         Main = "Principal",
@@ -123,6 +125,9 @@ function StriLi_Stub_esES() return {
         rightClickText = "|cffff0000RightClick|r Open/Close ItemHistory",
         leftClickText = "|cff1eff00LeftClick|r Open/Close StriLi",
         dragClickText = "|cffccccccLeftClick + Drag|r Move Minimap-Button",
+        master = "Maestro StriLi.|cffffffff \nTiene todos los permisos de StriLi. \nPuede nombrar asistentes StriLi.|r",
+        assist = "Asistente StriLi.|cffffffff \nPuede introducir nuevos registros. \nPuede ajustar los trazos manualmente (también a través de la ventana Historial de artículos).|r",
+        hasStriLi = "Activado el addon StriLi.",
     },
 };
 end
