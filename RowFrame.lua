@@ -1,5 +1,12 @@
 RowFrame = { x_offset = 35, y_offset = -35, height = 30 }
 
+RowFrameStatus_t = {
+    StriLiMaster = 0,
+    StriLiAssist = 1,
+    HasStriLi = 2,
+    None = 3,
+};
+
 function RowFrame:new(o, frameName, parentFrame, posIndex, raidMember)
 
     o = o or {};
@@ -36,9 +43,11 @@ function RowFrame:reInit(_, _, _, posIndex, raidMember)
     self.frame:SetPoint("TOPLEFT", self.parentFrame, "TOPLEFT", self.x_offset, self.y_offset - self.posIndex * self.height);
 
     if self.raidMember[2]["IsStriLiAssist"]:get() then
-        self:UpdateName("¬"..self.raidMember[1]);
+        self:setStatus(RowFrameStatus_t.StriLiAssist);
+
     else
-        self:UpdateName(self.raidMember[1]);
+        self:setStatus(RowFrameStatus_t.None);
+
     end
 
     StriLi_SetTextColorByClass(self.Regions.NameFS, raidMember[2][1]);
@@ -61,15 +70,21 @@ end
 function RowFrame:setColumnContent(charName, charData)
 
     if StriLiOptions["TokenSecList"] then
-        self.Children.Name, self.Children.Reregister, self.Children.Main, self.Children.Sec, self.Children.Token, self.Children.TokenSec, self.Children.Fail = self.frame:GetChildren();
+        self.Children.Status, self.Children.Name, self.Children.Reregister, self.Children.Main, self.Children.Sec, self.Children.Token, self.Children.TokenSec, self.Children.Fail = self.frame:GetChildren();
     else
-        self.Children.Name, self.Children.Reregister, self.Children.Main, self.Children.Sec, self.Children.Token, self.Children.Fail = self.frame:GetChildren();
+        self.Children.Status, self.Children.Name, self.Children.Reregister, self.Children.Main, self.Children.Sec, self.Children.Token, self.Children.Fail = self.frame:GetChildren();
     end
-    
+    self.Children.Status:EnableMouse(true);
     self.Children.Name:EnableMouse(true);
     self.Children.Name:SetScript("OnMouseUp", function(frame, button)
         self:OnMouseUp(frame, button);
     end);
+
+    -- Settingup PlayerStatus
+    self.Regions.StatusFS = self.Children.Status:CreateFontString("PlayerStatus" .. tostring(self.posIndex), "ARTWORK", "GameFontNormal");
+    self.Regions.StatusFS:SetPoint("LEFT", 0, 0);
+    self.Regions.StatusFS:SetPoint("RIGHT", 0, 0);
+    self.Regions.StatusFS:SetText("");
 
     -- Setting Playername
     self.Regions.NameFS = self.Children.Name:CreateFontString("PlayerName" .. tostring(self.posIndex), "ARTWORK", "GameFontNormal");
@@ -273,19 +288,24 @@ function RowFrame:OnValueChanged(sender)
 
     elseif sender == self.raidMember[2]["IsStriLiAssist"] then
         if self.raidMember[2]["IsStriLiAssist"]:get() then
-            self:UpdateName("¬"..self.raidMember[1])
+
+            self:setStatus(RowFrameStatus_t.StriLiAssist);
         elseif UnitName("player") ~= self.raidMember[1] then
             StriLi.CommunicationHandler:checkIfUserHasStriLi(self.raidMember[1], function(hasStriLi)
                 if hasStriLi and StriLi.master:get() ~= self.raidMember[1] then
-                    self:UpdateName("•"..self.raidMember[1]);
+
+                    self:setStatus(RowFrameStatus_t.HasStriLi);
                 elseif hasStriLi and StriLi.master:get() == self.raidMember[1] then
-                    self:UpdateName("®"..self.raidMember[1]);
+
+                    self:setStatus(RowFrameStatus_t.StriLiMaster);
                 else
-                    self:UpdateName(self.raidMember[1]);
+
+                    self:setStatus(RowFrameStatus_t.None);
                 end
             end)
         else
-            self:UpdateName("•"..self.raidMember[1]);
+
+            self:setStatus(RowFrameStatus_t.HasStriLi);
         end
 
     end
@@ -548,5 +568,34 @@ function RowFrame:disableButtons()
     end
 
     self.Regions.ReregisterCB:Disable();
+
+end
+
+function RowFrame:setStatus(status)
+
+    local toolTippText = nil;
+
+    if status == RowFrameStatus_t.HasStriLi then
+        self.Regions.StatusFS:SetText("S");
+        toolTippText = StriLi.Lang.Tooltip.hasStriLi;
+    elseif status == RowFrameStatus_t.StriLiAssist then
+        self.Regions.StatusFS:SetText("A");
+        toolTippText = StriLi.Lang.Tooltip.assist;
+    elseif status == RowFrameStatus_t.StriLiMaster then
+        self.Regions.StatusFS:SetText("M");
+        toolTippText = StriLi.Lang.Tooltip.master;
+    end
+
+    self.Children.Status:SetScript("OnEnter", function()
+        if toolTippText then
+            GameTooltip:SetOwner(self.Children.Status, "ANCHOR_TOP")
+            GameTooltip:AddLine(toolTippText)
+            GameTooltip:Show()
+        end
+    end)
+
+    self.Children.Status:SetScript("OnLeave", function()
+        GameTooltip:Hide()
+    end)
 
 end

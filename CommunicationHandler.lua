@@ -139,8 +139,10 @@ function StriLi.CommunicationHandler:On_MasterChanged(newMaster, sender)
     if (StriLi.master:get() == sender) or (StriLi.master:get() == "") then
         StriLi.master:set(newMaster);
         if newMaster ~= "" then
-            StriLi.MainFrame.rows[sender]:UpdateName("•"..sender);
-            StriLi.MainFrame.rows[newMaster]:UpdateName("®"..newMaster);
+
+            StriLi.MainFrame.rows[sender]:setStatus(RowFrameStatus_t.HasStriLi);
+
+            StriLi.MainFrame.rows[newMaster]:setStatus(RowFrameStatus_t.StriLiMaster);
         end
         if self.waitingForRespond == "SL_RS_CFM" then
             self:stopWaitingForRespondAndSendNextQueuedRequest();

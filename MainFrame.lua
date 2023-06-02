@@ -100,9 +100,9 @@ end
 
 function StriLi.MainFrame:adaptWidth()
     if StriLiOptions["TokenSecList"] then
-        self.frame:SetWidth(625);
+        self.frame:SetWidth(710);
     else
-        self.frame:SetWidth(540);
+        self.frame:SetWidth(625);
     end
 end
 
@@ -194,20 +194,25 @@ function StriLi.MainFrame:addPlayer(raidMember)
 
     if raidMember[1] == StriLi.master:get() then
 
-        self.rows[raidMember[1]]:UpdateName("®"..raidMember[1]);
+
+        self.rows[raidMember[1]]:setStatus(RowFrameStatus_t.StriLiMaster);
 
     else
 
         if UnitName("player") == raidMember[1] and RaidMembersDB:isMemberAssist(UnitName("player")) then
-            self.rows[raidMember[1]]:UpdateName("¬"..raidMember[1]);
+
+            self.rows[raidMember[1]]:setStatus(RowFrameStatus_t.StriLiAssist);
         elseif UnitName("player") == raidMember[1] then
-            self.rows[raidMember[1]]:UpdateName("•"..raidMember[1]);
+
+            self.rows[raidMember[1]]:setStatus(RowFrameStatus_t.HasStriLi);
         else
             StriLi.CommunicationHandler:checkIfUserHasStriLi(raidMember[1], function(userHasStriLi)
                 if userHasStriLi and RaidMembersDB:isMemberAssist(raidMember[1]) then
-                    self.rows[raidMember[1]]:UpdateName("¬"..raidMember[1]);
+
+                    self.rows[raidMember[1]]:setStatus(RowFrameStatus_t.StriLiAssist);
                 elseif userHasStriLi then
-                    self.rows[raidMember[1]]:UpdateName("•"..raidMember[1]);
+
+                    self.rows[raidMember[1]]:setStatus(RowFrameStatus_t.HasStriLi);
                 end
             end);
         end

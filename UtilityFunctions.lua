@@ -59,11 +59,14 @@ function StriLi_tryToSetNewMaster(newMasterName)
                     StriLi.master:set(newMasterName);
                     if newMasterName ~= "" then
                         if RaidMembersDB:isMemberAssist(UnitName("player")) then
-                            StriLi.MainFrame.rows[UnitName("player")]:UpdateName("¬"..UnitName("player"));
+
+                            StriLi.MainFrame.rows[UnitName("player")]:setStatus(RowFrameStatus_t.StriLiAssist);
                         else
-                            StriLi.MainFrame.rows[UnitName("player")]:UpdateName("•"..UnitName("player"));
+
+                            StriLi.MainFrame.rows[UnitName("player")]:setStatus(RowFrameStatus_t.HasStriLi);
                         end
-                        StriLi.MainFrame.rows[newMasterName]:UpdateName("®"..newMasterName);
+
+                        StriLi.MainFrame.rows[newMasterName]:setStatus(RowFrameStatus_t.StriLiMaster);
                     end
                 end
             else
@@ -111,7 +114,8 @@ function StriLi_tryToSetAssist(name)
                 if StriLi.CommunicationHandler:Send_promoteMemberToStriLiAssist(name) then
                     RaidMembersDB:setMemberAsAssist(name);
                     if name ~= "" then
-                        StriLi.MainFrame.rows[name]:UpdateName("¬"..name);
+
+                        StriLi.MainFrame.rows[name]:setStatus(RowFrameStatus_t.StriLiAssist);
                     end
                 end
             else
@@ -303,4 +307,17 @@ function table.removeByValue(list, value)
             return table.remove(list,i);
         end
     end
+end
+
+function delayedFunctionCall(delay_s, functionToCall)
+    local timerFrame = CreateFrame("Frame");
+    local time = delay_s;
+
+    timerFrame:SetScript("OnUpdate", function(_, elapsedTime)
+        time = time - elapsedTime;
+        if time < 0.0 then
+            functionToCall();
+            timerFrame:SetScript("OnUpdate", nil);
+        end
+    end)
 end

@@ -12,6 +12,8 @@ function StriLi.EventHandler:init()
     self.frame:RegisterEvent("ADDON_LOADED");
     self.frame:RegisterEvent("PLAYER_LOGOUT");
     self.frame:RegisterEvent("PARTY_MEMBERS_CHANGED");
+    self.frame:RegisterEvent("PARTY_MEMBER_DISABLE");
+    self.frame:RegisterEvent("PARTY_MEMBER_ENABLE");
     self.frame:RegisterEvent("CHAT_MSG_ADDON");
 
 end
@@ -35,8 +37,9 @@ function StriLi.EventHandler:OnEvent(event, ...)
             versionFrame:Show();
             editBox:SetScript("OnEscapePressed", function(self) versionFrame:Hide() end);
         end
+        delayedFunctionCall(20.0, function () self:OnPartyMembersChanged() end)
         StriLi.startup = false;
-    elseif event == "PARTY_MEMBERS_CHANGED" then
+    elseif event == "PARTY_MEMBERS_CHANGED" or event == "PARTY_MEMBER_DISABLE" or event == "PARTY_MEMBER_ENABLE" then
         self:OnPartyMembersChanged();
     elseif event == "PLAYER_LOGOUT" then
         StriLi_finalizeAddon(); -- Ensures that all important data will be saved
@@ -176,11 +179,14 @@ function StriLi.EventHandler:addNewPlayers()
 
             StriLi.CommunicationHandler:checkIfUserHasStriLi(name, function(userHasStriLi)
                 if userHasStriLi and not (StriLi.master:get() == name) and not RaidMembersDB:isMemberAssist(name) then
-                    StriLi.MainFrame.rows[name]:UpdateName("•"..name);
+
+                    StriLi.MainFrame.rows[name]:setStatus(RowFrameStatus_t.HasStriLi);
                 elseif userHasStriLi and not (StriLi.master:get() == name) and RaidMembersDB:isMemberAssist(name) then
-                    StriLi.MainFrame.rows[name]:UpdateName("¬"..name);
+
+                    StriLi.MainFrame.rows[name]:setStatus(RowFrameStatus_t.StriLiAssist);
                 elseif userHasStriLi and (StriLi.master:get() == name) then
-                    StriLi.MainFrame.rows[name]:UpdateName("®"..name);
+
+                    StriLi.MainFrame.rows[name]:setStatus(RowFrameStatus_t.StriLiMaster);
                 end
             end);
         end
@@ -189,7 +195,7 @@ function StriLi.EventHandler:addNewPlayers()
     if not masterIsInRaid then
 
         if StriLi.MainFrame.rows[StriLi.master:get()] ~= nil then
-            StriLi.MainFrame.rows[StriLi.master:get()]:UpdateName(StriLi.master:get());
+            StriLi.MainFrame.rows[StriLi.master:get()]:setStatus(RowFrameStatus_t.None);
         end
 
         StriLi.master:set("");
