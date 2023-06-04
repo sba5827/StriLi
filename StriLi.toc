@@ -5,7 +5,7 @@
 ## Notes: Supports Lootmaster in the standard loot system via tally sheets by providing an in-game tally sheet and automated roll detection. For info about commands /sl help. For more information visit the StriLi github page.
 ## SavedVariablesPerCharacter:  
 ## SavedVariables: StriLi_Master, StriLi_LatestVersion, StriLi_RaidMembersDB_members, StriLi_newRaidGroup, StriLi_ItemHistory, StriLi_RulesTxt, StriLiOptions, StriLiDB
-## Version: 3.13
+## Version: 3.14
 
 #@no-lib-strip@
 Libs\LibStub\LibStub.lua
