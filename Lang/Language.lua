@@ -121,6 +121,7 @@ StriLi.Lang = {
         AutoPromote = "Auto promote StriLi master to raid assist.",
         TokenSec = "Token sec list.",
         IgnoreGroup = "Ignore group",
+        WhisperTallyMarks = "Strichliste an Raidmember flüstern wenn du per Whisper gefragt wirst?",
     },
     Tooltip = {
         rightClickText = "|cffff0000RightClick|r Open/Close ItemHistory",

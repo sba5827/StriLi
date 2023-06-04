@@ -142,6 +142,8 @@ function StriLi_GetPlayerRank(playerName)
         end
     end
 
+    return -1;
+
 end
 
 function StriLi_GetRaidIndexOfPlayer(playerName)
@@ -280,7 +282,14 @@ function StriLi_initAddon()
         StriLiOptions = {
             ["AutoPromote"] = false,
             ["TokenSecList"] = false,
+            ["WhisperTallyMarks"] = true,
         };
+    elseif StriLiOptions.AutoPromote == nil then
+        StriLiOptions.AutoPromote = false;
+    elseif StriLiOptions.TokenSecList == nil then
+        StriLiOptions.TokenSecList = false
+    elseif StriLiOptions.WhisperTallyMarks == nil then
+        StriLiOptions.WhisperTallyMarks = true;
     end
 
     StriLi.LootRules:setText(StriLi_RulesTxt);

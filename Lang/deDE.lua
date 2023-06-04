@@ -120,6 +120,7 @@ function StriLi_Stub_deDE() return {
         AutoPromote = "StriLi Master automatisch zum Raid-Assistenten ernennen.",
         TokenSec = "Token Sec Liste.",
         IgnoreGroup = "Gruppe ignorieren",
+        WhisperTallyMarks = "Strichliste an Raidmember flüstern wenn du per Whisper gefragt wirst?",
     },
     Tooltip = {
         rightClickText = "|cffff0000RechtsKlick|r Öffnet/Schließt ItemHistory",

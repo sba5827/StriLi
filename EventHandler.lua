@@ -15,6 +15,7 @@ function StriLi.EventHandler:init()
     self.frame:RegisterEvent("PARTY_MEMBER_DISABLE");
     self.frame:RegisterEvent("PARTY_MEMBER_ENABLE");
     self.frame:RegisterEvent("CHAT_MSG_ADDON");
+    self.frame:RegisterEvent("CHAT_MSG_WHISPER");
 
 end
 
@@ -47,6 +48,8 @@ function StriLi.EventHandler:OnEvent(event, ...)
         self.chatMsgSystem_cbFnc(...);
     elseif event == "CHAT_MSG_ADDON" then
         StriLi.CommunicationHandler:On_CHAT_MSG_ADDON(...);
+    elseif event == "CHAT_MSG_WHISPER" then
+        self:OnWhisper(...);
     end
 
 end
@@ -251,4 +254,20 @@ function StriLi.EventHandler:addNewPlayers()
 
     end
 
+end
+
+function StriLi.EventHandler:OnWhisper(...)
+    local message, author = arg1, arg2;
+    message = string.lower(message);
+
+    if RaidMembersDB:checkForMember(author) and StriLi_GetPlayerRank(author) > -1 and StriLiOptions.WhisperTallyMarks then
+        if  string.match(message,"%s*strich") and not string.match(message,"%S+strich") or
+            string.match(message,"%s*stroke") and not string.match(message,"%S+stroke") or
+            string.match(message,"%s*tally mark") and not string.match(message,"%S+tally mark") or
+            string.match(message,"%s*strili") and not string.match(message,"%S+strili") or
+            string.match(message,"%s*trazo") and not string.match(message,"%S+trazo")
+        then
+            RaidMembersDB:postAllDataAsWhisper(author);
+        end
+    end
 end

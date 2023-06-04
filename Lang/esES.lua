@@ -120,6 +120,7 @@ function StriLi_Stub_esES() return {
         AutoPromote = "Ascenso automático del maestro StriLi a asistente de incursión.",
         TokenSec = "Lista Token sec.",
         IgnoreGroup = "Ignorar grupo",
+        WhisperTallyMarks = "¿Susurrar una lista de recuento a los miembros de la incursión cuando se les pide por susurro?",
     },
     Tooltip = {
         rightClickText = "|cffff0000RightClick|r Open/Close ItemHistory",

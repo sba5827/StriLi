@@ -141,6 +141,12 @@ function RaidMembersDB:postAllDataToRaid()
     end
 end
 
+function RaidMembersDB:postAllDataAsWhisper(receiver)
+    for name, v in pairs(self.raidMembers) do
+        SendChatMessage(name.." || "..StriLi.Lang.TallyMarkTypes.Main..": "..v["Main"]:get().." "..StriLi.Lang.TallyMarkTypes.Sec..": "..v["Sec"]:get().." "..StriLi.Lang.TallyMarkTypes.Token..": "..v["Token"]:get().." "..StriLi.Lang.TallyMarkTypes.TokenSec..": "..v["TokenSec"]:get().." "..StriLi.Lang.TallyMarkTypes.Fail..": "..v["Fail"]:get(), "WHISPER", nil, receiver);
+    end
+end
+
 function RaidMembersDB:postNamesOfUnluckyPlayers()
 
     local playerNamesString = CONSTS.msgColorStringStart.."StriLi: "..StriLi.Lang.Commands.PlayersGotLoot..": "
