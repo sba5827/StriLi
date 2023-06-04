@@ -120,6 +120,7 @@ function StriLi_Stub_enGB() return {
         AutoPromote = "Auto promote StriLi master to raid assist.",
         TokenSec = "Token sec list.",
         IgnoreGroup = "Ignore group",
+        WhisperTallyMarks = "Whispering a tally list to raidmembers when asked via whisper?",
     },
     Tooltip = {
         rightClickText = "|cffff0000RightClick|r Open/Close ItemHistory",
