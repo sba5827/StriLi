@@ -61,6 +61,7 @@ local functionTable = {};
 for line in _lines do
 	local bIsLocal, sFunctionName = getFunctionName(line);
 	if bIsLocal ~= nil then
+		sFunctionName = sFunctionName:gsub(':','_'):gsub('%.','_');
 		table.insert(functionTable, {["bLocal"]=bIsLocal, ["name"]=sFunctionName});
 		print(string.format("local: %s, name: %s", tostring(bIsLocal), tostring(sFunctionName)));
 	end

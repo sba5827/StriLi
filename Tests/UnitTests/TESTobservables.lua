@@ -16,7 +16,7 @@ require("Fakeobservables");
 
 --------------------------------------------------End of Setup Code--------------------------------------------------
 
-function TEST_Observable:new()
+function TEST_Observable_new()
 	UnitTest_vStartTest();
 
 	--Test1
@@ -25,7 +25,7 @@ function TEST_Observable:new()
 	UnitTest_vFinishTest();
 end
 
-function TEST_Observable:registerObserver()
+function TEST_Observable_registerObserver()
 	UnitTest_vStartTest();
 
 	--Test1
@@ -34,7 +34,7 @@ function TEST_Observable:registerObserver()
 	UnitTest_vFinishTest();
 end
 
-function TEST_Observable:unregisterObserver()
+function TEST_Observable_unregisterObserver()
 	UnitTest_vStartTest();
 
 	--Test1
@@ -43,7 +43,7 @@ function TEST_Observable:unregisterObserver()
 	UnitTest_vFinishTest();
 end
 
-function TEST_Observable:notify()
+function TEST_Observable_notify()
 	UnitTest_vStartTest();
 
 	--Test1
@@ -52,7 +52,7 @@ function TEST_Observable:notify()
 	UnitTest_vFinishTest();
 end
 
-function TEST_Observable:set()
+function TEST_Observable_set()
 	UnitTest_vStartTest();
 
 	--Test1
@@ -61,7 +61,7 @@ function TEST_Observable:set()
 	UnitTest_vFinishTest();
 end
 
-function TEST_Observable:get()
+function TEST_Observable_get()
 	UnitTest_vStartTest();
 
 	--Test1
@@ -70,7 +70,7 @@ function TEST_Observable:get()
 	UnitTest_vFinishTest();
 end
 
-function TEST_ObservableNumber:new()
+function TEST_ObservableNumber_new()
 	UnitTest_vStartTest();
 
 	--Test1
@@ -79,7 +79,7 @@ function TEST_ObservableNumber:new()
 	UnitTest_vFinishTest();
 end
 
-function TEST_ObservableNumber:add()
+function TEST_ObservableNumber_add()
 	UnitTest_vStartTest();
 
 	--Test1
@@ -88,7 +88,7 @@ function TEST_ObservableNumber:add()
 	UnitTest_vFinishTest();
 end
 
-function TEST_ObservableNumber:sub()
+function TEST_ObservableNumber_sub()
 	UnitTest_vStartTest();
 
 	--Test1
@@ -97,7 +97,7 @@ function TEST_ObservableNumber:sub()
 	UnitTest_vFinishTest();
 end
 
-function TEST_ObservableNumber:mul()
+function TEST_ObservableNumber_mul()
 	UnitTest_vStartTest();
 
 	--Test1
@@ -106,7 +106,7 @@ function TEST_ObservableNumber:mul()
 	UnitTest_vFinishTest();
 end
 
-function TEST_ObservableNumber:divBy()
+function TEST_ObservableNumber_divBy()
 	UnitTest_vStartTest();
 
 	--Test1
@@ -115,7 +115,7 @@ function TEST_ObservableNumber:divBy()
 	UnitTest_vFinishTest();
 end
 
-function TEST_ObservableString:new()
+function TEST_ObservableString_new()
 	UnitTest_vStartTest();
 
 	--Test1
@@ -124,7 +124,7 @@ function TEST_ObservableString:new()
 	UnitTest_vFinishTest();
 end
 
-function TEST_ObservableBool:new()
+function TEST_ObservableBool_new()
 	UnitTest_vStartTest();
 
 	--Test1
@@ -134,17 +134,17 @@ function TEST_ObservableBool:new()
 end
 
 UnitTest_vSetupTests();
-TEST_Observable:new();
-TEST_Observable:registerObserver();
-TEST_Observable:unregisterObserver();
-TEST_Observable:notify();
-TEST_Observable:set();
-TEST_Observable:get();
-TEST_ObservableNumber:new();
-TEST_ObservableNumber:add();
-TEST_ObservableNumber:sub();
-TEST_ObservableNumber:mul();
-TEST_ObservableNumber:divBy();
-TEST_ObservableString:new();
-TEST_ObservableBool:new();
+TEST_Observable_new();
+TEST_Observable_registerObserver();
+TEST_Observable_unregisterObserver();
+TEST_Observable_notify();
+TEST_Observable_set();
+TEST_Observable_get();
+TEST_ObservableNumber_new();
+TEST_ObservableNumber_add();
+TEST_ObservableNumber_sub();
+TEST_ObservableNumber_mul();
+TEST_ObservableNumber_divBy();
+TEST_ObservableString_new();
+TEST_ObservableBool_new();
 UnitTest_vFinalizeTests();

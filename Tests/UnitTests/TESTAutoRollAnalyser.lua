@@ -7,6 +7,7 @@ package.path:gsub("Framework","FakedFiles")..
 package.path:gsub("Tests\\Framework","Lang");
 -------------------------------------Define setup code here for fake files here--------------------------------------
 StriLi = {};
+
 --------------------------------------------------End of Setup Code--------------------------------------------------
 
 require("BlizzardFakes");
@@ -15,12 +16,13 @@ require("Language");
 require("UnitTest");
 require("FakeAutoRollAnalyser");
 
+
 -----------------------------------------Define generel Test setup code here-----------------------------------------
-TEST_StriLi = {AutoRollAnalyser = {}};
 StriLi.InitLang();
+
 --------------------------------------------------End of Setup Code--------------------------------------------------
 
-function TEST_StriLi.AutoRollAnalyser:setItemID()
+function TEST_StriLi_AutoRollAnalyser_setItemID()
 	UnitTest_vStartTest();
 
 	--Test1
@@ -41,7 +43,7 @@ function TEST_StriLi.AutoRollAnalyser:setItemID()
 	UnitTest_vFinishTest();
 end
 
-function TEST_StriLi.AutoRollAnalyser:setTimeForRolls()
+function TEST_StriLi_AutoRollAnalyser_setTimeForRolls()
 	UnitTest_vStartTest();
 
 	--Test1
@@ -66,7 +68,7 @@ function TEST_StriLi.AutoRollAnalyser:setTimeForRolls()
 	UnitTest_vFinishTest();
 end
 
-function TEST_StriLi.AutoRollAnalyser:setItem()
+function TEST_StriLi_AutoRollAnalyser_setItem()
 	UnitTest_vStartTest();
 
 	--Test1
@@ -75,7 +77,7 @@ function TEST_StriLi.AutoRollAnalyser:setItem()
 	UnitTest_vFinishTest();
 end
 
-function TEST_StriLi.AutoRollAnalyser:getRollInProgress()
+function TEST_StriLi_AutoRollAnalyser_getRollInProgress()
 	UnitTest_vStartTest();
 
 	--Test1
@@ -84,7 +86,7 @@ function TEST_StriLi.AutoRollAnalyser:getRollInProgress()
 	UnitTest_vFinishTest();
 end
 
-function TEST_StriLi.AutoRollAnalyser:start()
+function TEST_StriLi_AutoRollAnalyser_start()
 	UnitTest_vStartTest();
 
 	--Test1
@@ -93,7 +95,7 @@ function TEST_StriLi.AutoRollAnalyser:start()
 	UnitTest_vFinishTest();
 end
 
-function TEST_StriLi.AutoRollAnalyser:finalize()
+function TEST_StriLi_AutoRollAnalyser_finalize()
 	UnitTest_vStartTest();
 
 	--Test1
@@ -102,7 +104,7 @@ function TEST_StriLi.AutoRollAnalyser:finalize()
 	UnitTest_vFinishTest();
 end
 
-function TEST_StriLi.AutoRollAnalyser:cancelRoll()
+function TEST_StriLi_AutoRollAnalyser_cancelRoll()
 	UnitTest_vStartTest();
 
 	--Test1
@@ -111,7 +113,7 @@ function TEST_StriLi.AutoRollAnalyser:cancelRoll()
 	UnitTest_vFinishTest();
 end
 
-function TEST_StriLi.AutoRollAnalyser:On_CHAT_MSG_SYSTEM()
+function TEST_StriLi_AutoRollAnalyser_On_CHAT_MSG_SYSTEM()
 	UnitTest_vStartTest();
 
 	--Test1
@@ -120,7 +122,7 @@ function TEST_StriLi.AutoRollAnalyser:On_CHAT_MSG_SYSTEM()
 	UnitTest_vFinishTest();
 end
 
-function TEST_StriLi.AutoRollAnalyser:registerRoll()
+function TEST_StriLi_AutoRollAnalyser_registerRoll()
 	UnitTest_vStartTest();
 
 	--Test1
@@ -129,7 +131,7 @@ function TEST_StriLi.AutoRollAnalyser:registerRoll()
 	UnitTest_vFinishTest();
 end
 
-function TEST_StriLi.AutoRollAnalyser:isNHToken()
+function TEST_StriLi_AutoRollAnalyser_isNHToken()
 	UnitTest_vStartTest();
 
 	--Test1
@@ -138,7 +140,7 @@ function TEST_StriLi.AutoRollAnalyser:isNHToken()
 	UnitTest_vFinishTest();
 end
 
-function TEST_StriLi.AutoRollAnalyser:sortRolls()
+function TEST_StriLi_AutoRollAnalyser_sortRolls()
 	UnitTest_vStartTest();
 
 	--Test1
@@ -147,7 +149,7 @@ function TEST_StriLi.AutoRollAnalyser:sortRolls()
 	UnitTest_vFinishTest();
 end
 
-function TEST_StriLi.AutoRollAnalyser:shoutWinner()
+function TEST_StriLi_AutoRollAnalyser_shoutWinner()
 	UnitTest_vStartTest();
 
 	--Test1
@@ -156,7 +158,7 @@ function TEST_StriLi.AutoRollAnalyser:shoutWinner()
 	UnitTest_vFinishTest();
 end
 
-function TEST_StriLi.AutoRollAnalyser:shoutRolls()
+function TEST_StriLi_AutoRollAnalyser_shoutRolls()
 	UnitTest_vStartTest();
 
 	--Test1
@@ -165,7 +167,7 @@ function TEST_StriLi.AutoRollAnalyser:shoutRolls()
 	UnitTest_vFinishTest();
 end
 
-function TEST_StriLi.AutoRollAnalyser:increaseWinnerCountAndExpandItemHistory()
+function TEST_StriLi_AutoRollAnalyser_increaseWinnerCountAndExpandItemHistory()
 	UnitTest_vStartTest();
 
 	--Test1
@@ -175,18 +177,18 @@ function TEST_StriLi.AutoRollAnalyser:increaseWinnerCountAndExpandItemHistory()
 end
 
 UnitTest_vSetupTests();
-TEST_StriLi.AutoRollAnalyser:setItemID();
-TEST_StriLi.AutoRollAnalyser:setTimeForRolls();
-TEST_StriLi.AutoRollAnalyser:setItem();
-TEST_StriLi.AutoRollAnalyser:getRollInProgress();
-TEST_StriLi.AutoRollAnalyser:start();
-TEST_StriLi.AutoRollAnalyser:finalize();
-TEST_StriLi.AutoRollAnalyser:cancelRoll();
-TEST_StriLi.AutoRollAnalyser:On_CHAT_MSG_SYSTEM();
-TEST_StriLi.AutoRollAnalyser:registerRoll();
-TEST_StriLi.AutoRollAnalyser:isNHToken();
-TEST_StriLi.AutoRollAnalyser:sortRolls();
-TEST_StriLi.AutoRollAnalyser:shoutWinner();
-TEST_StriLi.AutoRollAnalyser:shoutRolls();
-TEST_StriLi.AutoRollAnalyser:increaseWinnerCountAndExpandItemHistory();
+TEST_StriLi_AutoRollAnalyser_setItemID();
+TEST_StriLi_AutoRollAnalyser_setTimeForRolls();
+TEST_StriLi_AutoRollAnalyser_setItem();
+TEST_StriLi_AutoRollAnalyser_getRollInProgress();
+TEST_StriLi_AutoRollAnalyser_start();
+TEST_StriLi_AutoRollAnalyser_finalize();
+TEST_StriLi_AutoRollAnalyser_cancelRoll();
+TEST_StriLi_AutoRollAnalyser_On_CHAT_MSG_SYSTEM();
+TEST_StriLi_AutoRollAnalyser_registerRoll();
+TEST_StriLi_AutoRollAnalyser_isNHToken();
+TEST_StriLi_AutoRollAnalyser_sortRolls();
+TEST_StriLi_AutoRollAnalyser_shoutWinner();
+TEST_StriLi_AutoRollAnalyser_shoutRolls();
+TEST_StriLi_AutoRollAnalyser_increaseWinnerCountAndExpandItemHistory();
 UnitTest_vFinalizeTests();
