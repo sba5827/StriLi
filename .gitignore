@@ -3,3 +3,4 @@
 /.idea
 /Libs
 *.lua.bak
+/Tests/Outputs
