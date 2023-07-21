@@ -7,7 +7,6 @@ package.path:gsub("Framework","FakedFiles")..
 package.path:gsub("Tests\\Framework","Lang");
 -------------------------------------Define setup code here for fake files here--------------------------------------
 StriLi = {};
-
 --------------------------------------------------End of Setup Code--------------------------------------------------
 
 require("BlizzardFakes");
@@ -16,10 +15,8 @@ require("Language");
 require("UnitTest");
 require("FakeAutoRollAnalyser");
 
-
 -----------------------------------------Define generel Test setup code here-----------------------------------------
 StriLi.InitLang();
-
 --------------------------------------------------End of Setup Code--------------------------------------------------
 
 function TEST_StriLi_AutoRollAnalyser_setItemID()
