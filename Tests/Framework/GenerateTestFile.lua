@@ -119,3 +119,26 @@ end
 
 io.output(file):write(content);
 file:close();
+
+file = io.open('../RunAllTestsGitHub.bat', 'r');
+local content = file:read'*a';
+file:close();
+
+local bLineExists = (content:find(sFileName)) and true or false;
+
+file = io.open('../RunAllTestsGitHub.bat', 'w+');
+
+if not bLineExists then
+	if content:find("pause") then
+		content = content:gsub("pause", string.format("lua54.exe ../UnitTests/TEST%s.lua\npause", sFileName));
+	else
+		content = content..string.format("\nlua54.exe ../UnitTests/TEST%s.lua\npause", sFileName);
+	end
+else
+	if not content:find("pause") then
+		content = content.."\npause";
+	end
+end
+
+io.output(file):write(content);
+file:close();
