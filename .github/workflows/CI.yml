@@ -33,13 +33,8 @@ jobs:
     
       - name: Check for Test fails 
         run: |
-        find /c "faild" ./Tests/Outputs/TESTAutoRollAnalyser_OUT.txt >NUL
-        if %errorlevel% equ 1 goto notfound
-            echo found
-        goto done
-        :notfound
-            echo "::warning::notfound"
-        goto done
-        :done
-        
-        
+          IF (Select-String -Pattern 'faild' -Path .\Tests\Outputs\*.txt ) {
+            throw "test faild"
+          } ELSE {
+            echo "::info::test ok"
+          }
