@@ -163,7 +163,20 @@ function TEST_StriLi_AutoRollAnalyser_finalize()
 	UnitTest_vStartTest();
 
 	--Test1
-	UnitTest_vTestAssert(false);
+	UnitTest_vExpectFunctionCall("StriLi.EventHandler.disable_CHAT_MSG_SYSTEM_event");
+	UnitTest_vExpectFunctionCall("StriLi.AutoRollAnalyser.sortRolls");
+	UnitTest_vExpectFunctionCall("StriLi.AutoRollAnalyser.shoutWinner");
+	UnitTest_vExpectFunctionCall("StriLi.AutoRollAnalyser.shoutRolls");
+	UnitTest_vExpectFunctionCall("StriLi.AutoRollAnalyser.increaseWinnerCountAndExpandItemHistory");
+	StriLi.AutoRollAnalyser:finalize();
+	UnitTest_vTestAssertFunctionCall("StriLi.EventHandler.disable_CHAT_MSG_SYSTEM_event");
+	UnitTest_vTestAssertFunctionCall("StriLi.AutoRollAnalyser.sortRolls");
+	UnitTest_vTestAssertFunctionCall("StriLi.AutoRollAnalyser.shoutWinner");
+	UnitTest_vTestAssertFunctionCall("StriLi.AutoRollAnalyser.shoutRolls");
+	UnitTest_vTestAssertFunctionCall("StriLi.AutoRollAnalyser.increaseWinnerCountAndExpandItemHistory");
+	UnitTest_vTestAssert(StriLi.AutoRollAnalyser.timerFrame.OnUpdate == nil);
+	UnitTest_vTestAssert(StriLi.AutoRollAnalyser.rollInProgress == false);
+	
 
 	UnitTest_vFinishTest();
 end
@@ -172,7 +185,12 @@ function TEST_StriLi_AutoRollAnalyser_cancelRoll()
 	UnitTest_vStartTest();
 
 	--Test1
-	UnitTest_vTestAssert(false);
+	StriLi.AutoRollAnalyser.rollInProgress = true;
+	UnitTest_vExpectFunctionCall("StriLi.EventHandler.disable_CHAT_MSG_SYSTEM_event");
+	StriLi.AutoRollAnalyser:cancelRoll();
+	UnitTest_vTestAssertFunctionCall("StriLi.EventHandler.disable_CHAT_MSG_SYSTEM_event");
+	UnitTest_vTestAssert(StriLi.AutoRollAnalyser.timerFrame.OnUpdate == nil);
+	UnitTest_vTestAssert(StriLi.AutoRollAnalyser.rollInProgress == false);
 
 	UnitTest_vFinishTest();
 end
