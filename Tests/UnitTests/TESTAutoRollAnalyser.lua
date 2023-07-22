@@ -18,6 +18,10 @@ require("FakeEventHandler");
 
 -----------------------------------------Define generel Test setup code here-----------------------------------------
 StriLi.InitLang();
+StriLi.EventHandler:init();
+local function fakeOnUpdateCall(frame, elapsed)
+	frame:OnUpdate(elapsed);
+end
 --------------------------------------------------End of Setup Code--------------------------------------------------
 
 function TEST_StriLi_AutoRollAnalyser_setItemID()
@@ -99,18 +103,62 @@ end
 
 function TEST_StriLi_AutoRollAnalyser_start()
 	UnitTest_vStartTest();
+	local tModule = StriLi.AutoRollAnalyser;
 
-	--Test1
+	--Test1 Test initialization
+	StriLi.AutoRollAnalyser:setTimeForRolls(10)
 	StriLi.AutoRollAnalyser:start()
 	UnitTest_vTestAssert(type(GetLastChatMessage()) == "string");
 	UnitTest_vTestAssert(GetLastChatMessageType() == "RAID_WARNING");
-	UnitTest_vTestAssert(StriLi.AutoRollAnalyser.rollInProgress == true);
-	UnitTest_vTestAssert(StriLi.AutoRollAnalyser.rolls["Main"][1] == nil);
-	UnitTest_vTestAssert(StriLi.AutoRollAnalyser.rolls["Sec"][1] == nil);
-	UnitTest_vTestAssert(StriLi.AutoRollAnalyser.playerRolled[1] == nil);
-	UnitTest_vTestAssert(StriLi.AutoRollAnalyser.warn1Done == false);
-	UnitTest_vTestAssert(StriLi.AutoRollAnalyser.warn2Done == false);
-	UnitTest_vTestAssert(StriLi.AutoRollAnalyser.warn3Done == false);
+	UnitTest_vTestAssert(tModule.rollInProgress == true);
+	UnitTest_vTestAssert(tModule.rolls["Main"][1] == nil);
+	UnitTest_vTestAssert(tModule.rolls["Sec"][1] == nil);
+	UnitTest_vTestAssert(tModule.playerRolled[1] == nil);
+	UnitTest_vTestAssert(tModule.warn1Done == false);
+	UnitTest_vTestAssert(tModule.warn2Done == false);
+	UnitTest_vTestAssert(tModule.warn3Done == false);
+	
+	--Test2 Test OnUpdateFunction
+	fakeOnUpdateCall(tModule.timerFrame, 7.0);
+	UnitTest_vTestAssert(tModule.time == 3.0);
+	UnitTest_vTestAssert(tModule.warn3Done == false);
+	
+	fakeOnUpdateCall(tModule.timerFrame, 1.0);
+	UnitTest_vTestAssert(tModule.time == 2.0);
+	UnitTest_vTestAssert(tModule.warn3Done == true);
+	UnitTest_vTestAssert(GetLastChatMessage() == "3");
+	UnitTest_vTestAssert(GetLastChatMessageType() == "RAID_WARNING");
+	UnitTest_vTestAssert(tModule.warn2Done == false);
+	
+	fakeOnUpdateCall(tModule.timerFrame, 1.0);
+	UnitTest_vTestAssert(tModule.time == 1.0);
+	UnitTest_vTestAssert(tModule.warn3Done == true);
+	UnitTest_vTestAssert(tModule.warn2Done == true);
+	UnitTest_vTestAssert(GetLastChatMessage() == "2");
+	UnitTest_vTestAssert(GetLastChatMessageType() == "RAID_WARNING");
+	UnitTest_vTestAssert(tModule.warn1Done == false);
+	
+	fakeOnUpdateCall(tModule.timerFrame, 1.0);
+	UnitTest_vTestAssert(tModule.time == 0.0);
+	UnitTest_vTestAssert(tModule.warn3Done == true);
+	UnitTest_vTestAssert(tModule.warn2Done == true);
+	UnitTest_vTestAssert(tModule.warn1Done == true);
+	UnitTest_vTestAssert(GetLastChatMessage() == "1");
+	UnitTest_vTestAssert(GetLastChatMessageType() == "RAID_WARNING");
+	
+	local fBackupFunction = tModule.finalize;
+	local bFunctionWasCalled = false;
+	tModule.finalize = function(self) bFunctionWasCalled = true end
+	fakeOnUpdateCall(tModule.timerFrame, 1.0);
+	UnitTest_vTestAssert(tModule.time == -1.0);
+	UnitTest_vTestAssert(tModule.warn3Done == true);
+	UnitTest_vTestAssert(tModule.warn2Done == true);
+	UnitTest_vTestAssert(tModule.warn1Done == true);
+	UnitTest_vTestAssert(GetLastChatMessage() == "---");
+	UnitTest_vTestAssert(GetLastChatMessageType() == "RAID_WARNING");
+	UnitTest_vTestAssert(bFunctionWasCalled);
+	
+	tModule.finalize = fBackupFunction;
 
 	UnitTest_vFinishTest();
 end
