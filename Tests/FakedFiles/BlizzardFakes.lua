@@ -38,3 +38,22 @@ end
 function LibStub()
 	return {NewAddon = function() return {} end};
 end
+
+local sLastMsg, sLastMsgType;
+
+function SendChatMessage(msg ,chatType ,language ,channel);
+
+	assert(type(msg) == "string");
+	
+	sLastMsg = msg;
+	sLastMsgType = chatType;
+	
+end
+
+function GetLastChatMessage()
+	return sLastMsg;
+end
+
+function GetLastChatMessageType()
+	return sLastMsgType;
+end

@@ -6,7 +6,7 @@ package.path = package.path..
 package.path:gsub("Framework","FakedFiles")..
 package.path:gsub("Tests\\Framework","Lang");
 -------------------------------------Define setup code here for fake files here--------------------------------------
-StriLi = {};
+
 --------------------------------------------------End of Setup Code--------------------------------------------------
 
 require("BlizzardFakes");
@@ -14,6 +14,7 @@ require("enGB");
 require("Language");
 require("UnitTest");
 require("FakeAutoRollAnalyser");
+require("FakeEventHandler");
 
 -----------------------------------------Define generel Test setup code here-----------------------------------------
 StriLi.InitLang();
@@ -69,7 +70,15 @@ function TEST_StriLi_AutoRollAnalyser_setItem()
 	UnitTest_vStartTest();
 
 	--Test1
-	UnitTest_vTestAssert(false);
+	StriLi.AutoRollAnalyser:setItem("itemString");
+	UnitTest_vTestAssert(StriLi.AutoRollAnalyser.item == "itemString");
+	
+	--Test2
+	StriLi.AutoRollAnalyser.rollInProgress = true;
+	StriLi.AutoRollAnalyser:setItem("itemString2");
+	UnitTest_vTestAssert(StriLi.AutoRollAnalyser.item == "itemString");
+	
+	StriLi.AutoRollAnalyser.rollInProgress = false;
 
 	UnitTest_vFinishTest();
 end
@@ -78,7 +87,12 @@ function TEST_StriLi_AutoRollAnalyser_getRollInProgress()
 	UnitTest_vStartTest();
 
 	--Test1
-	UnitTest_vTestAssert(false);
+	StriLi.AutoRollAnalyser.rollInProgress = true;
+	UnitTest_vTestAssert(StriLi.AutoRollAnalyser:getRollInProgress());
+	
+	--Test2
+	StriLi.AutoRollAnalyser.rollInProgress = false;
+	UnitTest_vTestAssert(not StriLi.AutoRollAnalyser:getRollInProgress());
 
 	UnitTest_vFinishTest();
 end
@@ -87,7 +101,16 @@ function TEST_StriLi_AutoRollAnalyser_start()
 	UnitTest_vStartTest();
 
 	--Test1
-	UnitTest_vTestAssert(false);
+	StriLi.AutoRollAnalyser:start()
+	UnitTest_vTestAssert(type(GetLastChatMessage()) == "string");
+	UnitTest_vTestAssert(GetLastChatMessageType() == "RAID_WARNING");
+	UnitTest_vTestAssert(StriLi.AutoRollAnalyser.rollInProgress == true);
+	UnitTest_vTestAssert(StriLi.AutoRollAnalyser.rolls["Main"][1] == nil);
+	UnitTest_vTestAssert(StriLi.AutoRollAnalyser.rolls["Sec"][1] == nil);
+	UnitTest_vTestAssert(StriLi.AutoRollAnalyser.playerRolled[1] == nil);
+	UnitTest_vTestAssert(StriLi.AutoRollAnalyser.warn1Done == false);
+	UnitTest_vTestAssert(StriLi.AutoRollAnalyser.warn2Done == false);
+	UnitTest_vTestAssert(StriLi.AutoRollAnalyser.warn3Done == false);
 
 	UnitTest_vFinishTest();
 end
