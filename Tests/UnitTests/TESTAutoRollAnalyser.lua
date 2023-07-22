@@ -146,9 +146,7 @@ function TEST_StriLi_AutoRollAnalyser_start()
 	UnitTest_vTestAssert(GetLastChatMessage() == "1");
 	UnitTest_vTestAssert(GetLastChatMessageType() == "RAID_WARNING");
 	
-	local fBackupFunction = tModule.finalize;
-	local bFunctionWasCalled = false;
-	tModule.finalize = function(self) bFunctionWasCalled = true end
+	UnitTest_vExpectFunctionCall("StriLi.AutoRollAnalyser.finalize");
 	fakeOnUpdateCall(tModule.timerFrame, 1.0);
 	UnitTest_vTestAssert(tModule.time == -1.0);
 	UnitTest_vTestAssert(tModule.warn3Done == true);
@@ -156,9 +154,7 @@ function TEST_StriLi_AutoRollAnalyser_start()
 	UnitTest_vTestAssert(tModule.warn1Done == true);
 	UnitTest_vTestAssert(GetLastChatMessage() == "---");
 	UnitTest_vTestAssert(GetLastChatMessageType() == "RAID_WARNING");
-	UnitTest_vTestAssert(bFunctionWasCalled);
-	
-	tModule.finalize = fBackupFunction;
+	UnitTest_vTestAssertFunctionCall("StriLi.AutoRollAnalyser.finalize");
 
 	UnitTest_vFinishTest();
 end

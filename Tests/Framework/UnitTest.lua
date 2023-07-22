@@ -64,3 +64,70 @@ function UnitTest_vTestAssert(bCondition, sMessage)
 		nAllTestSucceedCount = nAllTestSucceedCount + 1;
 	end 
 end
+
+local bFunctionCalled = false;
+local fBackupFunction = nil;
+
+string.split = function(inputstr, sep)
+   if sep == nil then
+      sep = "%s"
+   end
+   local t={}
+   for str in string.gmatch(inputstr, "([^"..sep.."]+)") do
+      table.insert(t, str)
+   end
+   return t
+end
+
+function UnitTest_vExpectFunctionCall(sFnc)
+	assert(type(sFnc) == "string");
+	local StringTable = string.split(sFnc, '.');
+	local nKeyCount = 0
+	local fFakeFunct = function() bFunctionCalled = true end;
+	
+	for k, v in pairs(StringTable) do
+		nKeyCount = k;
+	end
+	
+	if nKeyCount == 1 then
+		fBackupFunction = _G[StringTable[1]];
+		_G[StringTable[1]] = fFakeFunct;
+	elseif nKeyCount == 2 then
+		fBackupFunction = _G[StringTable[1]][StringTable[2]];
+		_G[StringTable[1]][StringTable[2]] = fFakeFunct;
+	elseif nKeyCount == 3 then
+		fBackupFunction = _G[StringTable[1]][StringTable[2]][StringTable[3]];
+		_G[StringTable[1]][StringTable[2]][StringTable[3]] = fFakeFunct;
+	elseif nKeyCount == 4 then
+		fBackupFunction = _G[StringTable[1]][StringTable[2]][StringTable[3]][StringTable[4]];
+		_G[StringTable[1]][StringTable[2]][StringTable[3]][StringTable[4]] = fFakeFunct;
+	else
+		assert(false, "function stack too deep");
+	end
+	
+	bFunctionCalled = false;
+end
+
+function UnitTest_vTestAssertFunctionCall(sFnc)
+	assert(type(sFnc) == "string");
+	local StringTable = string.split(sFnc, '.');
+	local nKeyCount = 0
+	
+	for k, v in pairs(StringTable) do
+		nKeyCount = k;
+	end
+	
+	if nKeyCount == 1 then
+		_G[StringTable[1]] = fBackupFunction;
+	elseif nKeyCount == 2 then
+		_G[StringTable[1]][StringTable[2]] = fBackupFunction;
+	elseif nKeyCount == 3 then
+		_G[StringTable[1]][StringTable[2]][StringTable[3]] = fBackupFunction;
+	elseif nKeyCount == 4 then
+		_G[StringTable[1]][StringTable[2]][StringTable[3]][StringTable[4]] = fBackupFunction;
+	else
+		assert(false, "function stack too deep");
+	end
+	
+	UnitTest_vTestAssert(bFunctionCalled, "Expected function was not called!");
+end
