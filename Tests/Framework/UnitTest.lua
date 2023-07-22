@@ -65,8 +65,8 @@ function UnitTest_vTestAssert(bCondition, sMessage)
 	end 
 end
 
-local bFunctionCalled = false;
-local fBackupFunction = nil;
+local bFunctionCalled = {};
+local fBackupFunction = {};
 
 string.split = function(inputstr, sep)
    if sep == nil then
@@ -83,29 +83,29 @@ function UnitTest_vExpectFunctionCall(sFnc)
 	assert(type(sFnc) == "string");
 	local StringTable = string.split(sFnc, '.');
 	local nKeyCount = 0
-	local fFakeFunct = function() bFunctionCalled = true end;
+	local fFakeFunct = function() bFunctionCalled[sFnc] = true end;
 	
 	for k, v in pairs(StringTable) do
 		nKeyCount = k;
 	end
 	
 	if nKeyCount == 1 then
-		fBackupFunction = _G[StringTable[1]];
+		fBackupFunction[sFnc] = _G[StringTable[1]];
 		_G[StringTable[1]] = fFakeFunct;
 	elseif nKeyCount == 2 then
-		fBackupFunction = _G[StringTable[1]][StringTable[2]];
+		fBackupFunction[sFnc] = _G[StringTable[1]][StringTable[2]];
 		_G[StringTable[1]][StringTable[2]] = fFakeFunct;
 	elseif nKeyCount == 3 then
-		fBackupFunction = _G[StringTable[1]][StringTable[2]][StringTable[3]];
+		fBackupFunction[sFnc] = _G[StringTable[1]][StringTable[2]][StringTable[3]];
 		_G[StringTable[1]][StringTable[2]][StringTable[3]] = fFakeFunct;
 	elseif nKeyCount == 4 then
-		fBackupFunction = _G[StringTable[1]][StringTable[2]][StringTable[3]][StringTable[4]];
+		fBackupFunction[sFnc] = _G[StringTable[1]][StringTable[2]][StringTable[3]][StringTable[4]];
 		_G[StringTable[1]][StringTable[2]][StringTable[3]][StringTable[4]] = fFakeFunct;
 	else
 		assert(false, "function stack too deep");
 	end
 	
-	bFunctionCalled = false;
+	bFunctionCalled[sFnc] = false;
 end
 
 function UnitTest_vTestAssertFunctionCall(sFnc)
@@ -118,16 +118,16 @@ function UnitTest_vTestAssertFunctionCall(sFnc)
 	end
 	
 	if nKeyCount == 1 then
-		_G[StringTable[1]] = fBackupFunction;
+		_G[StringTable[1]] = fBackupFunction[sFnc];
 	elseif nKeyCount == 2 then
-		_G[StringTable[1]][StringTable[2]] = fBackupFunction;
+		_G[StringTable[1]][StringTable[2]] = fBackupFunction[sFnc];
 	elseif nKeyCount == 3 then
-		_G[StringTable[1]][StringTable[2]][StringTable[3]] = fBackupFunction;
+		_G[StringTable[1]][StringTable[2]][StringTable[3]] = fBackupFunction[sFnc];
 	elseif nKeyCount == 4 then
-		_G[StringTable[1]][StringTable[2]][StringTable[3]][StringTable[4]] = fBackupFunction;
+		_G[StringTable[1]][StringTable[2]][StringTable[3]][StringTable[4]] = fBackupFunction[sFnc];
 	else
 		assert(false, "function stack too deep");
 	end
 	
-	UnitTest_vTestAssert(bFunctionCalled, "Expected function was not called!");
+	UnitTest_vTestAssert(bFunctionCalled[sFnc], "Expected function was not called!");
 end
