@@ -165,19 +165,18 @@ end
 
 function StriLi.AutoRollAnalyser:shoutRolls()
     local winnerShout = false;
-
-    for k,v in pairs(self.rolls) do
-        if k == "Main" then
-            SendChatMessage("---"..StriLi.Lang.TallyMarkTypes.Main.."---", "RAID");
-        else
-            SendChatMessage("---"..StriLi.Lang.TallyMarkTypes.Sec.."---", "RAID");
-        end
-
-        for _,v2 in ipairs(v) do
-            local s = v2["Name"].." || "..StriLi.Lang.Rolls.TallyMarks..": "..v2["Count"].." || "..StriLi.Lang.Rolls.Fails..": "..v2["Fail"].." || "..StriLi.Lang.Rolls.Roll..": "..v2["Roll"];
-            SendChatMessage(s, "RAID");
-        end
-    end
+	
+	SendChatMessage("---"..StriLi.Lang.TallyMarkTypes.Main.."---", "RAID");
+	for _,v2 in ipairs(self.rolls["Main"]) do
+		local s = v2["Name"].." || "..StriLi.Lang.Rolls.TallyMarks..": "..v2["Count"].." || "..StriLi.Lang.Rolls.Fails..": "..v2["Fail"].." || "..StriLi.Lang.Rolls.Roll..": "..v2["Roll"];
+		SendChatMessage(s, "RAID");
+	end
+	
+	SendChatMessage("---"..StriLi.Lang.TallyMarkTypes.Sec.."---", "RAID");
+	for _,v2 in ipairs(self.rolls["Sec"]) do
+		local s = v2["Name"].." || "..StriLi.Lang.Rolls.TallyMarks..": "..v2["Count"].." || "..StriLi.Lang.Rolls.Fails..": "..v2["Fail"].." || "..StriLi.Lang.Rolls.Roll..": "..v2["Roll"];
+		SendChatMessage(s, "RAID");
+	end
 
 end
 

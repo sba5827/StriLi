@@ -15,6 +15,11 @@ require("Language");
 require("UnitTest");
 require("FakeAutoRollAnalyser");
 require("FakeEventHandler");
+require("FakeUtilityFunctions");
+require("Fakeobservables");
+require("FakeRaidMembersDB");
+require("FakeItemHistory");
+require("FakeCommunicationHandler");
 
 -----------------------------------------Define generel Test setup code here-----------------------------------------
 StriLi.InitLang();
@@ -22,6 +27,8 @@ StriLi.EventHandler:init();
 local function fakeOnUpdateCall(frame, elapsed)
 	frame:OnUpdate(elapsed);
 end
+
+local tModule = StriLi.AutoRollAnalyser;
 --------------------------------------------------End of Setup Code--------------------------------------------------
 
 function TEST_StriLi_AutoRollAnalyser_setItemID()
@@ -103,7 +110,6 @@ end
 
 function TEST_StriLi_AutoRollAnalyser_start()
 	UnitTest_vStartTest();
-	local tModule = StriLi.AutoRollAnalyser;
 
 	--Test1 Test initialization
 	StriLi.AutoRollAnalyser:setTimeForRolls(10)
@@ -191,15 +197,47 @@ function TEST_StriLi_AutoRollAnalyser_cancelRoll()
 	UnitTest_vTestAssertFunctionCall("StriLi.EventHandler.disable_CHAT_MSG_SYSTEM_event");
 	UnitTest_vTestAssert(StriLi.AutoRollAnalyser.timerFrame.OnUpdate == nil);
 	UnitTest_vTestAssert(StriLi.AutoRollAnalyser.rollInProgress == false);
+	
+	--Test2
+	StriLi.AutoRollAnalyser.rollInProgress = false;
+	StriLi.AutoRollAnalyser:cancelRoll();
+	UnitTest_vTestAssert(StriLi.AutoRollAnalyser.timerFrame.OnUpdate == nil);
+	UnitTest_vTestAssert(StriLi.AutoRollAnalyser.rollInProgress == false);
 
 	UnitTest_vFinishTest();
 end
 
 function TEST_StriLi_AutoRollAnalyser_On_CHAT_MSG_SYSTEM()
 	UnitTest_vStartTest();
+	
+	--generel setup
+	RaidMembersDB:add("Player", "HUNTER");
 
-	--Test1
-	UnitTest_vTestAssert(false);
+	--Test1	
+	StriLi.AutoRollAnalyser:On_CHAT_MSG_SYSTEM("Player Würfelt. Ergebniss: 89 (1-100)");
+	UnitTest_vTestAssert(tModule.rolls["Main"][1]["Roll"] == 89);
+	UnitTest_vTestAssert(tModule.rolls["Main"][1]["Name"] == "Player");
+
+	--Test2
+	StriLi.AutoRollAnalyser:On_CHAT_MSG_SYSTEM("Player Würfelt. Ergebniss: 99 (1-100)");
+	UnitTest_vTestAssert(tModule.rolls["Main"][2] == nil);
+	
+	--Test3
+	StriLi.AutoRollAnalyser:On_CHAT_MSG_SYSTEM("Player2 Würfelt. Ergebniss: 99 (1-100)");
+	UnitTest_vTestAssert(tModule.rolls["Main"][2] == nil);
+	
+	--Test3
+	RaidMembersDB:add("Player2", "HUNTER");
+	StriLi.AutoRollAnalyser:On_CHAT_MSG_SYSTEM("Player2 Würfelt. Ergebniss: 12 (1-99)");
+	UnitTest_vTestAssert(tModule.rolls["Sec"][1]["Roll"] == 12);
+	UnitTest_vTestAssert(tModule.rolls["Sec"][1]["Name"] == "Player2");
+	
+	--Test3
+	RaidMembersDB:add("Player3", "HUNTER");
+	tModule:setItemID(52025);
+	StriLi.AutoRollAnalyser:On_CHAT_MSG_SYSTEM("Player3 Würfelt. Ergebniss: 1 (1-100)");
+	UnitTest_vTestAssert(tModule.rolls["Main"][2]["Roll"] == 1);
+	UnitTest_vTestAssert(tModule.rolls["Main"][2]["Name"] == "Player3");
 
 	UnitTest_vFinishTest();
 end
@@ -207,8 +245,8 @@ end
 function TEST_StriLi_AutoRollAnalyser_registerRoll()
 	UnitTest_vStartTest();
 
-	--Test1
-	UnitTest_vTestAssert(false);
+	--already fully tested by TEST_StriLi_AutoRollAnalyser_On_CHAT_MSG_SYSTEM
+	UnitTest_vTestAssert(true);
 
 	UnitTest_vFinishTest();
 end
@@ -217,7 +255,24 @@ function TEST_StriLi_AutoRollAnalyser_isNHToken()
 	UnitTest_vStartTest();
 
 	--Test1
-	UnitTest_vTestAssert(false);
+	tModule.itemID = 52025;
+	UnitTest_vTestAssert(StriLi.AutoRollAnalyser:isNHToken() == true);
+	
+	--Test2
+	tModule.itemID = 52026;
+	UnitTest_vTestAssert(StriLi.AutoRollAnalyser:isNHToken() == true);
+	
+	--Test3
+	tModule.itemID = 52027;
+	UnitTest_vTestAssert(StriLi.AutoRollAnalyser:isNHToken() == true);
+	
+	--Test4
+	tModule.itemID = 0;
+	UnitTest_vTestAssert(StriLi.AutoRollAnalyser:isNHToken() == false);
+	
+	--Test5
+	tModule.itemID = 256650521;
+	UnitTest_vTestAssert(StriLi.AutoRollAnalyser:isNHToken() == false);
 
 	UnitTest_vFinishTest();
 end
@@ -225,8 +280,37 @@ end
 function TEST_StriLi_AutoRollAnalyser_sortRolls()
 	UnitTest_vStartTest();
 
-	--Test1
-	UnitTest_vTestAssert(false);
+	--Test1: 3 Players Without any Tallymarks Sortet Main Rolls
+	RaidMembersDB:add("One", "HUNTER");
+	RaidMembersDB:add("Two", "HUNTER");
+	RaidMembersDB:add("Three", "HUNTER");
+	
+	-- Reset Data
+	tModule.rolls = {["Main"] = {}, ["Sec"] = {}};
+    tModule.playerRolled = {}; 
+	
+	tModule:registerRoll("Main", "One", 13)
+	tModule:registerRoll("Main", "Two", 1)
+	tModule:registerRoll("Main", "Three", 79)
+	tModule:sortRolls()
+	UnitTest_vTestAssert(tModule.rolls["Main"][1]["Roll"] == 79, "Roll1 was:".. tostring(tModule.rolls["Main"][1]["Roll"]));
+	UnitTest_vTestAssert(tModule.rolls["Main"][2]["Roll"] == 13, "Roll2 was:".. tostring(tModule.rolls["Main"][2]["Roll"]));
+	UnitTest_vTestAssert(tModule.rolls["Main"][3]["Roll"] == 1, "Roll3 was:".. tostring(tModule.rolls["Main"][3]["Roll"]));
+
+	--Test2: 3 Players with Tallymarks Sortet Main Rolls
+	RaidMembersDB:get("One")["Main"]:set(1);
+	
+	-- Reset Data
+	tModule.rolls = {["Main"] = {}, ["Sec"] = {}};
+    tModule.playerRolled = {}; 
+	
+	tModule:registerRoll("Main", "One", 13)
+	tModule:registerRoll("Main", "Two", 13)
+	tModule:registerRoll("Main", "Three", 1)
+	tModule:sortRolls()
+	UnitTest_vTestAssert(tModule.rolls["Main"][1]["Roll"] == 13, "Roll1 was:".. tostring(tModule.rolls["Main"][1]["Roll"]));
+	UnitTest_vTestAssert(tModule.rolls["Main"][2]["Roll"] == 1, "Roll2 was:".. tostring(tModule.rolls["Main"][2]["Roll"]));
+	UnitTest_vTestAssert(tModule.rolls["Main"][3]["Roll"] == 13, "Roll3 was:".. tostring(tModule.rolls["Main"][3]["Roll"]));
 
 	UnitTest_vFinishTest();
 end
@@ -235,7 +319,33 @@ function TEST_StriLi_AutoRollAnalyser_shoutWinner()
 	UnitTest_vStartTest();
 
 	--Test1
-	UnitTest_vTestAssert(false);
+	-- Reseting RaidMembersDB
+	RaidMembersDB.raidMembers = {};
+	RaidMembersDB.size = 0;
+	
+	--Adding Players
+	RaidMembersDB:add("One", "HUNTER");
+	RaidMembersDB:add("Two", "HUNTER");
+	RaidMembersDB:add("Three", "HUNTER");
+	
+	-- Reset Data
+	tModule.rolls = {["Main"] = {}, ["Sec"] = {}};
+    tModule.playerRolled = {}; 
+	
+	-- Setup Test
+	tModule:setItem("TESTITEMSTRING")
+	tModule:registerRoll("Main", "One", 100)
+	tModule:registerRoll("Main", "Two", 40)
+	tModule:registerRoll("Main", "Three", 50)
+	tModule:sortRolls()
+	
+	-- Call funcction under Test
+	tModule:shoutWinner();
+	
+	-- Verify Result
+	UnitTest_vTestAssert(GetLastChatMessageType() == "RAID");
+	UnitTest_vTestAssert(GetLastChatMessage():find("One") ~= nil);
+	UnitTest_vTestAssert(GetLastChatMessage():find("TESTITEMSTRING") ~= nil);
 
 	UnitTest_vFinishTest();
 end
@@ -244,7 +354,35 @@ function TEST_StriLi_AutoRollAnalyser_shoutRolls()
 	UnitTest_vStartTest();
 
 	--Test1
-	UnitTest_vTestAssert(false);
+	-- Reseting RaidMembersDB
+	RaidMembersDB.raidMembers = {};
+	RaidMembersDB.size = 0;
+	
+	-- Adding Players
+	RaidMembersDB:add("One", "HUNTER");
+	RaidMembersDB:add("Two", "HUNTER");
+	RaidMembersDB:add("Three", "HUNTER");
+	
+	-- Reset Data
+	tModule.rolls = {};
+	tModule.rolls["Main"] = {};
+	tModule.rolls["Sec"] = {};
+    tModule.playerRolled = {}; 
+	
+	-- Setup Test
+	tModule:setItem("TESTITEMSTRING")
+	tModule:registerRoll("Sec", "One", 100)
+	tModule:registerRoll("Sec", "Two", 40)
+	tModule:registerRoll("Sec", "Three", 50)
+	tModule:sortRolls()
+	
+	-- Call funcction under Test
+	tModule:shoutRolls();
+	
+	-- Verify Result
+	UnitTest_vTestAssert(GetLastChatMessageType() == "RAID");
+	UnitTest_vTestAssert(GetLastChatMessage():find("Two") ~= nil, GetLastChatMessage());
+	UnitTest_vTestAssert(GetLastChatMessage():find("40") ~= nil);
 
 	UnitTest_vFinishTest();
 end
@@ -252,8 +390,40 @@ end
 function TEST_StriLi_AutoRollAnalyser_increaseWinnerCountAndExpandItemHistory()
 	UnitTest_vStartTest();
 
-	--Test1
-	UnitTest_vTestAssert(false);
+		--Test1
+	-- Reseting RaidMembersDB
+	RaidMembersDB.raidMembers = {};
+	RaidMembersDB.size = 0;
+	
+	-- Adding Players
+	RaidMembersDB:add("One", "HUNTER");
+	RaidMembersDB:add("Two", "HUNTER");
+	RaidMembersDB:add("Three", "HUNTER");
+	
+	-- Reset Data
+	tModule.rolls = {};
+	tModule.rolls["Main"] = {};
+	tModule.rolls["Sec"] = {};
+    tModule.playerRolled = {}; 
+	
+	-- Setup Test
+	tModule:setItem("TESTITEMSTRING")
+	tModule:registerRoll("Sec", "One", 100)
+	tModule:registerRoll("Sec", "Two", 40)
+	tModule:registerRoll("Sec", "Three", 50)
+	tModule:sortRolls()
+	
+	-- Expected subfunction calls
+	UnitTest_vExpectFunctionCall("StriLi.ItemHistory.add");
+	UnitTest_vExpectFunctionCall("StriLi.CommunicationHandler.Send_ItemHistoryAdd");
+	
+	-- Call funcction under Test
+	tModule:increaseWinnerCountAndExpandItemHistory();
+	
+	-- Verify Result
+	UnitTest_vTestAssert(RaidMembersDB:get("One")["Sec"]:get() == 1);
+	UnitTest_vTestAssertFunctionCall("StriLi.ItemHistory.add");
+	UnitTest_vTestAssertFunctionCall("StriLi.CommunicationHandler.Send_ItemHistoryAdd");
 
 	UnitTest_vFinishTest();
 end
