@@ -64,6 +64,8 @@ function RaidMembersDB:remove(name, forced)
     if self.raidMembers[name] ~= nil then
         self.raidMembers[name] = nil;
         self.size = self.size - 1;
+    else
+        return false;
     end
 
     return true;

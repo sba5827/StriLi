@@ -51,9 +51,11 @@ function RowFrame:reInit(_, _, _, posIndex, raidMember)
     end
 
     StriLi_SetTextColorByClass(self.Regions.NameFS, raidMember[2][1]);
+    self:UpdateName(raidMember[1]);
     self:UpdateMainCounter(self.raidMember[2]["Main"]:get());
     self:UpdateSecCounter(self.raidMember[2]["Sec"]:get());
     self:UpdateTokenCounter(self.raidMember[2]["Token"]:get());
+    self:UpdateTokenSecCounter(self.raidMember[2]["TokenSec"]:get());
     self:UpdateFailCounter(self.raidMember[2]["Fail"]:get());
     self:UpdateReregister(self.raidMember[2]["Reregister"]:get());
 

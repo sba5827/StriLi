@@ -242,11 +242,11 @@ function StriLi.MainFrame:removePlayer(raidMemberName, forced)
 
     if self.rows[raidMemberName] ~= nil then
 
-        if RaidMembersDB:checkForMember(UnitName("player")) then
-            RaidMembersDB:get(UnitName("player"))["IsStriLiAssist"]:unregisterObserver(self);
+        if RaidMembersDB:checkForMember(raidMemberName) then
+            RaidMembersDB:get(raidMemberName)["IsStriLiAssist"]:unregisterObserver(self);
         end
 
-        RaidMembersDB:remove(raidMemberName, forced);
+        assert(RaidMembersDB:remove(raidMemberName, forced));
 
         table.removeByValue(self.nameTable, raidMemberName);
 
