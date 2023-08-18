@@ -14,6 +14,7 @@ CONSTS = protect({
     nextLinePatern = "([^\n]*)\n?(.*)",
     msgColorStringStart = "|cffFFFF00",
     msgColorStringEnd = "|r",
+    striLiMsgFlag = "|cffFFFF00<|r|cff33FFF2StriLi|r|cffFFFF00>|r ",
 });
 
 function StriLi_isPlayerMaster()

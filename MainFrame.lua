@@ -234,7 +234,7 @@ function StriLi.MainFrame:removePlayer(raidMemberName, forced)
             local _, _, _, _, _, _, _, online = GetRaidRosterInfo(raidMemberIndex);
 
             if online then
-                print (CONSTS.msgColorStringStart.."StriLi: "..StriLi.Lang.ErrorMsg.RemoveOnlineRaidmember.."|r");
+                print (CONSTS.striLiMsgFlag..CONSTS.msgColorStringStart..StriLi.Lang.ErrorMsg.RemoveOnlineRaidmember.."|r");
                 return;
             end
         end

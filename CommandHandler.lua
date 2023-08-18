@@ -16,20 +16,20 @@ SlashCmdList["STRILI"] = function(msg, _)
 
         if ( t == "c" ) then
             if not StriLi.AutoRollAnalyser:getRollInProgress() then
-                print(CONSTS.msgColorStringStart.."StriLi: "..StriLi.Lang.Rolls.NoRollToCancel.."|r");
+                print(CONSTS.striLiMsgFlag..CONSTS.msgColorStringStart..StriLi.Lang.Rolls.NoRollToCancel.."|r");
                 return;
             elseif not inRaid then
-                print(CONSTS.msgColorStringStart.."StriLi: "..StriLi.Lang.Commands.InvalideNotInRaid.."|r");
+                print(CONSTS.striLiMsgFlag..CONSTS.msgColorStringStart..StriLi.Lang.Commands.InvalideNotInRaid.."|r");
                 return;
             end
 
             StriLi.AutoRollAnalyser:cancelRoll();
-            print(CONSTS.msgColorStringStart.."StriLi: "..StriLi.Lang.Rolls.RollCanceled.."|r");
+            print(CONSTS.striLiMsgFlag..CONSTS.msgColorStringStart..StriLi.Lang.Rolls.RollCanceled.."|r");
             return;
 
         elseif (t == "h") or (t == "help")then
 
-            print(CONSTS.msgColorStringStart.."StriLi: "..StriLi.Lang.Commands.AvailableCommands..":|r");
+            print(CONSTS.striLiMsgFlag..CONSTS.msgColorStringStart..StriLi.Lang.Commands.AvailableCommands..":|r");
             print(CONSTS.msgColorStringStart.."/sl h|r");
             print(CONSTS.msgColorStringStart.."/sl help|r");
             print(CONSTS.msgColorStringStart.."/sl <"..StriLi.Lang.Commands.TimeInSec.."> <Item>|r");
@@ -61,7 +61,7 @@ SlashCmdList["STRILI"] = function(msg, _)
                 if inRaid then
                     RaidMembersDB:postAllDataToRaid();
                 elseif inRaid then
-                    print(CONSTS.msgColorStringStart.."StriLi: "..StriLi.Lang.Commands.InvalideNotInRaid.."|r");
+                    print(CONSTS.striLiMsgFlag..CONSTS.msgColorStringStart..StriLi.Lang.Commands.InvalideNotInRaid.."|r");
                     return;
                 end
             elseif args == "itemless" then
@@ -69,10 +69,10 @@ SlashCmdList["STRILI"] = function(msg, _)
             elseif args == "rules" then
 
                 if not inRaid then
-                    print(CONSTS.msgColorStringStart.."StriLi: "..StriLi.Lang.Commands.InvalideNotInRaid.."|r");
+                    print(CONSTS.striLiMsgFlag..CONSTS.msgColorStringStart..StriLi.Lang.Commands.InvalideNotInRaid.."|r");
                     return;
                 elseif StriLi_GetPlayerRank(UnitName("player")) < 1 then
-                    print(CONSTS.msgColorStringStart.."StriLi: "..StriLi.Lang.Commands.NoPermRankToLow.."|r");
+                    print(CONSTS.striLiMsgFlag..CONSTS.msgColorStringStart..StriLi.Lang.Commands.NoPermRankToLow.."|r");
                     return;
                 end
                 StriLi.LootRules:postToRaid();
@@ -87,25 +87,25 @@ SlashCmdList["STRILI"] = function(msg, _)
             return;
         else
 
-            print (CONSTS.msgColorStringStart.."StriLi: "..StriLi.Lang.Commands.FirstArgNum.."|r");
+            print (CONSTS.striLiMsgFlag..CONSTS.msgColorStringStart..StriLi.Lang.Commands.FirstArgNum.."|r");
             return;
 
         end
     end
 
 	if not inRaid then
-		print(CONSTS.msgColorStringStart.."StriLi: "..StriLi.Lang.Commands.InvalideNotInRaid.."|r");
+		print(CONSTS.striLiMsgFlag..CONSTS.msgColorStringStart..StriLi.Lang.Commands.InvalideNotInRaid.."|r");
 		return;
     elseif not StriLi_isPlayerMaster() then
-        print(CONSTS.msgColorStringStart.."StiLi: "..StriLi.Lang.Commands.YourNotMaster.."|r");
+        print(CONSTS.striLiMsgFlag..CONSTS.msgColorStringStart..StriLi.Lang.Commands.YourNotMaster.."|r");
         return;
     elseif StriLi_GetPlayerRank(UnitName("player")) < 1 then
-        print(CONSTS.msgColorStringStart.."StriLi: "..StriLi.Lang.Commands.NoPermRankToLow.."|r");
+        print(CONSTS.striLiMsgFlag..CONSTS.msgColorStringStart..StriLi.Lang.Commands.NoPermRankToLow.."|r");
         return;
     end
 
     if StriLi.AutoRollAnalyser:getRollInProgress() then
-        print (CONSTS.msgColorStringStart.."StriLi: "..StriLi.Lang.Rolls.RollAlreadyInProgress.." '/sl c'.|r");
+        print (CONSTS.striLiMsgFlag..CONSTS.msgColorStringStart..StriLi.Lang.Rolls.RollAlreadyInProgress.." '/sl c'.|r");
         return;
     end
 
