@@ -218,10 +218,12 @@ function RowFrame:UpdateTokenCounter(count)
 end
 
 function RowFrame:UpdateTokenSecCounter(count)
-    self.Regions.TokenSecCounterFS:SetText(tostring(count));
-    StriLi_ColorCounterCell(self.Children.TokenSec, count, true);
-    if not StriLi.CommunicationHandler.requestedSyncAsMaster then
-        StriLi.CommunicationHandler:sendDataChanged(self:getName():gsub('%®', ''):gsub('%•', ''):gsub('%¬', ''), "TokenSec", count, false);
+    if self.Regions.TokenSecCounterFS then
+        self.Regions.TokenSecCounterFS:SetText(tostring(count));
+        StriLi_ColorCounterCell(self.Children.TokenSec, count, true);
+        if not StriLi.CommunicationHandler.requestedSyncAsMaster then
+            StriLi.CommunicationHandler:sendDataChanged(self:getName():gsub('%®', ''):gsub('%•', ''):gsub('%¬', ''), "TokenSec", count, false);
+        end
     end
 end
 
@@ -586,6 +588,9 @@ function RowFrame:setStatus(status)
     elseif status == RowFrameStatus_t.StriLiMaster then
         self.Regions.StatusFS:SetText("M");
         toolTippText = StriLi.Lang.Tooltip.master;
+    else
+        self.Regions.StatusFS:SetText("");
+        toolTippText = nil;
     end
 
     self.Children.Status:SetScript("OnEnter", function()
