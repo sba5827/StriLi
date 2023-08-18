@@ -431,8 +431,9 @@ function RowFrame:initDropdownMenu(frame, level, menuList)
 
             local confirmFrame = ConfirmDialogFrame:new(nil, StriLi.Lang.Confirm.AreYouSureTo.." "..playerName.." "..StriLi.Lang.Confirm.Remove,
                     function()
-                        self.removeFnc(playerName);
-                        StriLi.CommunicationHandler:sendMemberRemoved(playerName);
+                        if self.removeFnc(playerName) then
+                            StriLi.CommunicationHandler:sendMemberRemoved(playerName);
+                        end
                     end,
                     nil);
 
