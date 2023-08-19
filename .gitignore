@@ -5,3 +5,4 @@
 *.lua.bak
 /Tests/Outputs
 Fake*.lua
+*.zip
