@@ -168,7 +168,7 @@ function StriLi.ItemHistory:remove(index)
             if raidMember[self.rollTypes[index]]:get() > 0 then
                 raidMember[self.rollTypes[index]]:sub(1);
             else
-                print(string.format(CONSTS.msgColorStringStart.."StriLi: "..StriLi.Lang.ErrorMsg.ItemRemoveFailed..CONSTS.msgColorStringEnd, self.players[index]));
+                print(string.format(CONSTS.striLiMsgFlag..CONSTS.msgColorStringStart..StriLi.Lang.ErrorMsg.ItemRemoveFailed..CONSTS.msgColorStringEnd, self.players[index]));
                 return;
             end
         end
@@ -222,11 +222,11 @@ function StriLi.ItemHistory:editRollType(rollType, index)
             raidMember[self.rollTypes[index]]:sub(1);
             raidMember[rollType]:add(1);
         else
-            print(string.format(CONSTS.msgColorStringStart.."StriLi: "..StriLi.Lang.ErrorMsg.ItemRolltypeChangeFailed..CONSTS.msgColorStringEnd, self.rollTypes[index], rollType, self.players[index], self.rollTypes[index]));
+            print(string.format(CONSTS.striLiMsgFlag..CONSTS.msgColorStringStart..StriLi.Lang.ErrorMsg.ItemRolltypeChangeFailed..CONSTS.msgColorStringEnd, self.rollTypes[index], rollType, self.players[index], self.rollTypes[index]));
             return;
         end
     else
-        print(string.format(CONSTS.msgColorStringStart.."StriLi: "..StriLi.Lang.ErrorMsg.ItemRolltypeChangeFailed2..CONSTS.msgColorStringEnd, self.rollTypes[index], rollType, self.players[index]));
+        print(string.format(CONSTS.striLiMsgFlag..CONSTS.msgColorStringStart..StriLi.Lang.ErrorMsg.ItemRolltypeChangeFailed2..CONSTS.msgColorStringEnd, self.rollTypes[index], rollType, self.players[index]));
         return;
     end
 
@@ -254,7 +254,7 @@ function StriLi.ItemHistory:editPlayer(player, playerClass, index)
             RaidMembersDB:get(oldOwner)[self.rollTypes[index]]:sub(1);
             RaidMembersDB:get(player)[self.rollTypes[index]]:add(1);
         else
-            print(string.format(CONSTS.msgColorStringStart.."StriLi: "..StriLi.Lang.ErrorMsg.ItemReassignFailed..CONSTS.msgColorStringEnd, player, oldOwner));
+            print(string.format(CONSTS.striLiMsgFlag..CONSTS.msgColorStringStart..StriLi.Lang.ErrorMsg.ItemReassignFailed..CONSTS.msgColorStringEnd, player, oldOwner));
             return;
         end
     else

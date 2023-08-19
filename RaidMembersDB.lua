@@ -55,7 +55,7 @@ function RaidMembersDB:remove(name, forced)
             local _, _, _, _, _, _, _, online = GetRaidRosterInfo(raidMemberIndex);
 
             if online then
-                print (CONSTS.msgColorStringStart.."StriLi: "..StriLi.Lang.ErrorMsg.RemoveOnlineRaidmember.."|r");
+                print (CONSTS.striLiMsgFlag..CONSTS.msgColorStringStart..StriLi.Lang.ErrorMsg.RemoveOnlineRaidmember.."|r");
                 return false;
             end
         end
@@ -64,6 +64,8 @@ function RaidMembersDB:remove(name, forced)
     if self.raidMembers[name] ~= nil then
         self.raidMembers[name] = nil;
         self.size = self.size - 1;
+    else
+        return false;
     end
 
     return true;
@@ -149,7 +151,7 @@ end
 
 function RaidMembersDB:postNamesOfUnluckyPlayers()
 
-    local playerNamesString = CONSTS.msgColorStringStart.."StriLi: "..StriLi.Lang.Commands.PlayersGotLoot..": "
+    local playerNamesString = CONSTS.striLiMsgFlag..CONSTS.msgColorStringStart..StriLi.Lang.Commands.PlayersGotLoot..": "
 
     for name, v in pairs(self.raidMembers) do
         if v["Main"]:get() == 0 and v["Sec"]:get() == 0 and v["Token"]:get() == 0 and v["TokenSec"]:get() == 0 then

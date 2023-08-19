@@ -51,9 +51,11 @@ function RowFrame:reInit(_, _, _, posIndex, raidMember)
     end
 
     StriLi_SetTextColorByClass(self.Regions.NameFS, raidMember[2][1]);
+    self:UpdateName(raidMember[1]);
     self:UpdateMainCounter(self.raidMember[2]["Main"]:get());
     self:UpdateSecCounter(self.raidMember[2]["Sec"]:get());
     self:UpdateTokenCounter(self.raidMember[2]["Token"]:get());
+    self:UpdateTokenSecCounter(self.raidMember[2]["TokenSec"]:get());
     self:UpdateFailCounter(self.raidMember[2]["Fail"]:get());
     self:UpdateReregister(self.raidMember[2]["Reregister"]:get());
 
@@ -216,10 +218,12 @@ function RowFrame:UpdateTokenCounter(count)
 end
 
 function RowFrame:UpdateTokenSecCounter(count)
-    self.Regions.TokenSecCounterFS:SetText(tostring(count));
-    StriLi_ColorCounterCell(self.Children.TokenSec, count, true);
-    if not StriLi.CommunicationHandler.requestedSyncAsMaster then
-        StriLi.CommunicationHandler:sendDataChanged(self:getName():gsub('%®', ''):gsub('%•', ''):gsub('%¬', ''), "TokenSec", count, false);
+    if self.Regions.TokenSecCounterFS then
+        self.Regions.TokenSecCounterFS:SetText(tostring(count));
+        StriLi_ColorCounterCell(self.Children.TokenSec, count, true);
+        if not StriLi.CommunicationHandler.requestedSyncAsMaster then
+            StriLi.CommunicationHandler:sendDataChanged(self:getName():gsub('%®', ''):gsub('%•', ''):gsub('%¬', ''), "TokenSec", count, false);
+        end
     end
 end
 
@@ -427,8 +431,9 @@ function RowFrame:initDropdownMenu(frame, level, menuList)
 
             local confirmFrame = ConfirmDialogFrame:new(nil, StriLi.Lang.Confirm.AreYouSureTo.." "..playerName.." "..StriLi.Lang.Confirm.Remove,
                     function()
-                        self.removeFnc(playerName);
-                        StriLi.CommunicationHandler:sendMemberRemoved(playerName);
+                        if self.removeFnc(playerName) then
+                            StriLi.CommunicationHandler:sendMemberRemoved(playerName);
+                        end
                     end,
                     nil);
 
@@ -584,6 +589,9 @@ function RowFrame:setStatus(status)
     elseif status == RowFrameStatus_t.StriLiMaster then
         self.Regions.StatusFS:SetText("M");
         toolTippText = StriLi.Lang.Tooltip.master;
+    else
+        self.Regions.StatusFS:SetText("");
+        toolTippText = nil;
     end
 
     self.Children.Status:SetScript("OnEnter", function()

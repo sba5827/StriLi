@@ -260,7 +260,7 @@ function StriLi.EventHandler:OnWhisper(...)
     local message, author = arg1, arg2;
     message = string.lower(message);
 
-    if RaidMembersDB:checkForMember(author) and StriLi_GetPlayerRank(author) > -1 and StriLiOptions.WhisperTallyMarks then
+    if RaidMembersDB:checkForMember(author) and StriLi_GetPlayerRank(author) > -1 and StriLiOptions["WhisperTallyMarks"] then
         if  string.match(message,"%s*strich") and not string.match(message,"%S+strich") or
             string.match(message,"%s*stroke") and not string.match(message,"%S+stroke") or
             string.match(message,"%s*tally mark") and not string.match(message,"%S+tally mark") or

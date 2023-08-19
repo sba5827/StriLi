@@ -184,7 +184,7 @@ function StriLi.MainFrame:addPlayer(raidMember)
     self.rows[raidMember[1]] = self.unusedRowFrameStack:pop(nil, "StriLi_RowFrame" .. tostring(self.rowCount), self.frame, self.rowCount + 1, raidMember);
     self.rowCount = self.rowCount + 1;
     self.rows[raidMember[1]]:setCombineFunction(function(memName1, memName2) self:combineMembers(memName1, memName2) end);
-    self.rows[raidMember[1]]:setRemoveFunction(function(n) self:removePlayer(n, false) end);
+    self.rows[raidMember[1]]:setRemoveFunction(function(n) return self:removePlayer(n, false) end);
 
     table.insert(self.nameTable,raidMember[1]);
     self:sortRowFrames();
@@ -234,19 +234,19 @@ function StriLi.MainFrame:removePlayer(raidMemberName, forced)
             local _, _, _, _, _, _, _, online = GetRaidRosterInfo(raidMemberIndex);
 
             if online then
-                print (CONSTS.msgColorStringStart.."StriLi: "..StriLi.Lang.ErrorMsg.RemoveOnlineRaidmember.."|r");
-                return;
+                print (CONSTS.striLiMsgFlag..CONSTS.msgColorStringStart..StriLi.Lang.ErrorMsg.RemoveOnlineRaidmember.."|r");
+                return false;
             end
         end
     end
 
     if self.rows[raidMemberName] ~= nil then
 
-        if RaidMembersDB:checkForMember(UnitName("player")) then
-            RaidMembersDB:get(UnitName("player"))["IsStriLiAssist"]:unregisterObserver(self);
+        if RaidMembersDB:checkForMember(raidMemberName) then
+            RaidMembersDB:get(raidMemberName)["IsStriLiAssist"]:unregisterObserver(self);
         end
 
-        RaidMembersDB:remove(raidMemberName, forced);
+        assert(RaidMembersDB:remove(raidMemberName, forced));
 
         table.removeByValue(self.nameTable, raidMemberName);
 
