@@ -5,28 +5,28 @@ rmdir %TEMPDIR%
 mkdir %TEMPDIR%
 
 set FILETOZIP=%~dp0*.lua
-xcopy %FILETOZIP% %TEMPDIR%\ /Y
+xcopy %FILETOZIP% %TEMPDIR%\StriLi\ /Y
 
 set FILETOZIP=%~dp0*.xml
-xcopy %FILETOZIP% %TEMPDIR%\ /Y
+xcopy %FILETOZIP% %TEMPDIR%\StriLi\ /Y
 
 set FILETOZIP=%~dp0*.md
-xcopy %FILETOZIP% %TEMPDIR%\ /Y
+xcopy %FILETOZIP% %TEMPDIR%\StriLi\ /Y
 
 set FILETOZIP=%~dp0*.toc
-xcopy %FILETOZIP% %TEMPDIR%\ /Y
+xcopy %FILETOZIP% %TEMPDIR%\StriLi\ /Y
 
 set FILETOZIP=%~dp0*.blp
-xcopy %FILETOZIP% %TEMPDIR%\ /Y
+xcopy %FILETOZIP% %TEMPDIR%\StriLi\ /Y
 
 set FILETOZIP=%~dp0LICENSE
-xcopy %FILETOZIP% %TEMPDIR%\ /Y
+xcopy %FILETOZIP% %TEMPDIR%\StriLi\ /Y
 
 set FILETOZIP=%~dp0Libs
-xcopy %FILETOZIP% %TEMPDIR%\Libs\ /E /Y
+xcopy %FILETOZIP% %TEMPDIR%\StriLi\Libs\ /E /Y
 
 set FILETOZIP=%~dp0Lang
-xcopy %FILETOZIP% %TEMPDIR%\Lang\ /E /Y
+xcopy %FILETOZIP% %TEMPDIR%\StriLi\Lang\ /E /Y
 
 echo Set objArgs = WScript.Arguments > _zipIt.vbs
 echo InputFolder = objArgs(0) >> _zipIt.vbs

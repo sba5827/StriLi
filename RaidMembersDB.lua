@@ -69,7 +69,6 @@ function RaidMembersDB:remove(name, forced)
     end
 
     return true;
-
 end
 
 function RaidMembersDB:isMemberAssist(name)
