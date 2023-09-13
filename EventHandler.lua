@@ -38,8 +38,10 @@ function StriLi.EventHandler:OnEvent(event, ...)
             versionFrame:Show();
             editBox:SetScript("OnEscapePressed", function(self) versionFrame:Hide() end);
         end
-        delayedFunctionCall(20.0, function () self:OnPartyMembersChanged() end)
-        StriLi.startup = false;
+        delayedFunctionCall(20.0, function ()
+            self:OnPartyMembersChanged();
+            StriLi.startup = false;
+        end)
     elseif event == "PARTY_MEMBERS_CHANGED" or event == "PARTY_MEMBER_DISABLE" or event == "PARTY_MEMBER_ENABLE" then
         self:OnPartyMembersChanged();
     elseif event == "PLAYER_LOGOUT" then
