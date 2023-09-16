@@ -34,7 +34,7 @@ StriLi.CommunicationHandler = { waitingForRespond = "",
                                 requestQueue = {}
 };
 
-function StriLi.CommunicationHandler:On_CHAT_MSG_ADDON(prefix, message, distribution_type, sender)
+function StriLi.CommunicationHandler:On_CHAT_MSG_ADDON(prefix, message, _, sender)
 
     --DEBUG
     --if string.sub(arg1, 1, 2) == "SL" then
@@ -189,7 +189,7 @@ function StriLi.CommunicationHandler:On_DataChanged(msgString, sender)
     end
 
     StriLi.communicationTriggeredDataChange = true;
-    if (data == "Reregister") then
+    if (data == "ReRegister") then
         RaidMembersDB:get(name)[data]:set(arg);
         StriLi.communicationTriggeredDataChange = false;
     elseif (arg == "Combine") and not assistChange then
@@ -251,7 +251,7 @@ function StriLi.CommunicationHandler:On_Request_SyncData(sender)
         self:sendDataChanged(name, "Sec", data["Sec"]:get(), true);
         self:sendDataChanged(name, "Token", data["Token"]:get(), true);
         self:sendDataChanged(name, "Fail", data["Fail"]:get(), true);
-        self:sendDataChanged(name, "Reregister", data["Reregister"]:get(), true);
+        self:sendDataChanged(name, "ReRegister", data["ReRegister"]:get(), true);
 
     end
 
@@ -373,14 +373,16 @@ function StriLi.CommunicationHandler:On_ItemHistoryAdd(arguments, sender)
 
     if (StriLi.master:get() ~= sender and StriLi.master:get() ~= "") and not self.requestedSyncAsMaster then return end
 
+    local player, playerClass, rollType, roll, rollNum, index;
+
     local itemLink, _next = string.match(arguments, "([^%]]+)%s?(.*)");
-    local _, _next = string.match(_next, CONSTS.nextWordPatern);
-    local player, _next = string.match(_next, CONSTS.nextWordPatern);
-    local playerClass, _next = string.match(_next, CONSTS.nextWordPatern);
-    local rollType, _next = string.match(_next, CONSTS.nextWordPatern);
-    local roll, _next = string.match(_next, CONSTS.nextWordPatern);
-    local rollNum = tonumber(roll);
-    local index, _next = string.match(_next, CONSTS.nextWordPatern);
+    _, _next = string.match(_next, CONSTS.nextWordPatern);
+    player, _next = string.match(_next, CONSTS.nextWordPatern);
+    playerClass, _next = string.match(_next, CONSTS.nextWordPatern);
+    rollType, _next = string.match(_next, CONSTS.nextWordPatern);
+    roll, _next = string.match(_next, CONSTS.nextWordPatern);
+    rollNum = tonumber(roll);
+    index, _next = string.match(_next, CONSTS.nextWordPatern);
     local indexNum = tonumber(index);
     local allRolls = {["Main"]={}, ["Sec"]={}};
 
@@ -419,15 +421,16 @@ function StriLi.CommunicationHandler:On_ItemHistoryChanged(arguments, sender)
 
     if (StriLi.master:get() ~= sender  and StriLi.master:get() ~= "" and not (RaidMembersDB:isMemberAssist(sender) and StriLi_isPlayerMaster())) then return end
 
+    local player, playerClass, rollType, roll, rollNum, index
 
     local itemLink, _next = string.match(arguments, "([^%]]+)%s?(.*)");
-    local _, _next = string.match(_next, CONSTS.nextWordPatern);
-    local player, _next = string.match(_next, CONSTS.nextWordPatern);
-    local playerClass, _next = string.match(_next, CONSTS.nextWordPatern);
-    local rollType, _next = string.match(_next, CONSTS.nextWordPatern);
-    local roll, _next = string.match(_next, CONSTS.nextWordPatern);
-    local rollNum = tonumber(roll)
-    local index, _next = string.match(_next, CONSTS.nextWordPatern);
+    _, _next = string.match(_next, CONSTS.nextWordPatern);
+    player, _next = string.match(_next, CONSTS.nextWordPatern);
+    playerClass, _next = string.match(_next, CONSTS.nextWordPatern);
+    rollType, _next = string.match(_next, CONSTS.nextWordPatern);
+    roll, _next = string.match(_next, CONSTS.nextWordPatern);
+    rollNum = tonumber(roll)
+    index, _next = string.match(_next, CONSTS.nextWordPatern);
 
     if rollNum ~= nil then
         roll = rollNum;
@@ -445,7 +448,7 @@ function StriLi.CommunicationHandler:On_ItemHistoryRemove(arguments, sender)
 
     if (StriLi.master:get() ~= sender and StriLi.master:get() ~= "") then return end
 
-    local index, _next = string.match(arguments, CONSTS.nextWordPatern);
+    local index, _ = string.match(arguments, CONSTS.nextWordPatern);
 
     index = tonumber(index);
 
@@ -461,7 +464,7 @@ function StriLi.CommunicationHandler:Send_ItemHistoryAdd(itemLink, player, playe
 
     for k, v in pairs(allRolls) do
         s = s..k.."_";
-        for k2, v2 in pairs(v) do
+        for _, v2 in pairs(v) do
             s = s..v2["Name"].."_"..v2["Roll"].."_"
         end
     end

@@ -10,7 +10,7 @@ local StriLiLDB = LibStub("LibDataBroker-1.1"):NewDataObject("StriLi!", {
         tooltip:AddLine(StriLi.Lang.Tooltip.dragClickText, 1, 1, 1)
         tooltip:Show()
     end,
-    OnClick = function(this, button)
+    OnClick = function(_, button)
         if button == "LeftButton" then
             StriLi.MainFrame:toggle()
         elseif button == "RightButton" then

@@ -90,31 +90,31 @@ end
 
 function StriLi.AutoRollAnalyser:On_CHAT_MSG_SYSTEM(text)
 
-    local playername, _next = string.match(text, CONSTS.nextWordPatern);
+    local player_name, _next = string.match(text, CONSTS.nextWordPatern);
     local number, range = string.match(_next, "(%d+)%s?(.*)");
     number = tonumber(number);
 
     if range == "(1-100)" then
-        self:registerRoll("Main", playername, number);
+        self:registerRoll("Main", player_name, number);
     elseif range == "(1-99)" then
-        self:registerRoll("Sec", playername, number);
+        self:registerRoll("Sec", player_name, number);
     end
 
 end
 
-function StriLi.AutoRollAnalyser:registerRoll(rollType, playername, number)
+function StriLi.AutoRollAnalyser:registerRoll(rollType, player_name, number)
 
-    if not RaidMembersDB:checkForMember(playername) then return end --if player in ignored list
+    if not RaidMembersDB:checkForMember(player_name) then return end --if player in ignored list
 
-    if self.playerRolled[playername] == nil then
+    if self.playerRolled[player_name] == nil then
 
-        self.playerRolled[playername] = true;
+        self.playerRolled[player_name] = true;
 
         if self:isNHToken() then
             local countToGet = ((rollType == "Main" or not StriLiOptions["TokenSecList"]) and "Token" or "TokenSec");
-            table.insert(self.rolls[rollType], {["Roll"]=number, ["Name"]=playername, ["Count"]=RaidMembersDB:get(playername)[countToGet]:get(), ["Fail"]=RaidMembersDB:get(playername)["Fail"]:get()});
+            table.insert(self.rolls[rollType], { ["Roll"]=number, ["Name"]= player_name, ["Count"]=RaidMembersDB:get(player_name)[countToGet]:get(), ["Fail"]=RaidMembersDB:get(player_name)["Fail"]:get()});
         else
-            table.insert(self.rolls[rollType], {["Roll"]=number, ["Name"]=playername, ["Count"]=RaidMembersDB:get(playername)[rollType]:get(), ["Fail"]=RaidMembersDB:get(playername)["Fail"]:get()});
+            table.insert(self.rolls[rollType], { ["Roll"]=number, ["Name"]= player_name, ["Count"]=RaidMembersDB:get(player_name)[rollType]:get(), ["Fail"]=RaidMembersDB:get(player_name)["Fail"]:get()});
         end
 
     end
@@ -149,7 +149,7 @@ function StriLi.AutoRollAnalyser:sortRolls()
 end
 
 function StriLi.AutoRollAnalyser:shoutWinner()
-    local rollType = nil;
+    local rollType;
 
     if self.rolls["Main"][1] == nil and self.rolls["Sec"][1] == nil then
         return;
@@ -164,7 +164,6 @@ function StriLi.AutoRollAnalyser:shoutWinner()
 end
 
 function StriLi.AutoRollAnalyser:shoutRolls()
-    local winnerShout = false;
 	
 	SendChatMessage("---"..StriLi.Lang.TallyMarkTypes.Main.."---", "RAID");
 	for _,v2 in ipairs(self.rolls["Main"]) do
@@ -216,7 +215,7 @@ function StriLi.AutoRollAnalyser:increaseWinnerCountAndExpandItemHistory()
         i = i+1;
     end
 
-    local i = 1;
+    i = 1;
 
     while self.rolls["Sec"][i] do
         table.insert(rollsToSave["Sec"], {["Roll"] = self.rolls["Sec"][i]["Roll"], ["Name"] = self.rolls["Sec"][i]["Name"]});

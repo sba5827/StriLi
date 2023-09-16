@@ -119,12 +119,12 @@ function StriLi.ItemHistory:printRollsForItem(index)
 
     print(self.items[index])
     print(CONSTS.msgColorStringStart..StriLi.Lang.Labels.Main..CONSTS.msgColorStringEnd);
-    for k,v in pairs(self.allRolls[index]["Main"]) do
+    for _,v in pairs(self.allRolls[index]["Main"]) do
         print(CONSTS.msgColorStringStart..v["Name"]..": "..v["Roll"]..CONSTS.msgColorStringEnd);
     end
 
     print(CONSTS.msgColorStringStart..StriLi.Lang.Labels.Sec..CONSTS.msgColorStringEnd);
-    for k,v in pairs(self.allRolls[index]["Sec"]) do
+    for _,v in pairs(self.allRolls[index]["Sec"]) do
         print(CONSTS.msgColorStringStart..v["Name"]..": "..v["Roll"]..CONSTS.msgColorStringEnd);
     end
 
@@ -364,7 +364,7 @@ function StriLi.ItemHistory:OnMouseUp(frame, button, itemFrame)
 
 end
 
-function StriLi.ItemHistory:initDropdownMenu(frame, level, menuList, itemFrame)
+function StriLi.ItemHistory:initDropdownMenu(_, level, menuList, itemFrame)
     local info = UIDropDownMenu_CreateInfo();
     local bAssist = RaidMembersDB:isMemberAssist(UnitName("player")) and not StriLi_isPlayerMaster();
 
@@ -377,14 +377,14 @@ function StriLi.ItemHistory:initDropdownMenu(frame, level, menuList, itemFrame)
         info.disabled, info.text, info.hasArrow, info.menuList = false, StriLi.Lang.Commands.RolltypeChange, true, "Lists";
         UIDropDownMenu_AddButton(info);
 
-        info.disabled, info.text, info.hasArrow, info.func = bAssist, StriLi.Lang.Commands.Remove, false, function(_, arg1)
+        info.disabled, info.text, info.hasArrow, info.func = bAssist, StriLi.Lang.Commands.Remove, false, function(_, _)
 
             StriLi.dropdownFrame:Hide()
 
             local confirmFrame = ConfirmDialogFrame:new(nil, StriLi.Lang.Confirm.ItemRemove,
                     function()
 
-                        local index = nil;
+                        local index;
 
                         for k,v in pairs(self.contentFrame.children) do
                             if v == itemFrame then
@@ -403,8 +403,8 @@ function StriLi.ItemHistory:initDropdownMenu(frame, level, menuList, itemFrame)
         end;
         UIDropDownMenu_AddButton(info);
 
-        info.disabled, info.text, info.hasArrow, info.func = false, StriLi.Lang.Commands.Print, false, function(_, arg1)
-            local index = nil;
+        info.disabled, info.text, info.hasArrow, info.func = false, StriLi.Lang.Commands.Print, false, function(_, _)
+            local index;
 
             for k,v in pairs(self.contentFrame.children) do
                 if v == itemFrame then
@@ -422,7 +422,7 @@ function StriLi.ItemHistory:initDropdownMenu(frame, level, menuList, itemFrame)
 
                 info.disabled = false;
                 info.text = k;
-                info.colorCode = "|cff" .. Strili_GetHexClassColorCode(v[1]);
+                info.colorCode = "|cff" .. StriLi_GetHexClassColorCode(v[1]);
                 info.func = function(_, arg1)
 
                     StriLi.dropdownFrame:Hide()
@@ -430,15 +430,15 @@ function StriLi.ItemHistory:initDropdownMenu(frame, level, menuList, itemFrame)
                     local confirmFrame = ConfirmDialogFrame:new(nil, StriLi.Lang.Confirm.AreYouSureTo.." "..arg1.." "..StriLi.Lang.Confirm.ItemAssign,
                             function()
 
-                                local index = nil;
+                                local index;
 
-                                for k,v in pairs(self.contentFrame.children) do
-                                    if v == itemFrame then
-                                        index = k;
+                                for k2,v2 in pairs(self.contentFrame.children) do
+                                    if v2 == itemFrame then
+                                        index = k2;
                                     end
                                 end
 
-                                local arg1Class = RaidMembersDB:get(arg1)[1]; --get the raidmember via RaidMembersDB:get and extracting the class from table.
+                                local arg1Class = RaidMembersDB:get(arg1)[1]; --get the raid member via RaidMembersDB:get and extracting the class from table.
 
                                 self:editPlayer(arg1, arg1Class, index);
 
@@ -455,7 +455,7 @@ function StriLi.ItemHistory:initDropdownMenu(frame, level, menuList, itemFrame)
             end
         end
     elseif menuList == "Lists" then
-        local aList = nil;
+        local aList;
 
         if StriLiOptions["TokenSecList"] then
             aList = {   ["Main"] = StriLi.Lang.TallyMarkTypes.Main,
@@ -481,11 +481,11 @@ function StriLi.ItemHistory:initDropdownMenu(frame, level, menuList, itemFrame)
                     local confirmFrame = ConfirmDialogFrame:new(nil, StriLi.Lang.Confirm.AreYouSureTo.." "..StriLi.Lang.Confirm.ItemRolltypeChange,
                             function()
 
-                                local index = nil;
+                                local index;
 
-                                for k,v in pairs(self.contentFrame.children) do
-                                    if v == itemFrame then
-                                        index = k;
+                                for k2,v2 in pairs(self.contentFrame.children) do
+                                    if v2 == itemFrame then
+                                        index = k2;
                                     end
                                 end
 
@@ -507,14 +507,14 @@ function StriLi.ItemHistory:initDropdownMenu(frame, level, menuList, itemFrame)
     end
 end
 
-function StriLi.ItemHistory:initDropdownMenuSlave(frame, level, menuList, itemFrame)
+function StriLi.ItemHistory:initDropdownMenuSlave(_, level, _, itemFrame)
     local info = UIDropDownMenu_CreateInfo();
 
     if level == 1 then
 
         -- Outermost menu level
-        info.disabled, info.text, info.hasArrow, info.func = false, StriLi.Lang.Commands.Print, false, function(_, arg1)
-            local index = nil;
+        info.disabled, info.text, info.hasArrow, info.func = false, StriLi.Lang.Commands.Print, false, function(_, _)
+            local index;
 
             for k,v in pairs(self.contentFrame.children) do
                 if v == itemFrame then

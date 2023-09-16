@@ -36,7 +36,7 @@ function StriLi.EventHandler:OnEvent(event, ...)
             editBox:SetText("https://github.com/sba5827/StriLi");
             editBox:HighlightText();
             versionFrame:Show();
-            editBox:SetScript("OnEscapePressed", function(self) versionFrame:Hide() end);
+            editBox:SetScript("OnEscapePressed", function(_) versionFrame:Hide() end);
         end
         delayedFunctionCall(20.0, function ()
             self:OnPartyMembersChanged();
@@ -68,7 +68,7 @@ function StriLi.EventHandler:OnPartyMembersChanged()
             StriLi.master:set("");
         end
     elseif numOfMembers > 1 and StriLi_newRaidGroup then
-        self:OnJoiningNewRaidgoup();
+        self:OnJoiningNewRaidGroup();
     elseif numOfMembers > 1 then
         self:addNewPlayers();
     end
@@ -97,7 +97,7 @@ function StriLi.EventHandler:OnRaidLeft()
 
 end
 
-function StriLi.EventHandler:OnJoiningNewRaidgoup()
+function StriLi.EventHandler:OnJoiningNewRaidGroup()
 
     StriLi.CommunicationHandler:checkForMaster(function(master)
 

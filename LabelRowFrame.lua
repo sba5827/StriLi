@@ -23,14 +23,14 @@ end
 function LabelRowFrame:setColumnContent()
 
     if StriLiOptions["TokenSecList"] then
-        self.Children.Status, self.Children.Name, self.Children.Reregister, self.Children.Main, self.Children.Sec, self.Children.Token, self.Children.TokenSec, self.Children.Fail = self.frame:GetChildren();
+        self.Children.Status, self.Children.Name, self.Children.ReRegister, self.Children.Main, self.Children.Sec, self.Children.Token, self.Children.TokenSec, self.Children.Fail = self.frame:GetChildren();
     else
-        self.Children.Status, self.Children.Name, self.Children.Reregister, self.Children.Main, self.Children.Sec, self.Children.Token, self.Children.Fail = self.frame:GetChildren();
+        self.Children.Status, self.Children.Name, self.Children.ReRegister, self.Children.Main, self.Children.Sec, self.Children.Token, self.Children.Fail = self.frame:GetChildren();
     end
 
     self.Regions.StatusFS = self.Children.Status:CreateFontString("PlayerStatusLable", "ARTWORK", "GameFontNormal");
     self.Regions.NameFS = self.Children.Name:CreateFontString("PlayerNameLable", "ARTWORK", "GameFontNormal");
-    self.Regions.ReregisterFS = self.Children.Reregister:CreateFontString("ReregisterLable", "ARTWORK", "GameFontNormal");
+    self.Regions.ReRegisterFS = self.Children.ReRegister:CreateFontString("ReRegisterLable", "ARTWORK", "GameFontNormal");
     self.Regions.MainFS = self.Children.Main:CreateFontString("MainLable", "ARTWORK", "GameFontNormal");
     self.Regions.SecFS = self.Children.Sec:CreateFontString("SecLable", "ARTWORK", "GameFontNormal");
     self.Regions.TokenFS = self.Children.Token:CreateFontString("TokenLabel", "ARTWORK", "GameFontNormal");
@@ -41,7 +41,7 @@ function LabelRowFrame:setColumnContent()
 
     self.Regions.StatusFS:SetPoint("CENTER", 0, 0);
     self.Regions.NameFS:SetPoint("CENTER", 0, 0);
-    self.Regions.ReregisterFS:SetPoint("CENTER", 0, 0);
+    self.Regions.ReRegisterFS:SetPoint("CENTER", 0, 0);
     self.Regions.MainFS:SetPoint("CENTER", 0, 0);
     self.Regions.SecFS:SetPoint("CENTER", 0, 0);
     self.Regions.TokenFS:SetPoint("CENTER", 0, 0);
@@ -52,7 +52,7 @@ function LabelRowFrame:setColumnContent()
 
     self.Regions.StatusFS:SetText(StriLi.Lang.Labels.Status);
     self.Regions.NameFS:SetText(StriLi.Lang.Labels.Name);
-    self.Regions.ReregisterFS:SetText(StriLi.Lang.Labels.Reregister);
+    self.Regions.ReRegisterFS:SetText(StriLi.Lang.Labels.ReRegister);
     self.Regions.MainFS:SetText(StriLi.Lang.Labels.Main);
     self.Regions.SecFS:SetText(StriLi.Lang.Labels.Sec);
     self.Regions.TokenFS:SetText(StriLi.Lang.Labels.Token);

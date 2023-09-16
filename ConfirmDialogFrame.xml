@@ -57,7 +57,7 @@
 					<OnLoad>self:SetText(StriLi.Lang.XML.ButtonYes)</OnLoad>
 				</Scripts>
 			</Button>
-			<Button name="$parent_CancleButton" inherits="StriLi_Custom_Button_Template" text="">
+			<Button name="$parent_CancelButton" inherits="StriLi_Custom_Button_Template" text="">
 				<Size>
 					<AbsDimension x="60" y="20"/>
 				</Size>

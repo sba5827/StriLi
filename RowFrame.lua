@@ -57,7 +57,7 @@ function RowFrame:reInit(_, _, _, posIndex, raidMember)
     self:UpdateTokenCounter(self.raidMember[2]["Token"]:get());
     self:UpdateTokenSecCounter(self.raidMember[2]["TokenSec"]:get());
     self:UpdateFailCounter(self.raidMember[2]["Fail"]:get());
-    self:UpdateReregister(self.raidMember[2]["Reregister"]:get());
+    self:UpdateReRegister(self.raidMember[2]["ReRegister"]:get());
 
     self:linkCounter(self.raidMember[2]);
 
@@ -72,9 +72,9 @@ end
 function RowFrame:setColumnContent(charName, charData)
 
     if StriLiOptions["TokenSecList"] then
-        self.Children.Status, self.Children.Name, self.Children.Reregister, self.Children.Main, self.Children.Sec, self.Children.Token, self.Children.TokenSec, self.Children.Fail = self.frame:GetChildren();
+        self.Children.Status, self.Children.Name, self.Children.ReRegister, self.Children.Main, self.Children.Sec, self.Children.Token, self.Children.TokenSec, self.Children.Fail = self.frame:GetChildren();
     else
-        self.Children.Status, self.Children.Name, self.Children.Reregister, self.Children.Main, self.Children.Sec, self.Children.Token, self.Children.Fail = self.frame:GetChildren();
+        self.Children.Status, self.Children.Name, self.Children.ReRegister, self.Children.Main, self.Children.Sec, self.Children.Token, self.Children.Fail = self.frame:GetChildren();
     end
     self.Children.Status:EnableMouse(true);
     self.Children.Name:EnableMouse(true);
@@ -82,13 +82,13 @@ function RowFrame:setColumnContent(charName, charData)
         self:OnMouseUp(frame, button);
     end);
 
-    -- Settingup PlayerStatus
+    -- Setting up PlayerStatus
     self.Regions.StatusFS = self.Children.Status:CreateFontString("PlayerStatus" .. tostring(self.posIndex), "ARTWORK", "GameFontNormal");
     self.Regions.StatusFS:SetPoint("LEFT", 0, 0);
     self.Regions.StatusFS:SetPoint("RIGHT", 0, 0);
     self.Regions.StatusFS:SetText("");
 
-    -- Setting Playername
+    -- Setting Player name
     self.Regions.NameFS = self.Children.Name:CreateFontString("PlayerName" .. tostring(self.posIndex), "ARTWORK", "GameFontNormal");
     self.Regions.NameFS:SetPoint("LEFT", 0, 0);
     self.Regions.NameFS:SetPoint("RIGHT", 0, 0);
@@ -97,16 +97,16 @@ function RowFrame:setColumnContent(charName, charData)
     StriLi_SetTextColorByClass(self.Regions.NameFS, charData[1]);
 
     -- Creating Checkbox. Tooltip added if Re-registered
-    self.Regions.ReregisterCB = CreateFrame("CheckButton", "ReRegisterCheckButton" .. tostring(self.posIndex), self.Children.Reregister, "ChatConfigCheckButtonTemplate");
-    self.Regions.ReregisterCB:SetPoint("CENTER", 0, 0);
-    self.Regions.ReregisterCB:SetHitRectInsets(0, 0, 0, 0);
-    self:UpdateReregister(charData["Reregister"]:get());
+    self.Regions.ReRegisterCB = CreateFrame("CheckButton", "ReRegisterCheckButton" .. tostring(self.posIndex), self.Children.ReRegister, "ChatConfigCheckButtonTemplate");
+    self.Regions.ReRegisterCB:SetPoint("CENTER", 0, 0);
+    self.Regions.ReRegisterCB:SetHitRectInsets(0, 0, 0, 0);
+    self:UpdateReRegister(charData["ReRegister"]:get());
 
-    self.Regions.ReregisterCB:SetScript("OnClick", function()
-        self:ReregisterRequest(false);
+    self.Regions.ReRegisterCB:SetScript("OnClick", function()
+        self:ReRegisterRequest(false);
     end)
 
-    charData["Reregister"]:registerObserver(self);
+    charData["ReRegister"]:registerObserver(self);
 
     -- Creating counters and initializing them
     self.Regions.MainCounter = CreateFrame("Frame", "CounterMain" .. tostring(self.posIndex), self.Children.Main, "StriLi_Counter_Template2");
@@ -139,7 +139,7 @@ end
 
 function RowFrame:linkCounter(charData)
     
-    local aTable = nil;
+    local aTable;
     if StriLiOptions["TokenSecList"] then
         aTable = { ["Main"] = self.Regions.MainCounter, ["Sec"] = self.Regions.SecCounter, ["Token"] = self.Regions.TokenCounter, ["TokenSec"] = self.Regions.TokenSecCounter, ["Fail"] = self.Regions.FailCounter };
     else
@@ -168,7 +168,7 @@ end
 
 function RowFrame:unlinkCounters()
 
-    local aTable = nil;
+    local aTable;
     if StriLiOptions["TokenSecList"] then
         aTable = { ["Main"] = self.Regions.MainCounter, ["Sec"] = self.Regions.SecCounter, ["Token"] = self.Regions.TokenCounter, ["TokenSec"] = self.Regions.TokenSecCounter, ["Fail"] = self.Regions.FailCounter };
     else
@@ -185,7 +185,7 @@ function RowFrame:unlinkCounters()
 
     end
 
-    self.raidMember[2]["Reregister"]:unregisterObserver(self);
+    self.raidMember[2]["ReRegister"]:unregisterObserver(self);
 
 end
 
@@ -235,28 +235,28 @@ function RowFrame:UpdateFailCounter(count)
     end
 end
 
-function RowFrame:UpdateReregister(reregister)
+function RowFrame:UpdateReRegister(reRegister)
 
-    if (reregister ~= "") then
-        self.Regions.ReregisterCB:SetChecked(true);
+    if (reRegister ~= "") then
+        self.Regions.ReRegisterCB:SetChecked(true);
         self.Children.Name:SetScript("OnEnter", function()
             GameTooltip_SetDefaultAnchor(GameTooltip, self.Children.Name)
             GameTooltip:SetOwner(self.Children.Name, "ANCHOR_NONE")
             GameTooltip:SetPoint("CENTER", self.Children.Name, "CENTER", 0, 30)
-            GameTooltip:SetText(reregister)
+            GameTooltip:SetText(reRegister)
             GameTooltip:Show()
         end);
         self.Children.Name:SetScript("OnLeave", function()
             GameTooltip:Hide()
         end);
     else
-        self.Regions.ReregisterCB:SetChecked(false);
+        self.Regions.ReRegisterCB:SetChecked(false);
         self.Children.Name:SetScript("OnEnter", nil);
         self.Children.Name:SetScript("OnLeave", nil);
     end
 
     if not StriLi.CommunicationHandler.requestedSyncAsMaster then
-        StriLi.CommunicationHandler:sendDataChanged(self:getName():gsub('%®', ''):gsub('%•', ''):gsub('%¬', ''), "Reregister", reregister, false);
+        StriLi.CommunicationHandler:sendDataChanged(self:getName():gsub('%®', ''):gsub('%•', ''):gsub('%¬', ''), "ReRegister", reRegister, false);
     end
 end
 
@@ -287,8 +287,8 @@ function RowFrame:OnValueChanged(sender)
     elseif sender == self.raidMember[2]["Fail"] then
         self:UpdateFailCounter(self.raidMember[2]["Fail"]:get());
 
-    elseif sender == self.raidMember[2]["Reregister"] then
-        self:UpdateReregister(self.raidMember[2]["Reregister"]:get());
+    elseif sender == self.raidMember[2]["ReRegister"] then
+        self:UpdateReRegister(self.raidMember[2]["ReRegister"]:get());
 
     elseif sender == self.raidMember[2]["IsStriLiAssist"] then
         if self.raidMember[2]["IsStriLiAssist"]:get() then
@@ -318,20 +318,20 @@ function RowFrame:OnValueChanged(sender)
 
 end
 
-function RowFrame.ReregisterRequest(self, overwrite)
+function RowFrame.ReRegisterRequest(self, overwrite)
 
-    if self.Regions.ReregisterCB:GetChecked() or overwrite then
+    if self.Regions.ReRegisterCB:GetChecked() or overwrite then
 
-        local reregisterInputFrame = TextInputFrame:new(nil, StriLi.Lang.Confirm.ReregisterRequest..": ", function(input)
-            self.raidMember[2]["Reregister"]:set(input);
+        local reRegisterInputFrame = TextInputFrame:new(nil, StriLi.Lang.Confirm.ReRegisterRequest..": ", function(input)
+            self.raidMember[2]["ReRegister"]:set(input);
         end, function(_)
             
         end);
 
-        reregisterInputFrame:show();
+        reRegisterInputFrame:show();
 
     else
-        self.raidMember[2]["Reregister"]:set("");
+        self.raidMember[2]["ReRegister"]:set("");
     end
 
 end
@@ -403,8 +403,8 @@ function RowFrame:initDropdownMenu(frame, level, menuList)
         -- Outermost menu level
         info.text, info.hasArrow, info.menuList, info.disabled = StriLi.Lang.Commands.CombineMembers, true, "Players", bAssist;
         UIDropDownMenu_AddButton(info);
-        info.text, info.hasArrow, info.disabled, info.func = StriLi.Lang.Commands.Reregister, false, false, function()
-            self:ReregisterRequest(true)
+        info.text, info.hasArrow, info.disabled, info.func = StriLi.Lang.Commands.ReRegister, false, false, function()
+            self:ReRegisterRequest(true)
         end;
         UIDropDownMenu_AddButton(info);
         info.text, info.hasArrow, info.disabled, info.func = StriLi.Lang.Commands.SetMaster, false, bAssist, function()
@@ -486,7 +486,7 @@ function RowFrame:initDropdownMenu(frame, level, menuList)
 
                 info.disabled = bAssist;
                 info.text = k;
-                info.colorCode = "|cff" .. Strili_GetHexClassColorCode(v[1]);
+                info.colorCode = "|cff" .. StriLi_GetHexClassColorCode(v[1]);
                 info.func = function(_, arg1, arg2)
 
                     StriLi.dropdownFrame:Hide()
@@ -510,15 +510,15 @@ function RowFrame:initDropdownMenu(frame, level, menuList)
     end
 end
 
-function RowFrame:toggleReregisterLock()
+function RowFrame:toggleReRegisterLock()
 
-    if self.Regions.ReregisterCB:IsEnabled() == 1 then
-        self.Regions.ReregisterCB:Disable();
+    if self.Regions.ReRegisterCB:IsEnabled() == 1 then
+        self.Regions.ReRegisterCB:Disable();
     else
-        self.Regions.ReregisterCB:Enable();
+        self.Regions.ReRegisterCB:Enable();
     end
 
-    return self.Regions.ReregisterCB:IsEnabled();
+    return self.Regions.ReRegisterCB:IsEnabled();
 
 end
 
@@ -550,7 +550,7 @@ function RowFrame:enableButtons()
     end
 
     if StriLi.MainFrame.children.lockButton:GetText() == StriLi.Lang.Labels.Lock then
-        self.Regions.ReregisterCB:Enable();
+        self.Regions.ReRegisterCB:Enable();
     end
 
 end
@@ -572,13 +572,13 @@ function RowFrame:disableButtons()
 
     end
 
-    self.Regions.ReregisterCB:Disable();
+    self.Regions.ReRegisterCB:Disable();
 
 end
 
 function RowFrame:setStatus(status)
 
-    local toolTippText = nil;
+    local toolTippText;
 
     if status == RowFrameStatus_t.HasStriLi then
         self.Regions.StatusFS:SetText("S");

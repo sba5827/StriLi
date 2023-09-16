@@ -1,7 +1,7 @@
 function protect(tbl)
     return setmetatable({}, {
         __index = tbl,
-        __newindex = function(t, key, value)
+        __newindex = function(_, key, value)
             error("attempting to change constant " ..
                     tostring(key) .. " to " .. tostring(value), 2)
         end
@@ -37,7 +37,7 @@ function StriLi_SetMaster(arg1)
             if (rank > 0) or StriLiOptions["AutoPromote"] then
                 StriLi_tryToSetNewMaster(newMasterName);
             else
-                print(CCONSTS.striLiMsgFlag..ONSTS.msgColorStringStart..newMasterName.." "..StriLi.Lang.ErrorMsg.SetMasterNotPossible.." "..StriLi.Lang.ErrorMsg.RankToLow.."|r");
+                print(CONSTS.striLiMsgFlag..CONSTS.msgColorStringStart..newMasterName.." "..StriLi.Lang.ErrorMsg.SetMasterNotPossible.." "..StriLi.Lang.ErrorMsg.RankToLow.."|r");
             end
             break;
         end
@@ -178,7 +178,7 @@ function StriLi_SetTextColorByClass(FontString, Class)
 
 end
 
-function Strili_GetHexClassColorCode(Class) -- Returns RRGGBB
+function StriLi_GetHexClassColorCode(Class) -- Returns RRGGBB
 
     if( Class == "WARRIOR" ) 		then return "C69B6D" end
     if( Class == "PALADIN" ) 		then return "F48CBA" end
