@@ -1,9 +1,9 @@
-StriLi.LootRules = {frame=nil, text = "tescht"};
+StriLi.LootRules = {frame=nil, text = "test"};
 
 function StriLi.LootRules:init()
     self.frame = CreateFrame("FRAME","StriLi_LootRulesFrame", UIParent, "StriLi_LootRulesFrame_Template");
     self.frame.ScrollFrame.EditBox:SetText(self.text);
-    self.frame.ScrollFrame.EditBox:SetScript("OnEscapePressed", function(self) StriLi.LootRules:hide() end);
+    self.frame.ScrollFrame.EditBox:SetScript("OnEscapePressed", function(_) StriLi.LootRules:hide() end);
 
     self.frame:SetScript("OnMouseDown", function(frame)
         if (not frame.isMoving) and (frame.isLocked ~= 1) then

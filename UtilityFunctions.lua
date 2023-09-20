@@ -1,7 +1,7 @@
 function protect(tbl)
     return setmetatable({}, {
         __index = tbl,
-        __newindex = function(t, key, value)
+        __newindex = function(_, key, value)
             error("attempting to change constant " ..
                     tostring(key) .. " to " .. tostring(value), 2)
         end
@@ -37,14 +37,14 @@ function StriLi_SetMaster(arg1)
             if (rank > 0) or StriLiOptions["AutoPromote"] then
                 StriLi_tryToSetNewMaster(newMasterName);
             else
-                print(CONSTS.msgColorStringStart..newMasterName.." "..StriLi.Lang.ErrorMsg.SetMasterNotPossible.." "..StriLi.Lang.ErrorMsg.RankToLow.."|r");
+                print(CONSTS.striLiMsgFlag..CONSTS.msgColorStringStart..newMasterName.." "..StriLi.Lang.ErrorMsg.SetMasterNotPossible.." "..StriLi.Lang.ErrorMsg.RankToLow.."|r");
             end
             break;
         end
     end
 
     if not found then
-        print(CONSTS.msgColorStringStart..newMasterName.." "..StriLi.Lang.ErrorMsg.SetMasterNotPossible.." "..newMasterName.." "..StriLi.Lang.ErrorMsg.PlayerNotInRaid.."|r");
+        print(CONSTS.striLiMsgFlag..CONSTS.msgColorStringStart..newMasterName.." "..StriLi.Lang.ErrorMsg.SetMasterNotPossible.." "..newMasterName.." "..StriLi.Lang.ErrorMsg.PlayerNotInRaid.."|r");
     end
 
 end
@@ -71,7 +71,7 @@ function StriLi_tryToSetNewMaster(newMasterName)
                     end
                 end
             else
-                print(CONSTS.msgColorStringStart..newMasterName.." "..StriLi.Lang.ErrorMsg.SetMasterNotPossible.." "..StriLi.Lang.ErrorMsg.PossibleCauses..":\n - "
+                print(CONSTS.striLiMsgFlag..CONSTS.msgColorStringStart..newMasterName.." "..StriLi.Lang.ErrorMsg.SetMasterNotPossible.." "..StriLi.Lang.ErrorMsg.PossibleCauses..":\n - "
                         ..newMasterName.." "..StriLi.Lang.ErrorMsg.Cause1.."\n - "
                         ..newMasterName.." "..StriLi.Lang.ErrorMsg.Cause2.."\n - "
                         ..StriLi.Lang.ErrorMsg.Cause3.."\n - "
@@ -101,7 +101,7 @@ function StriLi_SetAssist(name)
     end
 
     if not found then
-        print(CONSTS.msgColorStringStart..name.." "..StriLi.Lang.ErrorMsg.SetAssistNotPossible.." "..name.." "..StriLi.Lang.ErrorMsg.PlayerNotInRaid.."|r");
+        print(CONSTS.striLiMsgFlag..CONSTS.msgColorStringStart..name.." "..StriLi.Lang.ErrorMsg.SetAssistNotPossible.." "..name.." "..StriLi.Lang.ErrorMsg.PlayerNotInRaid.."|r");
     end
 
 end
@@ -120,7 +120,7 @@ function StriLi_tryToSetAssist(name)
                     end
                 end
             else
-                print(CONSTS.msgColorStringStart..name.." "..StriLi.Lang.ErrorMsg.SetAssistNotPossible.." "..StriLi.Lang.ErrorMsg.PossibleCauses..":\n - "
+                print(CONSTS.striLiMsgFlag..CONSTS.msgColorStringStart..name.." "..StriLi.Lang.ErrorMsg.SetAssistNotPossible.." "..StriLi.Lang.ErrorMsg.PossibleCauses..":\n - "
                         ..name.." "..StriLi.Lang.ErrorMsg.Cause1.."\n - "
                         ..name.." "..StriLi.Lang.ErrorMsg.Cause2.."\n - "
                         ..StriLi.Lang.ErrorMsg.Cause3.."\n - "
@@ -178,7 +178,7 @@ function StriLi_SetTextColorByClass(FontString, Class)
 
 end
 
-function Strili_GetHexClassColorCode(Class) -- Returns RRGGBB
+function StriLi_GetHexClassColorCode(Class) -- Returns RRGGBB
 
     if( Class == "WARRIOR" ) 		then return "C69B6D" end
     if( Class == "PALADIN" ) 		then return "F48CBA" end

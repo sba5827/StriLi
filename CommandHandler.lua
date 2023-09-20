@@ -6,7 +6,7 @@ SlashCmdList["STRILI"] = function(msg, _)
     -- any whitespace at end of args is retained
 
 
-    local startIndex, endIndex, t, args = string.find(msg, "%s*(%w+)%s*(.*)");
+    local startIndex, _, t, args = string.find(msg, "%s*(%w+)%s*(.*)");
 	
 	local inRaid = (GetNumRaidMembers() > 0);
     if startIndex == nil then

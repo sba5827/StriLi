@@ -24,7 +24,7 @@ function RaidMembersDB:add(name, class)
         ["Token"] = ObservableNumber:new(),
         ["TokenSec"] = ObservableNumber:new(),
         ["Fail"] = ObservableNumber:new(),
-        ["Reregister"] = ObservableString:new(),
+        ["ReRegister"] = ObservableString:new(),
         ["IsStriLiAssist"] = ObservableBool:new(),
     };
 
@@ -55,7 +55,7 @@ function RaidMembersDB:remove(name, forced)
             local _, _, _, _, _, _, _, online = GetRaidRosterInfo(raidMemberIndex);
 
             if online then
-                print (CONSTS.striLiMsgFlag..CONSTS.msgColorStringStart..StriLi.Lang.ErrorMsg.RemoveOnlineRaidmember.."|r");
+                print (CONSTS.striLiMsgFlag..CONSTS.msgColorStringStart..StriLi.Lang.ErrorMsg.RemoveOnlineRaidMember.."|r");
                 return false;
             end
         end
@@ -98,7 +98,7 @@ function RaidMembersDB:getRawData()
                  ["Token"] = v["Token"]:get(),
                  ["TokenSec"] = v["TokenSec"]:get(),
                  ["Fail"] = v["Fail"]:get(),
-                 ["Reregister"] = v["Reregister"]:get(),
+                 ["ReRegister"] = v["ReRegister"]:get(),
                  ["IsStriLiAssist"] = v["IsStriLiAssist"]:get(),
         }
     end
@@ -118,7 +118,7 @@ function RaidMembersDB:initFromRawData(rawData)
             ["Token"] = ObservableNumber:new(),
             ["TokenSec"] = ObservableNumber:new(),
             ["Fail"] = ObservableNumber:new(),
-            ["Reregister"] = ObservableString:new();
+            ["ReRegister"] = ObservableString:new();
             ["IsStriLiAssist"] = ObservableBool:new();
         };
 
@@ -127,7 +127,7 @@ function RaidMembersDB:initFromRawData(rawData)
         self.raidMembers[i]["Token"]:set(v["Token"]);
         self.raidMembers[i]["TokenSec"]:set(v["TokenSec"]);
         self.raidMembers[i]["Fail"]:set(v["Fail"]);
-        self.raidMembers[i]["Reregister"]:set(v["Reregister"]);
+        self.raidMembers[i]["ReRegister"]:set(v["ReRegister"]);
         self.raidMembers[i]["IsStriLiAssist"]:set(v["IsStriLiAssist"]);
 
         self.size = self.size + 1;

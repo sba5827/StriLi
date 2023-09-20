@@ -152,7 +152,7 @@
 					</Anchor>
 				</Anchors>
 			</StatusBar>
-			<StatusBar name="StriLi_Reregisration" inherits="StriLi_Template" useParentLevel="true">
+			<StatusBar name="StriLi_ReRegistration" inherits="StriLi_Template" useParentLevel="true">
 				<Size>
 					<AbsDimension x="45" y="30"/>
 				</Size>
@@ -243,7 +243,7 @@
 					</Anchor>
 				</Anchors>
 			</StatusBar>
-			<StatusBar name="StriLi_Reregisration" inherits="StriLi_Template" useParentLevel="true">
+			<StatusBar name="StriLi_ReRegistration" inherits="StriLi_Template" useParentLevel="true">
 				<Size>
 					<AbsDimension x="45" y="30"/>
 				</Size>

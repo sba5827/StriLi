@@ -17,7 +17,7 @@ function StriLi_OptionFrame_init()
     
     if StriLiOptions["AutoPromote"] then checkBoxAutoPromoteToRaidAsi:SetChecked(true) end
     checkBoxAutoPromoteToRaidAsi:SetScript("OnClick",
-            function(this, button, down)
+            function(this, _, _)
                 StriLiOptions["AutoPromote"] = this:GetChecked();
             end);
 
@@ -30,7 +30,7 @@ function StriLi_OptionFrame_init()
     
     if StriLiOptions["TokenSecList"] then checkBoxTokenSecList:SetChecked(true) end
     checkBoxTokenSecList:SetScript("OnClick",
-            function(this, button, down)
+            function(this, _, _)
                 StriLiOptions["TokenSecList"] = this:GetChecked();
                 RaidMembersDB:OnTokenListOptionChanged();
                 StriLi.MainFrame:OnTokenListOptionChanged();
@@ -47,7 +47,7 @@ function StriLi_OptionFrame_init()
 
     if StriLiOptions["WhisperTallyMarks"] then checkBoxWhisperTallyMarks:SetChecked(true) end
     checkBoxWhisperTallyMarks:SetScript("OnClick",
-            function(this, button, down)
+            function(this, _, _)
                 StriLiOptions["WhisperTallyMarks"] = this:GetChecked();
             end);
 
@@ -71,7 +71,7 @@ function StriLi_OptionFrame_init()
 
         if StriLiOptions["IgnoreGroup"..i] then checkBoxIgnoreGroup_table[i]:SetChecked(true) end
         checkBoxIgnoreGroup_table[i]:SetScript("OnClick",
-                function(this, button, down)
+                function(this, _, _)
                     StriLiOptions["IgnoreGroup"..i] = this:GetChecked();
                 end);
 

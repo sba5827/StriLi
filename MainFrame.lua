@@ -234,7 +234,7 @@ function StriLi.MainFrame:removePlayer(raidMemberName, forced)
             local _, _, _, _, _, _, _, online = GetRaidRosterInfo(raidMemberIndex);
 
             if online then
-                print (CONSTS.striLiMsgFlag..CONSTS.msgColorStringStart..StriLi.Lang.ErrorMsg.RemoveOnlineRaidmember.."|r");
+                print (CONSTS.striLiMsgFlag..CONSTS.msgColorStringStart..StriLi.Lang.ErrorMsg.RemoveOnlineRaidMember.."|r");
                 return false;
             end
         end
@@ -360,7 +360,7 @@ function StriLi.MainFrame:OnClickLockButton()
 
     for _, rowFrame in pairs(self.rows) do
 
-        enabled = rowFrame:toggleReregisterLock();
+        enabled = rowFrame:toggleReRegisterLock();
 
     end
 
@@ -395,7 +395,7 @@ function StriLi.MainFrame:OnClickItemHistoryButton()
 
 end
 
-function StriLi.MainFrame:initDropdownMenu(frame, level, menuList)
+function StriLi.MainFrame:initDropdownMenu(_, _, _)
 
     local info = UIDropDownMenu_CreateInfo();
 

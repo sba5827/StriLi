@@ -22,7 +22,7 @@ function TextInputFrame:new(o, text, confirm_fnc, cancel_fnc)
         end
     end);
 
-    StriLi_TextInputFrame_CancleButton:SetScript("OnClick", function()
+    StriLi_TextInputFrame_CancelButton:SetScript("OnClick", function()
         StriLi_TextInputFrame:Hide();
         if (self.cancel_fnc ~= nil) then
             self.cancel_fnc(StriLi_TextInputFrame_Frame_EditBox:GetText());
