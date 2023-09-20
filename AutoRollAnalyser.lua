@@ -136,9 +136,9 @@ function StriLi.AutoRollAnalyser:sortRolls()
     local function condition(a,b)
 
         if ((a["Count"]+a["Fail"]) == (b["Count"]+b["Fail"])) then
-            return (a["Roll"] >= b["Roll"]);
+            return (a["Roll"] > b["Roll"]);
         else
-            return ((a["Count"]+a["Fail"]) <= (b["Count"]+b["Fail"]));
+            return ((a["Count"]+a["Fail"]) < (b["Count"]+b["Fail"]));
         end
 
     end
