@@ -121,6 +121,7 @@ function StriLi_Stub_esES() return {
         TokenSec = "Lista Token sec.",
         IgnoreGroup = "Ignorar grupo",
         WhisperTallyMarks = "¿Susurrar una lista de recuento a los miembros de la incursión cuando se les pide por susurro?",
+        ShowCorruptedVersions = "Mostrar quién tiene una versión StriLi no válida.",
     },
     Tooltip = {
         rightClickText = "|cffff0000RightClick|r Open/Close ItemHistory",

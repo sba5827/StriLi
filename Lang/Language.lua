@@ -122,6 +122,7 @@ StriLi.Lang = {
         TokenSec = "Token sec list.",
         IgnoreGroup = "Ignore group",
         WhisperTallyMarks = "Strichliste an Raid member flüstern wenn du per Whisper gefragt wirst?",
+        ShowCorruptedVersions = "Anzeigen, wer eine invalide StriLiVersion hat.",
     },
     Tooltip = {
         rightClickText = "|cffff0000RightClick|r Open/Close ItemHistory",

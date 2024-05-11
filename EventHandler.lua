@@ -23,13 +23,12 @@ function StriLi.EventHandler:OnEvent(event, ...)
 
     if event == "ADDON_LOADED" and arg1 == "StriLi" then
         StriLi.startup = true;
-        print("|cff00ffffStriLi "..StriLi.Lang.version.." " .. GetAddOnMetadata("StriLi", "Version") .. " "..StriLi.Lang.loaded.."|r");
         StriLi_initAddon();
         StriLi.MainFrame:init();
         StriLi.ItemHistory:initFromRawData(StriLi_ItemHistory);
         StriLi.LootRules:init();
         StriLi_OptionFrame_init();
-        if tonumber(StriLi_LatestVersion) > tonumber(GetAddOnMetadata("StriLi", "Version")) then
+        if StriLi_VersionEncryptToNumber(StriLi_LatestVersionEncrypt) > StriLi_VersionEncryptToNumber(StriLi.VersionEncrypt) then
             local versionFrame = CreateFrame("FRAME", "StriLi_VersionFrame", UIParent, "StriLi_CopyVersionFrame_Template");
             local editBox = versionFrame:GetChildren():GetChildren();
             StriLi_VersionFrame_FontString:SetText();
@@ -41,6 +40,12 @@ function StriLi.EventHandler:OnEvent(event, ...)
         delayedFunctionCall(20.0, function ()
             self:OnPartyMembersChanged();
             StriLi.startup = false;
+            print("|cff00ffffStriLi "..StriLi.Lang.version.." " .. StriLi_VersionEncryptToNumber(StriLi.VersionEncrypt) .. " "..StriLi.Lang.loaded.."|r");
+            if (not StriLi_isVersionValid(StriLi.VersionEncrypt)) then
+                print("|cff00ffff ".."This does not seem like a valid version of StriLi. Checkout https://github.com/sba5827/StriLi.")
+            else
+                print("|cff00ffff ".."This does seem like a valid version of StriLi.")
+            end
         end)
     elseif event == "PARTY_MEMBERS_CHANGED" or event == "PARTY_MEMBER_DISABLE" or event == "PARTY_MEMBER_ENABLE" then
         self:OnPartyMembersChanged();

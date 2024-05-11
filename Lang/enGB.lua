@@ -121,6 +121,7 @@ function StriLi_Stub_enGB() return {
         TokenSec = "Token sec list.",
         IgnoreGroup = "Ignore group",
         WhisperTallyMarks = "Whispering a tally list to raid members when asked via whisper?",
+        ShowCorruptedVersions = "Display who has an invalid StriLi version.",
     },
     Tooltip = {
         rightClickText = "|cffff0000RightClick|r Open/Close ItemHistory",
