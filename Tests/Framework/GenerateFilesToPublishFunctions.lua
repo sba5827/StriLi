@@ -1,3 +1,5 @@
+require("CodeCoverageParser");
+
 local sCurrentDir = io.popen("cd"):read();
 local sProductiveFilesDir = sCurrentDir:gsub("\\Tests\\Framework", "");
 
@@ -196,9 +198,14 @@ while sFileName do
 			end
 			io.write(line);
 		end
-		
+
 		originalFile:close();
 		fakedFile:close();
+
+		fakedFile = io.open(sProductiveFilesDir.."\\Tests\\FakedFiles\\".."Fake"..sFileName, "rb");
+
+		sParsFile(fakedFile:read("a"));
+
 		print("Fake"..sFileName.." generated.");
 
 	end
