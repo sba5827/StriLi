@@ -121,6 +121,7 @@ function StriLi_Stub_deDE() return {
         TokenSec = "Token Sec Liste.",
         IgnoreGroup = "Gruppe ignorieren",
         WhisperTallyMarks = "Strichliste an Raid member flüstern wenn du per Whisper gefragt wirst?",
+        ShowCorruptedVersions = "Anzeigen, wer eine invalide StriLiVersion hat.",
     },
     Tooltip = {
         rightClickText = "|cffff0000RechtsKlick|r Öffnet/Schließt ItemHistory",

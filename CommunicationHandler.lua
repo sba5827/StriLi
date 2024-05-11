@@ -60,7 +60,7 @@ function StriLi.CommunicationHandler:On_CHAT_MSG_ADDON(prefix, message, _, sende
     elseif prefix == "SL_RS_UHS" then
         self:On_Respond_UserHasStriLi(sender);
     elseif prefix == "SL_VC" then
-        self:On_VersionCheck(message);
+        self:On_VersionCheck(message, sender);
     elseif prefix == "SL_IHA" then
         self:On_ItemHistoryAdd(message, sender);
     elseif prefix == "SL_IHC" then
@@ -341,30 +341,40 @@ function StriLi.CommunicationHandler:checkIfUserHasStriLi(name, cbf)
 
 end
 
-function StriLi.CommunicationHandler:On_VersionCheck(transmittedVersion)
-    if tonumber(StriLi_LatestVersion) < tonumber(transmittedVersion) then
-        StriLi_LatestVersion = tonumber(transmittedVersion);
+function StriLi.CommunicationHandler:On_VersionCheck(transmittedVersion, sender)
+
+    local vEncrypt = StriLi_StringToVersionEncrypt(transmittedVersion);
+
+    if StriLi_isEncryptedVersionValid(vEncrypt) then
+
+        if tonumber(StriLi_VersionEncryptToNumber(StriLi_LatestVersionEncrypt)) < StriLi_VersionEncryptToNumber(vEncrypt) then
+            StriLi_LatestVersionEncrypt = vEncrypt;
+        end
+    elseif StriLiOptions["ShowCorruptedVersions"] then
+        print(CONSTS.striLiMsgFlag..CONSTS.msgColorStringStart.."Received corrupted version from: "..sender..CONSTS.msgColorStringEnd);
     end
 end
 
 function StriLi.CommunicationHandler:ShoutVersion()
+
+    if not StriLi_isEncryptedVersionValid(StriLi_LatestVersionEncrypt) then return end;
 
     if GetNumRaidMembers() > 1 then
 
         local _, instanceType = IsInInstance()
 
         if instanceType == "pvp" then
-            SendAddonMessage("SL_VC", tostring(StriLi_LatestVersion), "BATTLEGROUND");
+            SendAddonMessage("SL_VC", StriLi_VersionEncryptToString(StriLi_LatestVersionEncrypt), "BATTLEGROUND");
         else
-            SendAddonMessage("SL_VC", tostring(StriLi_LatestVersion), "RAID");
+            SendAddonMessage("SL_VC", StriLi_VersionEncryptToString(StriLi_LatestVersionEncrypt), "RAID");
         end
 
     elseif GetNumPartyMembers() > 0 then
-        SendAddonMessage("SL_VC", tostring(StriLi_LatestVersion), "PARTY");
+        SendAddonMessage("SL_VC", StriLi_VersionEncryptToString(StriLi_LatestVersionEncrypt), "PARTY");
     end
 
     if IsInGuild() then
-        SendAddonMessage("SL_VC", tostring(StriLi_LatestVersion), "GUILD");
+        SendAddonMessage("SL_VC", StriLi_VersionEncryptToString(StriLi_LatestVersionEncrypt), "GUILD");
     end
 
 end

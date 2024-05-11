@@ -17,6 +17,100 @@ CONSTS = protect({
     striLiMsgFlag = "|cffFFFF00<|r|cff33FFF2StriLi|r|cffFFFF00>|r ",
 });
 
+-- Funktion zum Modulo-Berechnung
+function StriLi_mod(a, b)
+    local result = a % b
+    if result < 0 then
+        result = result + b
+    end
+    return result
+end
+
+-- Funktion zum Exponieren modulo
+function StriLi_pow_mod(base, exponent, modulus)
+    local result = 1
+    for i = 1, exponent do
+        result = StriLi_mod(result * base, modulus)
+    end
+    return result
+end
+
+-- Funktion zum Entschlüsseln einer Nachricht mit dem Key
+function StriLi_decrypt(encrypted_message)
+    -- Entschlüsseln jedes Zahlenwerts mit dem Key
+    local decrypted_message = {}
+    for i = 1, #encrypted_message do
+        local decrypted_number = StriLi_pow_mod(encrypted_message[i], StriLi.Key.d, StriLi.Key.n)
+        decrypted_message[i] = decrypted_number
+    end
+
+    -- Konvertieren der numerischen Werte zurück in die Nachricht
+    local message = ""; -- Konvertierung der Zahlen in Zeichen
+    for i = 1, #decrypted_message do
+        if (decrypted_message[i] < 255) then
+            message = message..string.char(decrypted_message[i]);
+        else
+            return "false";
+        end
+    end
+
+    -- Rückgabe der entschlüsselten Nachricht
+    return message
+end
+
+function StriLi_crc8(t)
+    local c = 0
+    for _, b in ipairs(t) do
+        for i = 0, 7 do
+            local c0 = c % 2
+            local b0 = b % 2
+            c = (c - c0) / 2
+            b = (b - b0) / 2
+            if c0 + b0 == 1 then
+                c = c + 0x80 + (c % 16 < 8 and 8 or -8) + (c % 8 < 4 and 4 or -4)
+            end
+        end
+    end
+    return c
+end
+
+function StriLi_isEncryptedVersionValid(versionTable)
+
+    local bValidVersion = true;
+
+    local sDecrypt = StriLi_decrypt(versionTable);
+
+    if not(string.sub(sDecrypt, 1, 1) == "S") then
+        bValidVersion = false;
+    end
+
+    if not(string.sub(sDecrypt, 2, 2) == "L") then
+        bValidVersion = false;
+    end
+
+    local crc = string.char(StriLi_crc8({string.byte(sDecrypt, 1,6)}));
+
+    if not(crc == string.sub(sDecrypt, 7,7)) then
+        bValidVersion = false;
+    end
+
+    return bValidVersion;
+
+end
+
+function StriLi_isVersionValid(versionTable)
+
+    local bValidVersion = StriLi_isEncryptedVersionValid(versionTable);
+    local sDecrypt = StriLi_decrypt(versionTable);
+
+    if (not(tonumber(string.sub(sDecrypt,3, 6)) == tonumber(GetAddOnMetadata("StriLi", "Version")))) then
+        bValidVersion = false;
+    end
+
+    return bValidVersion;
+
+end
+
 function StriLi_isPlayerMaster()
     return StriLi.master:get() == UnitName("player");
 end
@@ -248,18 +342,12 @@ function StriLi_initAddon()
 
     StriLi.InitLang()
 
-    local addonVersion = tonumber(GetAddOnMetadata("StriLi", "Version"));
-
-    if StriLi_LatestVersion ~= nil then
-        --Secure that StriLi_LatestVersion will never be a String.
-        StriLi_LatestVersion = tonumber(StriLi_LatestVersion);
+    if StriLi_LatestVersionEncrypt == nil then
+        StriLi_LatestVersionEncrypt = StriLi.VersionEncrypt;
+    elseif StriLi_VersionEncryptToNumber(StriLi_LatestVersionEncrypt) < StriLi_VersionEncryptToNumber(StriLi.VersionEncrypt) then
+        StriLi_LatestVersionEncrypt = StriLi.VersionEncrypt;
     end
 
-    if StriLi_LatestVersion == nil then
-        StriLi_LatestVersion = addonVersion;
-    elseif StriLi_LatestVersion < addonVersion then
-        StriLi_LatestVersion = addonVersion;
-    end
     if StriLi_Master == nil then
         StriLi.master = ObservableString:new();
         StriLi.master:set("");
@@ -284,6 +372,7 @@ function StriLi_initAddon()
             ["AutoPromote"] = false,
             ["TokenSecList"] = false,
             ["WhisperTallyMarks"] = true,
+            ["ShowCorruptedVersions"] = false;
         };
     elseif StriLiOptions.AutoPromote == nil then
         StriLiOptions.AutoPromote = false;
@@ -291,6 +380,7 @@ function StriLi_initAddon()
         StriLiOptions.TokenSecList = false
     elseif StriLiOptions.WhisperTallyMarks == nil then
         StriLiOptions.WhisperTallyMarks = true;
+    elseif StriLiOptions.ShowCorruptedVersions == nil then
     end
 
     StriLi.LootRules:setText(StriLi_RulesTxt);
@@ -330,4 +420,45 @@ function delayedFunctionCall(delay_s, functionToCall)
             timerFrame:SetScript("OnUpdate", nil);
         end
     end)
+end
+
+function StriLi_VersionEncryptToString(t)
+    if type(t) ~= "table" then return nil end;
+
+    local sResult = "";
+    for i = 1, #t do
+        sResult = sResult..tostring(t[i])..",";
+    end
+
+    return sResult;
+end
+
+function StriLi_StringToVersionEncrypt(s)
+    if type(s) ~= "string" then return nil end;
+    local tResult = {};
+
+    local sTemp = "";
+
+    for i = 1, string.len(s) do
+        if string.sub(s,i,i) ~= "," then
+            sTemp = sTemp..string.sub(s,i,i);
+        else
+            table.insert(tResult, tonumber(sTemp));
+            sTemp = "";
+        end
+    end
+
+    return tResult;
+end
+
+function StriLi_VersionEncryptToNumber(t)
+    if type(t) ~= "table" then return nil end;
+
+    local nResult = 0.0;
+
+    if StriLi_isEncryptedVersionValid(t) then
+        nResult = tonumber(string.sub(StriLi_decrypt(t),3,6));
+    end
+
+    return nResult;
 end

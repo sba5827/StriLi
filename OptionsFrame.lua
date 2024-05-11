@@ -54,6 +54,20 @@ function StriLi_OptionFrame_init()
     local fsWhisperTallyMarks  = optionFrame:CreateFontString("ARTWORK", nil, "GameFontNormal")
     fsWhisperTallyMarks:SetPoint("TOPLEFT", 60, -85)
     fsWhisperTallyMarks:SetText(StriLi.Lang.Options.WhisperTallyMarks);
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    local checkBoxCorruptedVersion = CreateFrame("CheckButton", nil, optionFrame, "ChatConfigCheckButtonTemplate")
+    checkBoxCorruptedVersion:SetPoint("TOPLEFT", 30, -160);
+
+    if StriLiOptions["ShowCorruptedVersions"] then checkBoxCorruptedVersion:SetChecked(true) end
+    checkBoxCorruptedVersion:SetScript("OnClick",
+            function(this, _, _)
+                StriLiOptions["ShowCorruptedVersions"] = this:GetChecked();
+            end);
+
+    local fsCorruptedVersion  = optionFrame:CreateFontString("ARTWORK", nil, "GameFontNormal")
+    fsCorruptedVersion:SetPoint("TOPLEFT", 60, -165)
+    fsCorruptedVersion:SetText(StriLi.Lang.Options.ShowCorruptedVersions);
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
     local fsIgnoreGroup  = optionFrame:CreateFontString("ARTWORK", nil, "GameFontNormal")
